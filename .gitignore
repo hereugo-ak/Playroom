@@ -1,0 +1,9 @@
+# Local snapshots of earlier builds (duplicated assets)
+backups/
+
+# OS / editor junk
+.DS_Store
+Thumbs.db
+desktop.ini
+__pycache__/
+*.pyc

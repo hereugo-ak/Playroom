@@ -1,0 +1,11 @@
+{
+  "source": "assets/img/hero.jpg",
+  "kind": "living-photo camera loop rendered from the exact source frame",
+  "width": 1600,
+  "height": 900,
+  "fps": 30,
+  "seconds": 12.0,
+  "generative_repaint": false,
+  "elements_removed": false,
+  "description": "12 s living-photo camera loop: a 6% cinematic push toward the original playroom photograph, breathing window light and slow dust. The same girl, teddy, wooden train, blocks, stacking rings, dollhouse and teepee remain in place; no generative repaint and no element removed."
+}

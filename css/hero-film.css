@@ -1,0 +1,365 @@
+/* ==========================================================================
+   THE PLAYROOM FILM  ·  hero only  ·  v5  ·  20 Oct 2026
+   --------------------------------------------------------------------------
+   One photograph, edge to edge. There is no panel, no half-frame and no
+   left/right divide: the frame is darkened only from below (and a whisper at
+   the top for the brand line), with a soft, feathered pool under the copy so
+   the words sit on tone without a visible edge anywhere.
+
+   Palette: cocoa #1E130E, cream #FFF9EF, rosewood #EFB9C0 / #A65F6B,
+   ochre #E8B96A, oat paper #FBF5EB.
+
+   Header: intentionally untouched. The masthead and its spring behaviour live
+   in css/styles.css and js/motion.js, exactly as the approved build had them.
+   Scoped to the hero, so no other route or component changes.
+   ========================================================================== */
+
+/* ---------- 1 · The frame ------------------------------------------------ */
+#app .home-premium .hero-cinema--warm.hero-cinema--warm {
+  height: clamp(620px, 80svh, 760px) !important;
+  min-height: 620px !important;
+  background: #1e130e !important;
+  isolation: isolate;
+}
+
+#app .home-premium .hero-cinema--warm .hero-cinema-image {
+  filter: saturate(1.05) contrast(1.04) brightness(1.01) !important;
+}
+
+/* Light from the top so the room stays bright; weight only at the base.
+   The mid-layer pool is a soft ellipse under the copy — feathered on every
+   side, so there is no boundary to read as a split. */
+#app .home-premium .hero-cinema--warm.hero-cinema--warm .hero-cinema-shade {
+  background:
+    linear-gradient(180deg,
+      rgba(24, 15, 10, .60) 0%,
+      rgba(24, 15, 10, .24) 5%,
+      rgba(24, 15, 10, .05) 11%,
+      rgba(24, 15, 10, 0) 16%),
+    radial-gradient(58% 74% at 21% 76%,
+      rgba(24, 15, 10, .58) 0%,
+      rgba(24, 15, 10, .36) 42%,
+      rgba(24, 15, 10, .12) 64%,
+      rgba(24, 15, 10, 0) 80%),
+    linear-gradient(0deg,
+      rgba(24, 15, 10, .96) 0%,
+      rgba(24, 15, 10, .90) 10%,
+      rgba(24, 15, 10, .70) 22%,
+      rgba(24, 15, 10, .46) 34%,
+      rgba(24, 15, 10, .22) 48%,
+      rgba(24, 15, 10, .06) 62%,
+      rgba(24, 15, 10, 0) 72%),
+    radial-gradient(126% 96% at 50% 44%,
+      rgba(0, 0, 0, 0) 56%,
+      rgba(24, 15, 10, .22) 100%) !important;
+  z-index: 1 !important;
+}
+
+/* Legacy veil stays off. */
+#app .home-premium .hero-cinema--warm .hero-editorial::before {
+  display: none !important;
+}
+
+/* Warm floor light + film grain: keeps the cocoa from banding and gives the
+   shadowed side printed depth instead of flat colour. */
+#app .home-premium .hero-cinema--warm::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  background: radial-gradient(52% 40% at 8% 102%, rgba(232, 185, 106, .14), rgba(232, 185, 106, 0) 72%);
+}
+#app .home-premium .hero-cinema--warm::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+  opacity: .045;
+  mix-blend-mode: overlay;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)' opacity='0.6'/%3E%3C/svg%3E");
+}
+
+/* ---------- 2 · The brand line ------------------------------------------ */
+#app .home-premium .hero-cinema--warm .hero-cinema-top {
+  display: flex !important;
+  position: absolute;
+  left: clamp(24px, 4.4vw, 66px) !important;
+  right: clamp(24px, 4.4vw, 66px) !important;
+  top: clamp(20px, 2.2vw, 30px) !important;
+  z-index: 3;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  color: rgba(255, 249, 239, .9) !important;
+}
+#app .home-premium .hero-cinema--warm .hero-brand-line {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  font: 500 10px/1 var(--mono) !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase;
+  color: rgba(255, 249, 239, .94) !important;
+}
+#app .home-premium .hero-cinema--warm .hero-brand-line i {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #e8b96a !important;
+  box-shadow: 0 0 0 5px rgba(232, 185, 106, .18) !important;
+}
+#app .home-premium .hero-cinema--warm .hero-edition {
+  font: 400 9px/1 var(--mono) !important;
+  letter-spacing: .2em !important;
+  text-transform: uppercase;
+  color: rgba(255, 249, 239, .58) !important;
+}
+
+/* ---------- 3 · The copy ------------------------------------------------- */
+#app .home-premium .hero-cinema--warm .hero-editorial {
+  position: absolute !important;
+  left: clamp(24px, 4.4vw, 66px) !important;
+  right: auto !important;
+  top: auto !important;
+  bottom: clamp(66px, 9vh, 94px) !important;
+  width: min(660px, 54%) !important;
+  max-width: 660px !important;
+  transform: none !important;
+  animation: none !important;
+  z-index: 4 !important;
+  opacity: 1 !important;
+}
+#app .home-premium .hero-cinema--warm .hero-editorial-inner {
+  transform-origin: 0 100%;
+}
+#app .home-premium .hero-cinema--warm .hero-overline {
+  display: inline-flex;
+  align-items: center;
+  color: rgba(255, 249, 239, .84) !important;
+  font: 500 10px/1 var(--mono) !important;
+  letter-spacing: .22em !important;
+  text-transform: uppercase;
+}
+#app .home-premium .hero-cinema--warm .hero-overline::before {
+  width: 30px !important;
+  height: 1px;
+  margin-right: 13px;
+  background: #e8b96a !important;
+}
+#app .home-premium .hero-cinema--warm .hero-editorial h1 {
+  color: #fff9ef !important;
+  font: 500 clamp(46px, 5.8vw, 86px)/.92 var(--serif) !important;
+  letter-spacing: -.058em !important;
+  max-width: 640px !important;
+  margin: 22px 0 18px !important;
+  text-wrap: balance;
+  text-shadow: 0 2px 30px rgba(18, 11, 8, .42);
+}
+#app .home-premium .hero-cinema--warm .hero-editorial h1 em {
+  color: #efb9c0 !important;
+  font-style: italic !important;
+  font-weight: 400 !important;
+  letter-spacing: -.052em !important;
+}
+#app .home-premium .hero-cinema--warm .hero-editorial p {
+  font-size: 15px !important;
+  line-height: 1.76 !important;
+  max-width: 420px !important;
+  color: rgba(255, 247, 238, .9) !important;
+  margin: 0 0 26px !important;
+  text-shadow: 0 1px 16px rgba(18, 11, 8, .38);
+}
+#app .home-premium .hero-cinema--warm .hero-actions {
+  gap: 24px !important;
+}
+#app .home-premium .hero-cinema--warm .hero-actions .btn.light {
+  background: #fff9ef !important;
+  border-color: #fff9ef !important;
+  color: #2e1d14 !important;
+  min-height: 50px !important;
+  padding: 16px 24px !important;
+  box-shadow: 0 16px 36px rgba(20, 12, 8, .3) !important;
+  transition: background .24s ease, border-color .24s ease, transform .24s ease, box-shadow .24s ease !important;
+}
+#app .home-premium .hero-cinema--warm .hero-actions .btn.light:hover {
+  background: #f4d492 !important;
+  border-color: #f4d492 !important;
+  transform: translateY(-2px);
+  box-shadow: 0 20px 42px rgba(20, 12, 8, .34) !important;
+}
+#app .home-premium .hero-cinema--warm .hero-actions .btn.light .arrow {
+  transition: transform .24s ease;
+}
+#app .home-premium .hero-cinema--warm .hero-actions .btn.light:hover .arrow {
+  transform: translate(2px, -2px);
+}
+#app .home-premium .hero-cinema--warm .hero-secondary-link {
+  color: #fff9ef !important;
+  border-bottom-color: rgba(255, 249, 239, .5) !important;
+  font-size: 11px !important;
+  letter-spacing: .04em;
+  padding-bottom: 8px !important;
+  transition: color .22s ease, border-color .22s ease !important;
+}
+#app .home-premium .hero-cinema--warm .hero-secondary-link:hover {
+  color: #f4d492 !important;
+  border-bottom-color: #f4d492 !important;
+}
+
+/* Proof line: one hairline, three facts, ochre separators. */
+#app .home-premium .hero-cinema--warm .hero-assurance {
+  display: flex !important;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0;
+  max-width: 520px;
+  margin-top: 28px;
+  padding-top: 14px;
+  border-top: 1px solid rgba(255, 249, 239, .22);
+  font-family: var(--mono);
+  font-size: 9.5px;
+  line-height: 1.5;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255, 249, 239, .72);
+}
+#app .home-premium .hero-cinema--warm .hero-assurance span {
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+}
+#app .home-premium .hero-cinema--warm .hero-assurance span + span::before {
+  content: "";
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  margin: 0 12px;
+  background: #e8b96a;
+}
+
+/* The scroll cue: type on the film, no glass pill. */
+#app .home-premium .hero-cinema--warm .hero-scene-caption {
+  display: flex !important;
+  align-items: center;
+  gap: 12px;
+  width: auto !important;
+  max-width: none !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+  color: rgba(255, 249, 239, .74) !important;
+  font: 400 8.5px/1 var(--mono) !important;
+  letter-spacing: .18em !important;
+  text-transform: uppercase;
+  text-shadow: 0 1px 12px rgba(18, 11, 8, .5) !important;
+  bottom: clamp(22px, 3vh, 30px) !important;
+  right: clamp(24px, 4.4vw, 66px) !important;
+  z-index: 3 !important;
+}
+#app .home-premium .hero-cinema--warm .hero-scene-caption i {
+  width: 30px;
+  height: 1px;
+  background: linear-gradient(90deg, rgba(255, 249, 239, .55), rgba(255, 249, 239, .06)) !important;
+}
+#app .home-premium .hero-cinema--warm .hero-scene-caption span:last-child {
+  color: rgba(255, 249, 239, .92);
+}
+
+/* No panel signature in this composition. */
+#app .home-premium .hero-panel-sign {
+  display: none !important;
+}
+
+/* ---------- 4 · Tablet: same frame, tighter copy ------------------------- */
+@media (min-width: 761px) and (max-width: 1100px) {
+  #app .home-premium .hero-cinema--warm.hero-cinema--warm .hero-cinema-shade {
+    background:
+      linear-gradient(180deg,
+        rgba(24, 15, 10, .60) 0%,
+        rgba(24, 15, 10, .2) 5%,
+        rgba(24, 15, 10, 0) 14%),
+      radial-gradient(64% 80% at 20% 76%,
+        rgba(24, 15, 10, .62) 0%,
+        rgba(24, 15, 10, .4) 44%,
+        rgba(24, 15, 10, .14) 66%,
+        rgba(24, 15, 10, 0) 82%),
+      linear-gradient(0deg,
+        rgba(24, 15, 10, .96) 0%,
+        rgba(24, 15, 10, .9) 12%,
+        rgba(24, 15, 10, .7) 26%,
+        rgba(24, 15, 10, .44) 40%,
+        rgba(24, 15, 10, .2) 54%,
+        rgba(24, 15, 10, .04) 68%,
+        rgba(24, 15, 10, 0) 78%) !important;
+  }
+  #app .home-premium .hero-cinema--warm .hero-editorial {
+    width: min(560px, 58%) !important;
+    bottom: clamp(56px, 7vh, 76px) !important;
+  }
+  #app .home-premium .hero-cinema--warm .hero-editorial h1 {
+    font-size: clamp(46px, 5.6vw, 62px) !important;
+  }
+}
+
+/* ---------- 5 · Phones: the room, then the words ------------------------- */
+@media (max-width: 760px) {
+  #app .home-premium .hero-cinema--warm.hero-cinema--warm {
+    height: clamp(620px, 86svh, 720px) !important;
+    min-height: 620px !important;
+  }
+  #app .home-premium .hero-cinema--warm.hero-cinema--warm .hero-cinema-shade {
+    background:
+      linear-gradient(180deg,
+        rgba(24, 15, 10, .5) 0%,
+        rgba(24, 15, 10, .14) 6%,
+        rgba(24, 15, 10, 0) 14%),
+      linear-gradient(0deg,
+        rgba(24, 15, 10, .96) 0%,
+        rgba(24, 15, 10, .9) 18%,
+        rgba(24, 15, 10, .66) 34%,
+        rgba(24, 15, 10, .34) 50%,
+        rgba(24, 15, 10, .1) 66%,
+        rgba(24, 15, 10, 0) 78%) !important;
+  }
+  #app .home-premium .hero-cinema--warm .hero-editorial {
+    left: 22px !important;
+    right: 20px !important;
+    bottom: 26px !important;
+    top: auto !important;
+    width: auto !important;
+    max-width: none !important;
+    transform: none !important;
+  }
+  #app .home-premium .hero-cinema--warm .hero-editorial h1 {
+    font-size: clamp(46px, 11.8vw, 58px) !important;
+    line-height: .94 !important;
+    margin: 18px 0 15px !important;
+    max-width: 360px !important;
+    text-shadow: 0 2px 22px rgba(18, 11, 8, .46);
+  }
+  #app .home-premium .hero-cinema--warm .hero-editorial p {
+    font-size: 13.5px !important;
+    line-height: 1.72 !important;
+    max-width: 320px !important;
+    margin-bottom: 20px !important;
+  }
+  #app .home-premium .hero-cinema--warm .hero-actions {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px !important;
+  }
+  #app .home-premium .hero-cinema--warm .hero-actions .btn.light {
+    min-height: 46px !important;
+    padding: 13px 18px !important;
+  }
+  #app .home-premium .hero-cinema--warm .hero-assurance,
+  #app .home-premium .hero-cinema--warm .hero-cinema-top,
+  #app .home-premium .hero-cinema--warm .hero-scene-caption {
+    display: none !important;
+  }
+}
