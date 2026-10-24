@@ -56,6 +56,10 @@ function bindSpots(root = document) {
 // 3. Progress bar + cursor glow
 // ------------------------------------------------------------------
 let progressBar = null;
+let progressMax = 1;
+function setProgressMax() {
+  progressMax = Math.max(1, document.documentElement.scrollHeight - innerHeight);
+}
 function initProgress() {
   if (progressBar) return;
   progressBar = document.createElement('div');
@@ -66,12 +70,14 @@ function initProgress() {
     if (ticking) return;
     ticking = true;
     requestAnimationFrame(() => {
-      const max = document.documentElement.scrollHeight - innerHeight;
-      progressBar.style.width = (max > 0 ? scrollY / max * 100 : 0) + '%';
+      // scaleX instead of width: progress never reflows, only composites.
+      progressBar.style.transform = `scaleX(${Math.min(1, scrollY / progressMax)})`;
       ticking = false;
     });
   };
   addEventListener('scroll', update, { passive: true });
+  addEventListener('resize', () => { setProgressMax(); update(); }, { passive: true });
+  setProgressMax();
   update();
 }
 
@@ -174,8 +180,14 @@ function initHeader() {
   const mobile = () => matchMedia('(max-width:700px)').matches;
   const tight = () => matchMedia('(max-width:1100px)').matches;
   const clearNavLayout = () => ['position', 'top', 'left', 'right', 'width', 'max-width', 'max-height', 'flex-wrap', 'align-items', 'gap', 'z-index'].forEach((k) => nav.style.removeProperty(k));
+  let lastSig = '';
   const apply = () => {
     const p = clamp(progress, 0, 1), isMobile = mobile(), isTight = tight(), compact = p > .78;
+    // One signature per state; when nothing moved since the last paint there is
+    // nothing to write — this keeps the spring from restyling every frame.
+    const sig = `${p.toFixed(3)}${isMobile ? 'm' : 'd'}${isTight ? 't' : 'w'}${compact ? 'c' : 'x'}${scrollY > 10 ? 'f' : ''}`;
+    if (sig === lastSig) return;
+    lastSig = sig;
     const annH = (isMobile ? 29 : 32) * (1 - p);
     announcement.style.height = annH.toFixed(2) + 'px';
     announcement.style.opacity = (1 - p).toFixed(3);
@@ -291,6 +303,7 @@ export function motionRefresh() {
   bindSpots();
   bindInteractions();
   initFooterReveal();
+  setProgressMax(); // route renders change the document height
 }
 
 let inited = false;
