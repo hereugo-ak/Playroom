@@ -37,9 +37,17 @@ export function initWelcome() {
     document.getElementById('plWelcomeShop')?.addEventListener('click', () => { close('success'); location.hash = '#/catalog'; });
   });
   // Show only after the visitor has started browsing, then suppress for three weeks after dismissal.
+  // On the home page the offer must also wait for the cinematic hero handoff to
+  // fully resolve — the pinned room, the copy lift and the cream peel are the
+  // first impression, and locking the page mid-scroll would cut them short.
+  const offerGate = () => {
+    const hero = document.querySelector('[data-hero-scene]');
+    if (!hero) return 420;
+    return Math.round(hero.getBoundingClientRect().top + window.scrollY + hero.offsetHeight + 160);
+  };
   let scrollQueued = false;
-  window.addEventListener('scroll', () => { if (scrollQueued) return; scrollQueued = true; requestAnimationFrame(() => { scrollQueued = false; if (window.scrollY > 420) open(); }); }, { passive: true });
+  window.addEventListener('scroll', () => { if (scrollQueued) return; scrollQueued = true; requestAnimationFrame(() => { scrollQueued = false; if (window.scrollY > offerGate()) open(); }); }, { passive: true });
   // A short delay also permits visitors who browse with a mouse but do not scroll much; never open immediately.
-  window.setTimeout(() => { if (window.scrollY > 160) open(); }, 18000);
+  window.setTimeout(() => { if (window.scrollY > offerGate()) open(); }, 18000);
   window.addEventListener('hashchange', () => { if (!isHome() && overlay.classList.contains('is-open')) close('dismiss'); });
 }
