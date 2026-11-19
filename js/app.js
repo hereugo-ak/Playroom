@@ -26,7 +26,7 @@ import { PAYMENT_METHODS, generatePayer, generatePayment, validatePayment, gatew
 import { render, go, route, registerRoutes, setNotFound, holdScrollOnce } from './router.js';
 import { initMotion, motionRefresh } from './motion.js';
 import { initScrollExperience, refreshHeroScene } from './hero-scene.js';
-import { initSupport } from './support.js?v=4';
+import { initSupport } from './support.js?v=5';
 import { initWelcome } from './welcome.js';
 import { wireGateway, renderGatewayPanel, rewirePay, brandRowHTML, confettiBurst, completeOrder } from './checkout-gateway.js';
 import { initAuth, consumeAuthLanding, ensureProfile, authState } from './auth/auth-store.js';

@@ -11,7 +11,7 @@
 <link rel="stylesheet" href="css/styles.css?v=12">
 <link rel="stylesheet" href="css/hero-film.css?v=4">
 <link rel="stylesheet" href="css/account.css?v=2">
-<link rel="stylesheet" href="css/support.css?v=2">
+<link rel="stylesheet" href="css/support.css?v=3">
 </head>
 <body>
 <div class="site-chrome-placeholder" id="siteChromePlaceholder"><div class="site-chrome-shell" id="siteChrome">
@@ -53,88 +53,80 @@
 <div class="search-panel" id="searchPanel"><div class="search-panel-inner"><div class="search-panel-top"><a class="wordmark" href="#/"><i class="mark"></i>playroom</a><button class="icon-btn" id="closeSearch" aria-label="Close search"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><form class="big-search" id="bigSearchForm"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/></svg><input id="bigSearchInput" placeholder="What are we looking for?" autocomplete="off"><button class="text-link" type="submit">Search ↗</button></form><div class="search-hint" id="searchHint">Trending right now</div><div class="search-extras" id="searchExtras"></div><a class="search-seeall" id="searchSeeAll" href="#/catalog" data-close-search hidden>See every result <span>↗</span></a><div class="search-cats" id="searchCats"></div><div class="search-results" id="searchResults"></div></div></div>
 <div class="modal-backdrop" id="modalBackdrop"><section class="modal" id="modal" role="dialog" aria-modal="true"><div class="modal-head"><h2 id="modalTitle">A little more</h2><button class="icon-btn" id="closeModal" aria-label="Close dialog"><svg viewBox="0 0 24 24"><path d="m6 6 12 12M18 6 6 18"/></svg></button></div><div class="modal-content" id="modalContent"></div></section></div>
 <div class="toast-stack" id="toastStack"></div><div class="compare-dock" id="compareDock"></div><button class="back-top" id="backTop" aria-label="Back to top">↑</button><div class="cookie-note" id="cookieNote"><div class="mono">A small note about this demo</div><p>This is a class-project storefront. Your bag, wish list and demo orders stay in this browser; if you create an account, your profile, addresses and saved things are stored securely with Supabase. No real payment is ever taken.</p><div class="cookie-actions"><button class="btn small" id="cookieOkay">Got it</button><button class="btn outline small" id="cookieDismiss">Dismiss</button></div></div>
-<div class="care-dock" id="plSupportFab" aria-label="Playroom customer care">
-  <div class="care-menu" id="plFabMenu" aria-hidden="true">
-    <button type="button" class="care-action care-action--chat" id="plOpenChat" aria-label="Open customer support chat" aria-controls="plChatPanel" aria-expanded="false" style="--i:0">
-      <span class="care-action-index">01</span>
-      <span class="care-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 11.5a7.7 7.7 0 0 1-8 7.4 8.9 8.9 0 0 1-3.7-.8L4 19l1.2-3.2A7 7 0 0 1 4 11.5a7.8 7.8 0 0 1 8-7.5 7.8 7.8 0 0 1 8 7.5Z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></svg></span>
-      <span class="care-action-text"><b>Write to us</b><small>Orders, gifts, little questions</small></span>
-      <svg class="care-action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5"/></svg>
+<div class="pr-support" id="plSupportFab" aria-label="Playroom support">
+  <div class="pr-support-actions" id="plFabMenu" aria-hidden="true">
+    <button type="button" class="pr-support-action" id="plOpenChat" aria-label="Open support chat" aria-controls="plChatPanel" aria-expanded="false" style="--i:0">
+      <span class="pr-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M20 11.5a7.7 7.7 0 0 1-8 7.4 8.9 8.9 0 0 1-3.7-.8L4 19l1.2-3.2A7 7 0 0 1 4 11.5a7.8 7.8 0 0 1 8-7.5 7.8 7.8 0 0 1 8 7.5Z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></svg></span>
+      <span><b>Message support</b><small>Orders, gifts, delivery</small></span>
     </button>
-    <button type="button" class="care-action care-action--call" id="plOpenCall" aria-label="Start an audio welcome from Playroom Care" aria-controls="plCallOverlay" style="--i:1">
-      <span class="care-action-index">02</span>
-      <span class="care-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 3.8c1 .3 1.8 1 2.2 2l.8 1.9a2.3 2.3 0 0 1-.6 2.6l-.9.8a12 12 0 0 0 4.8 4.8l.8-.9a2.3 2.3 0 0 1 2.6-.6l1.9.8c1 .4 1.7 1.2 2 2.2l.4 1.6a2.4 2.4 0 0 1-2.3 3C10 22 2 14 2 5.7a2.4 2.4 0 0 1 3-2.3l1.6.4Z"/><path d="M16.5 3.5a5 5 0 0 1 4 4M15.4 6.6a2.6 2.6 0 0 1 2 2"/></svg></span>
-      <span class="care-action-text"><b>Hear the welcome</b><small>A short note from the atelier</small></span>
-      <svg class="care-action-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12h13M13 7l5 5-5 5"/></svg>
+    <button type="button" class="pr-support-action" id="plOpenCall" aria-label="Start an audio call with Playroom support" aria-controls="plCallOverlay" style="--i:1">
+      <span class="pr-action-icon" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M6.6 3.8c1 .3 1.8 1 2.2 2l.8 1.9a2.3 2.3 0 0 1-.6 2.6l-.9.8a12 12 0 0 0 4.8 4.8l.8-.9a2.3 2.3 0 0 1 2.6-.6l1.9.8c1 .4 1.7 1.2 2 2.2l.4 1.6a2.4 2.4 0 0 1-2.3 3C10 22 2 14 2 5.7a2.4 2.4 0 0 1 3-2.3l1.6.4Z"/></svg></span>
+      <span><b>Audio call</b><small>Demo line for support</small></span>
     </button>
   </div>
-  <span class="care-hint" id="plFabHint" role="status">Need a hand?</span>
-  <button type="button" class="care-seal" id="plFabToggle" aria-label="Playroom customer care — chat and audio welcome" aria-expanded="false" aria-controls="plFabMenu">
-    <span class="care-seal-mark" aria-hidden="true">P<span>.</span></span>
-    <span class="care-sr">Open Playroom customer care</span>
+  <span class="pr-support-hint" id="plFabHint" role="status">Need help?</span>
+  <button type="button" class="pr-support-button" id="plFabToggle" aria-label="Playroom support — chat and audio call" aria-expanded="false" aria-controls="plFabMenu">
+    <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20 11.5a7.7 7.7 0 0 1-8 7.4 8.9 8.9 0 0 1-3.7-.8L4 19l1.2-3.2A7 7 0 0 1 4 11.5a7.8 7.8 0 0 1 8-7.5 7.8 7.8 0 0 1 8 7.5Z"/><path d="M8.5 11.5h.01M12 11.5h.01M15.5 11.5h.01"/></svg>
+    <span class="pr-support-dot" aria-hidden="true"></span>
+    <span class="pr-sr">Open support options</span>
   </button>
 </div>
 
-<section class="care-chat" id="plChatPanel" role="dialog" aria-modal="false" aria-labelledby="plChatTitle" aria-hidden="true">
-  <header class="care-chat-top">
-    <span class="care-chat-seal" aria-hidden="true">P</span>
-    <span class="care-chat-heading">
-      <span class="care-kicker">CARE DESK · ATELIER</span>
-      <strong id="plChatTitle">Playroom Care</strong>
-      <span class="care-presence"><i aria-hidden="true"></i> Here now · replies in a moment</span>
-    </span>
-    <button type="button" class="care-chat-audio" id="plChatCall" aria-label="Start an audio welcome"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8c1 .3 1.8 1 2.2 2l.8 1.9a2.3 2.3 0 0 1-.6 2.6l-.9.8a12 12 0 0 0 4.8 4.8l.8-.9a2.3 2.3 0 0 1 2.6-.6l1.9.8c1 .4 1.7 1.2 2 2.2l.4 1.6a2.4 2.4 0 0 1-2.3 3C10 22 2 14 2 5.7a2.4 2.4 0 0 1 3-2.3l1.6.4Z"/></svg><span>Audio</span></button>
-    <button type="button" class="care-chat-close" id="plCloseChat" aria-label="Close chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+<section class="pr-chat" id="plChatPanel" role="dialog" aria-modal="false" aria-labelledby="plChatTitle" aria-hidden="true">
+  <header class="pr-chat-header">
+    <div class="pr-chat-person">
+      <span class="pr-chat-avatar" aria-hidden="true"><i class="mark"></i></span>
+      <div><strong id="plChatTitle">Playroom Support</strong><span><i class="pr-online" aria-hidden="true"></i> Here to help · replies in a moment</span></div>
+    </div>
+    <div class="pr-chat-actions">
+      <button type="button" class="pr-icon-btn" id="plChatCall" aria-label="Start an audio call"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6.6 3.8c1 .3 1.8 1 2.2 2l.8 1.9a2.3 2.3 0 0 1-.6 2.6l-.9.8a12 12 0 0 0 4.8 4.8l.8-.9a2.3 2.3 0 0 1 2.6-.6l1.9.8c1 .4 1.7 1.2 2 2.2l.4 1.6a2.4 2.4 0 0 1-2.3 3C10 22 2 14 2 5.7a2.4 2.4 0 0 1 3-2.3l1.6.4Z"/></svg></button>
+      <button type="button" class="pr-icon-btn" id="plCloseChat" aria-label="Close chat"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+    </div>
   </header>
-  <div class="care-chat-strip"><span>CONVERSATION</span><span id="plChatCount">01 NOTE</span><span id="plChatContext">GUEST DESK</span></div>
-  <div class="care-thread" id="plChatMessages" aria-live="polite" aria-relevant="additions text"><div class="pl-chat-message"><small>Playroom Care · Just now</small><p>Hello, and welcome to the care desk. I can help with a toy, a gift, a delivery question or an order you have placed. What can I help you with?</p></div></div>
-  <div class="care-prompts" id="plChatQuick">
-    <button type="button" class="care-prompt" data-support-prompt="Can you help me track my order?"><span class="care-prompt-no">01</span><b>Track an order</b><svg class="care-prompt-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></button>
-    <button type="button" class="care-prompt" data-support-prompt="I need help choosing a gift."><span class="care-prompt-no">02</span><b>Find a gift</b><svg class="care-prompt-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></button>
-    <button type="button" class="care-prompt" data-support-prompt="What is your return policy?"><span class="care-prompt-no">03</span><b>Returns</b><svg class="care-prompt-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg></button>
-  </div>
-  <form class="care-compose" id="plChatForm">
-    <label class="care-compose-field"><span class="care-compose-mark" aria-hidden="true">✳</span><input id="plChatInput" name="message" autocomplete="off" placeholder="Write to the care desk…" aria-label="Write a message" required></label>
-    <button type="submit" class="care-send" aria-label="Send message"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m4 4 17 8-17 8 3-8-3-8Z"/><path d="M7 12h14"/></svg></button>
+  <div class="pr-chat-meta"><span id="plChatContext">GUEST</span><span id="plChatCount">01 message</span></div>
+  <div class="pr-chat-body" id="plChatMessages" aria-live="polite" aria-relevant="additions text"><div class="pl-chat-message"><small>Playroom Support · Just now</small><p>Hi — this is Playroom support. I can help with an order, a gift or a delivery question. What do you need?</p></div></div>
+  <div class="pr-chat-suggestions" id="plChatQuick"></div>
+  <form class="pr-chat-composer" id="plChatForm">
+    <input id="plChatInput" name="message" autocomplete="off" placeholder="Write a message…" aria-label="Write a message" required>
+    <button type="submit" class="pr-send" aria-label="Send message"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6"/></svg></button>
   </form>
-  <p class="care-fine">DEMO DESK · NOTHING LEAVES THIS BROWSER</p>
+  <p class="pr-chat-footnote">DEMO SUPPORT · NOTHING LEAVES THIS BROWSER</p>
 </section>
 
-<section class="care-call" id="plCallOverlay" aria-hidden="true">
-  <div class="care-call-card" role="dialog" aria-modal="true" aria-label="Playroom Care audio welcome" aria-describedby="plCallDisclaimer">
-    <header class="care-call-top">
-      <div class="care-call-brand"><i class="mark" aria-hidden="true"></i><span>playroom</span><em>care line</em></div>
-      <div class="care-call-meta"><i aria-hidden="true"></i><span id="plCallTimer">00:00</span><span>· audio welcome</span></div>
-      <button class="care-call-close" id="plCloseCall" type="button" aria-label="Close audio welcome"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+<section class="pr-call" id="plCallOverlay" aria-hidden="true">
+  <div class="pr-call-card" role="dialog" aria-modal="true" aria-label="Playroom support audio call" aria-describedby="plCallDisclaimer">
+    <header class="pr-call-header">
+      <div class="pr-call-brand"><i class="mark" aria-hidden="true"></i><span>playroom</span><small>Audio call</small></div>
+      <div class="pr-chat-actions">
+        <span class="pr-call-time" id="plCallTimer">00:00</span>
+        <button class="pr-icon-btn" id="plCloseCall" type="button" aria-label="Close audio call"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"/></svg></button>
+      </div>
     </header>
 
-    <div class="care-call-body">
-      <div class="care-call-intro">
-        <div class="care-call-portrait" aria-hidden="true"><span>P</span><i></i></div>
-        <div class="care-call-id">
-          <span class="care-kicker">PLAYROOM CARE · LINE 01</span>
-          <b>Greetings from<br>the atelier.</b>
-          <p>A short recorded note about the shop, your orders and where to find us.</p>
-          <em class="pl-call-state" id="plCallState"><i aria-hidden="true"></i><span id="plCallStateText">Connecting…</span></em>
-        </div>
-      </div>
-      <div class="care-signal">
+    <div class="pr-call-body">
+      <div class="pr-call-avatar" aria-hidden="true"><i class="mark"></i></div>
+      <h2>Playroom Support</h2>
+      <p>This is the demo call surface. A representative can join here when live support is added.</p>
+      <em class="pl-call-state" id="plCallState"><i aria-hidden="true"></i><span id="plCallStateText">Connecting…</span></em>
+
+      <div class="pr-call-wave-wrap">
         <div class="pl-call-wave" id="plCallWave" aria-hidden="true"></div>
-        <div class="care-signal-foot"><span>INCOMING · WELCOME NOTE</span><span>NO LIVE AGENT</span></div>
+        <span class="pr-call-timer">DEMO LINE · NO MIC YET</span>
       </div>
-      <div class="pl-call-caption care-transcript" id="plCallCaption" aria-live="polite">
-        <span class="care-transcript-label" aria-hidden="true">TRANSCRIPT</span>
+
+      <div class="pl-call-caption" id="plCallCaption" aria-live="polite">
+        <span class="pr-caption-label" aria-hidden="true">LIVE CAPTIONS</span>
         <div class="pl-caption-lines" id="plCaptionLines"></div>
       </div>
-      <p class="pl-call-after" id="plCallAfter" hidden>The welcome has finished. <button type="button" id="plOpenChatFromCall">Continue in chat</button></p>
+      <p class="pl-call-after" id="plCallAfter" hidden>The demo call note has finished. <button type="button" id="plOpenChatFromCall">Continue in chat</button></p>
     </div>
 
-    <div class="care-call-controls">
-      <button type="button" class="care-control" id="plToggleCaptions" aria-pressed="true"><span class="care-cc">CC</span><span>Captions</span></button>
-      <button type="button" class="care-control" id="plReplayGreeting"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5v6h6"/><path d="M5.3 15a7.6 7.6 0 1 0 1.4-8.6"/></svg><span>Replay note</span></button>
-      <button type="button" class="care-end" id="plEndCall"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 12.9c5.1-4.3 11.7-4.3 16.8 0l-1.5 2.7-3.5-1.3a10.4 10.4 0 0 1-6.8 0l-3.5 1.3-1.5-2.7Z"/></svg><span>Close line</span></button>
+    <div class="pr-call-controls">
+      <button type="button" class="pr-control" id="plToggleCaptions" aria-pressed="true"><span class="pr-cc">CC</span><span>Captions</span></button>
+      <button type="button" class="pr-control" id="plReplayGreeting"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 5v6h6"/><path d="M5.3 15a7.6 7.6 0 1 0 1.4-8.6"/></svg><span>Replay</span></button>
+      <button type="button" class="pr-end" id="plEndCall"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3.6 12.9c5.1-4.3 11.7-4.3 16.8 0l-1.5 2.7-3.5-1.3a10.4 10.4 0 0 1-6.8 0l-3.5 1.3-1.5-2.7Z"/></svg><span>End call</span></button>
     </div>
-    <p class="care-disclaimer" id="plCallDisclaimer">A recorded welcome from Playroom Care. No microphone is used.</p>
+    <p class="pr-call-note" id="plCallDisclaimer">Demo audio call: a recorded support note plays with captions. No microphone is used yet — a live agent can be connected here later.</p>
     <audio id="plGreetingAudio" src="assets/audio/playroom-greeting.mp3" preload="auto"></audio>
   </div>
 </section>

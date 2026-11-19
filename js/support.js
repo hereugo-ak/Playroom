@@ -1,7 +1,7 @@
-// Playroom Atelier — customer care: chat + a short recorded audio welcome.
-// The greeting is a pre-recorded clip (assets/audio/playroom-greeting.mp3); the
-// captions highlight words off the real sentence boundaries returned by the
-// voice service, and the waveform reacts to the actual audio via Web Audio.
+// Playroom Atelier — support chat + a demo audio call surface.
+// The call is intentionally an audio-call UI: a recorded support note plays
+// through it for now, with live captions and a reactive waveform. A real agent
+// can be connected to this same surface in a later build.
 //
 // The desk is context-aware: when a customer is signed in, its quick prompts
 // and answers read the same Supabase-backed order mirror as the account pages.
@@ -34,12 +34,10 @@ export function initSupport() {
     return /last|my order|recent|track|return|receipt|invoice/i.test(String(text)) ? lastOrder() : null;
   }
 
-  const promptHTML = (index, prompt, title, sub) => `
-    <button type="button" class="care-prompt" data-support-prompt="${safe(prompt)}">
-      <span class="care-prompt-no">${String(index).padStart(2, '0')}</span>
+  const promptHTML = (_index, prompt, title, sub) => `
+    <button type="button" class="pr-suggestion" data-support-prompt="${safe(prompt)}">
       <b>${safe(title)}</b>
       ${sub ? `<small>${safe(sub)}</small>` : ''}
-      <svg class="care-prompt-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
     </button>`;
 
   function renderQuickPrompts() {
@@ -65,7 +63,7 @@ export function initSupport() {
         promptHTML(2, 'I need help choosing a gift.', 'Find a gift', 'A thoughtful shortlist'),
         promptHTML(3, 'What is your return policy?', 'Returns', 'The 30-day story'),
       ].join('');
-      if (chatContext) chatContext.textContent = 'GUEST DESK';
+      if (chatContext) chatContext.textContent = 'GUEST';
     }
   }
 
@@ -102,7 +100,7 @@ export function initSupport() {
     p.textContent = text;
     row.append(small, p); messages.append(row); messages.scrollTop = messages.scrollHeight;
     noteCount += 1;
-    if (chatCount) chatCount.textContent = `${String(noteCount).padStart(2, '0')} ${noteCount === 1 ? 'NOTE' : 'NOTES'}`;
+    if (chatCount) chatCount.textContent = `${String(noteCount).padStart(2, '0')} ${noteCount === 1 ? 'message' : 'messages'}`;
     return row;
   }
   function replyFor(message) {
@@ -129,7 +127,7 @@ export function initSupport() {
     if (/gift|present|birthday|recommend|recommendation|choose|choosing|age|toy for/.test(m)) return 'Let’s find something thoughtful. The Gift Finder can narrow the collection by age, interest and budget. For open-ended play, try Building & STEM; for a quieter activity, look at Games & Puzzles; for little comfort gifts, explore Soft & Plush.';
     if (/payment|upi|card|checkout|pay/.test(m)) return 'Checkout is a frontend demo. You can select a payment preference and complete an example order, but no money is collected and no payment credentials are requested or sent.';
     if (/hello|hi\b|hey|good morning|good evening/.test(m)) return 'Hello! Glad you stopped by. I’m here to help you explore toys, think through a gift, or explain how the demo order and tracking screens work.';
-    if (/human|person|agent|call|video|talk|speak/.test(m)) return 'You can start the Audio Call in the corner — it plays a short recorded greeting from me, with live captions. There’s no microphone, no camera and no live agent connected in this prototype.';
+    if (/human|person|agent|call|video|talk|speak/.test(m)) return 'The audio call in the corner is a demo call surface right now — a recorded support note plays with live captions, and a real agent can join this same space later. No microphone or camera is used yet.';
     return 'Thanks for telling me. I’m the Playroom Care assistant, so I can help with toys and gifting, delivery estimates, returns, checkout and order tracking. This message has been received locally; nothing is sent to a server. What would you like help with next?';
   }
   function sendMessage(value) {
@@ -166,7 +164,7 @@ export function initSupport() {
     } catch (err) { /* storage unavailable — skip the hint */ }
   }
 
-  // ---------- audio welcome ----------
+  // ---------- demo audio call ----------
   // Word timings derived from the real sentence boundaries of the recorded
   // clip (0.100–3.225s and 3.175–7.037s), weighted per word. Every cue in
   // this list sits inside the true span of its sentence.
@@ -303,7 +301,7 @@ export function initSupport() {
       if (finished && !endedShown) {
         endedShown = true;
         if (afterNote) afterNote.hidden = false;
-        stateText.textContent = 'Greeting played';
+        stateText.textContent = 'Note played';
         stateChip.classList.add('is-done');
       }
     }
@@ -360,7 +358,7 @@ export function initSupport() {
     if (!audio) return;
     resetCaptions();
     stateChip.classList.remove('is-done');
-    stateText.textContent = 'Connected';
+    stateText.textContent = 'In call';
     ensureGraph();
     try {
       audio.currentTime = 0;
