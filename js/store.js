@@ -177,13 +177,29 @@ export function clearCart() {
 }
 
 // ---------- Wishlist ----------
+// The wish list stays instant and local-first. When a Supabase account is
+// signed in, auth/wishlist-sync.js registers a handler here so the same tap is
+// mirrored to the `wishlist` table. The store never imports auth directly, so
+// guest browsing keeps working with no backend at all.
+let remoteWishlistSync = null;
+export function setWishlistSyncHandler(fn) { remoteWishlistSync = typeof fn === 'function' ? fn : null; }
+
 export function toggleWishlist(productId) {
   const has = state.wishlist.includes(productId);
   state.wishlist = has
     ? state.wishlist.filter((id) => id !== productId)
     : [...state.wishlist, productId];
   persist();
+  // Fire-and-forget: a failed sync never blocks the interaction, and the local
+  // state is reconciled with the server on the next sign-in.
+  remoteWishlistSync?.(productId, !has);
   return !has;
+}
+
+/** Replace the local mirror with the account's server-side wish list. */
+export function replaceWishlist(ids) {
+  state.wishlist = [...new Set((ids || []).filter(Boolean))];
+  persist();
 }
 
 // ---------- Leaves (demo loyalty) ----------

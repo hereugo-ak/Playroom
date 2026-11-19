@@ -29,6 +29,9 @@ import { initScrollExperience, refreshHeroScene } from './hero-scene.js';
 import { initSupport } from './support.js?v=3';
 import { initWelcome } from './welcome.js';
 import { wireGateway, renderGatewayPanel, rewirePay, brandRowHTML, confettiBurst, completeOrder } from './checkout-gateway.js';
+import { initAuth, consumeAuthLanding, ensureProfile } from './auth/auth-store.js';
+import { initAccountUI, renderAuthRoute, wireAuthPage } from './auth/account-ui.js';
+import { startWishlistSync } from './auth/wishlist-sync.js';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let mobileMenu = false;
@@ -1958,6 +1961,13 @@ registerRoutes({
   '/wishlist': renderWishlist,
   '/wish': renderWish,
   '/orders': renderOrders,
+  '/account/login': (r) => renderAuthRoute(r),
+  '/account/register': (r) => renderAuthRoute(r),
+  '/account/forgot-password': (r) => renderAuthRoute(r),
+  '/account/reset-password': (r) => renderAuthRoute(r),
+  '/account/orders': (r) => renderAuthRoute(r),
+  '/account/addresses': (r) => renderAuthRoute(r),
+  '/account': (r) => renderAuthRoute(r),
   '/safety': renderSafetyPage,
   '/stage': (r) => (r.path === '/stage' ? renderStagesIndex() : renderStagePage(r.path.slice(7))),
   '/gift-finder': renderGiftFinder,
@@ -1971,7 +1981,6 @@ registerRoutes({
   '/shipping': () => renderSimple('/shipping'),
   '/privacy': () => renderSimple('/privacy'),
   '/contact': () => renderSimple('/contact'),
-  '/account': () => renderSimple('/account'),
 });
 const renderNotFound = notFound;
 window.renderNotFound = notFound;
@@ -2049,6 +2058,7 @@ function wirePage() {
   wireOrders();
   wireWish();
   wireAccount();
+  wireAuthPage();
   wireSponsored(); // home — swipeable sponsored picks
 
   // Community — the playroom (posts, replies, likes, filters, sorting)
@@ -2163,7 +2173,26 @@ window.openDrawer = openDrawer;
 // Global wiring
 // ------------------------------------------------------------------
 window.__compare = [];
-function init() {
+async function init() {
+  // Auth is restored before the router paints: Supabase callback tokens live in
+  // the URL and must be consumed before a route is chosen, and a protected page
+  // must not flash its contents to a signed-out visitor.
+  startWishlistSync();
+  await initAuth();
+  initAccountUI();
+
+  const landing = consumeAuthLanding();
+  if (landing) {
+    try { window.history.replaceState(null, '', `${window.location.pathname}#${landing.path}`); }
+    catch { window.location.hash = `#${landing.path}`; }
+  }
+  if (window.location.hash.startsWith('#/account')) {
+    await Promise.race([
+      ensureProfile().catch(() => {}),
+      new Promise((resolve) => setTimeout(resolve, 2500)),
+    ]);
+  }
+
   $('#openCart').addEventListener('click', () => openDrawer('cart'));
   $('#openWishlist').addEventListener('click', () => openDrawer('wishlist'));
   $('#closeDrawer').addEventListener('click', closeDrawer);

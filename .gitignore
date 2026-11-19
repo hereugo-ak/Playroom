@@ -7,3 +7,12 @@ Thumbs.db
 desktop.ini
 __pycache__/
 *.pyc
+
+# Dependencies & build output
+node_modules/
+dist/
+
+# Environment files (keep the template)
+.env
+.env.*
+!.env.example

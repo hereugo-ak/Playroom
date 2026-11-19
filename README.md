@@ -1,18 +1,57 @@
-# Playloom Atelier — Frontend Demo Store
+# Playroom — Frontend Storefront with Customer Accounts
 
-A 1:1 static rebuild of the reference `playloom_atelier_signature.html`, reorganized into a clean, modular enhanced static app. Everything runs in the browser; there is no backend and nothing real is charged or shipped (clearly labelled everywhere in the UI).
+A static, modular storefront built from the Playroom reference design. The shop
+itself runs entirely in the browser; customer accounts (profile, addresses and
+wish list) are backed by Supabase when configured. Checkout remains a clearly
+labelled demo and no real payment is charged or shipped.
 
-**Full details:** see [`REFERENCE_AUDIT.md`](./REFERENCE_AUDIT.md) (structure, verified flows, route map, limitations).
+**Design/structure audit:** [`REFERENCE_AUDIT.md`](./REFERENCE_AUDIT.md)
+**Account setup:** [`docs/AUTH_SETUP.md`](./docs/AUTH_SETUP.md)
+**Database & RLS:** [`docs/DATABASE.md`](./docs/DATABASE.md)
+**Routes:** [`docs/ROUTES.md`](./docs/ROUTES.md)
+**Testing & manual steps:** [`docs/TESTING.md`](./docs/TESTING.md)
 
 ## Quick start
 
 ```bash
 cd playloom-atelier
-python -m http.server 8199 --bind 127.0.0.1
-# visit http://127.0.0.1:8199/index.html#/
+npm install
+cp .env.example .env.local     # optional — accounts only
+npm run dev                    # http://localhost:5173
 ```
 
-ES modules need a real HTTP server — opening `index.html` via `file://` will not work.
+Without `.env.local` the shop works normally and the account pages show a plain
+“setup needed” note. To enable accounts, follow
+[`docs/AUTH_SETUP.md`](./docs/AUTH_SETUP.md), then restart the dev server.
+
+A plain static server still works for browsing:
+
+```bash
+python -m http.server 8199 --bind 127.0.0.1
+# http://127.0.0.1:8199/index.html#/
+```
+
+ES modules need a real HTTP server — opening `index.html` via `file://` will not
+work. `npm run build` emits a Vercel-ready `dist/`; `npm run preview` serves it
+locally.
+
+## Accounts
+
+| Feature | Route | Notes |
+| --- | --- | --- |
+| Register with email verification | `#/account/register` | Supabase confirmation email |
+| Sign in | `#/account/login` | Email + password or Google |
+| Google OAuth | `#/account/login` | `provider: 'google'` |
+| Forgot / reset password | `#/account/forgot-password` | One-use recovery link |
+| Overview & profile | `#/account` | Name and phone editable; email read-only |
+| Orders | `#/account/orders` | Honest empty state — no fabricated orders |
+| Saved addresses | `#/account/addresses` | Create / edit / delete / default |
+| Wish list | `#/wishlist` | localStorage for guests, Supabase when signed in |
+
+Protected routes remember the intended destination and return there after
+sign-in. The bag is never cleared by signing in or out. Account data is read and
+written with the publishable/anon key only; Row Level Security enforces ownership
+in Postgres.
 
 ## Highlights
 
@@ -20,28 +59,39 @@ ES modules need a real HTTP server — opening `index.html` via `file://` will n
 - Filter/sort catalogue, product pages with gallery + PIN delivery estimate
 - Cart drawer with free-delivery progress (free ≥ ₹1,499, else ₹99)
 - Checkout with validation + demo promo code `PLAY10` (10% off)
-- **Stripe-style demo gateway** (`js/gateway.js` + `js/checkout-gateway.js`): Card / UPI / NetBanking / Crypto tabs, random autofill of payer + payment fields, Elements-style live card formatting + brand detect, animated pay sequence (validating → bank → confirm → success + physics confetti), `pi_demo_*` txn ids
-- **FedEx-style demo tracking**: 12-digit tracking numbers, Priority Overnight label card with barcode, purple/orange brand header, 7-scan timeline, `fedex.com?trknbr=` deep link
-- **Photo-real invoice** on `#/order-confirmation` with bill/ship block, line table, totals, and print-to-PDF via `window.print()`
-- **Spring-physics motion core** (`js/spring.js` + `js/motion.js`): dependency-free springs, magnetic buttons, 3D tilt cards, drawer/modal/toast springs, hero toy wake + parallax, confetti gravity — no animation library required
-- Local demo orders + snapshot confirmation + simulated tracking timeline
-- Wishlist, recently viewed, search overlay, gift-finder quiz, journal, compare dock
-- Persistence via namespaced, versioned localStorage (`playloom-demo-v1-*`)
+- **Stripe-style demo gateway**: Card / UPI / NetBanking / Crypto tabs, random
+  autofill, Elements-style card formatting, animated pay sequence, `pi_demo_*`
+  txn ids
+- **FedEx-style demo tracking**: 12-digit tracking numbers, label, 7-scan
+  timeline
+- **Photo-real invoice** on `#/order-confirmation`, print-to-PDF
+- Spring-physics motion, magnetic buttons, 3D tilt cards, hero parallax
+- Wishlist, recently viewed, search overlay, gift-finder quiz, journal, compare
 
 ## Files
 
 | Path | Purpose |
-|---|---|
-| `index.html` | Shell + all chrome (header/footer/drawers/search/modal/toasts) |
-| `css/styles.css` | Reference stylesheet, verbatim |
-| `js/app.js` | All page renderers and page-level wiring |
+| --- | --- |
+| `index.html` | Shell + chrome (header/footer/drawers/search/modal/toasts) |
+| `css/styles.css` | Storefront stylesheet |
+| `css/account.css` | Account & auth styles, built from the existing tokens |
+| `js/app.js` | Page renderers and page-level wiring |
 | `js/router.js` | Hash router |
 | `js/store.js` | State, pricing rules, persistence, demo orders |
-| `js/data.js` + `data-seeds.js` + `data-pools.js` | 1:1 catalogue data |
-| `js/gateway.js`, `js/checkout-gateway.js` | Stripe-style demo gateway: 4 methods, random autofill, Elements-style card formatting, pay animation, FedEx label model |
-| `js/spring.js`, `js/motion.js` | Dependency-free spring-physics motion core + site-wide orchestration (no animation lib) |
-| `assets/img/` | 49 extracted photos (was base64 in the reference) |
+| `js/auth/` | Supabase client, session store, pages, UI wiring, wish-list sync |
+| `js/data.js` + `data-seeds.js` + `data-pools.js` | Catalogue data |
+| `js/gateway.js`, `js/checkout-gateway.js` | Demo gateway + tracking model |
+| `js/spring.js`, `js/motion.js` | Dependency-free motion core + orchestration |
+| `supabase/migrations/` | Tables, triggers, indexes, RLS policies |
+| `assets/img/` | 54 runtime photos |
+| `docs/` | Setup, schema/RLS, routes, testing |
 
 ## Scope note
 
-This is a class-project concept storefront. Orders and accounts are stored locally; no real charge, email, inventory, or courier movement exists. The Stripe-style gateway and FedEx-style tracking are **demo/test-mode UI stand-ins** (random test data, simulated timelines) — fine print is surfaced in the checkout UI, tracking page, invoice, and footer.
+This is a class-project concept storefront. **Orders, payments, loyalty leaves
+and referral codes remain local demo data.** If Supabase is configured, the
+profile, saved addresses and wish list are stored in your Supabase project under
+Row Level Security. The Stripe-style gateway and FedEx-style tracking are
+demo/test-mode UI stand-ins (random test data, simulated timelines) — fine print
+is surfaced in the checkout UI, tracking page, invoice and footer. No real
+charge, shipment or courier movement occurs.
