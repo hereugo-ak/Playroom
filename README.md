@@ -5,7 +5,6 @@ itself runs entirely in the browser; customer accounts (profile, addresses and
 wish list) are backed by Supabase when configured. Checkout remains a clearly
 labelled demo and no real payment is charged or shipped.
 
-**Design/structure audit:** [`REFERENCE_AUDIT.md`](./REFERENCE_AUDIT.md)
 **Account setup:** [`docs/AUTH_SETUP.md`](./docs/AUTH_SETUP.md)
 **Database & RLS:** [`docs/DATABASE.md`](./docs/DATABASE.md)
 **Routes:** [`docs/ROUTES.md`](./docs/ROUTES.md)

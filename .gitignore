@@ -11,6 +11,7 @@ __pycache__/
 # Dependencies & build output
 node_modules/
 dist/
+.vite/
 
 # Environment files (keep the template)
 .env
