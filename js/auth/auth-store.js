@@ -493,6 +493,152 @@ export async function makeDefaultAddress(id) {
 }
 
 // ---------------------------------------------------------------------------
+// Orders & returns (database side; the local mirror lives in store.js)
+// ---------------------------------------------------------------------------
+// Checkout is still a demo — no payment, courier or email is involved — but the
+// order snapshot is stored against the signed-in customer so it survives a new
+// browser, a cleared localStorage and a sign-in on another device. The JSONB
+// `data` column keeps the receipt exactly as the checkout created it; the typed
+// columns are only for history, lookups and ownership checks.
+
+const ORDER_COLUMNS = 'id, user_id, order_id, data, status, tracking_number, total, created_at';
+const RETURN_COLUMNS = 'id, user_id, return_id, order_id, data, created_at';
+
+const dateLabel = (iso) => {
+  const d = new Date(iso);
+  return Number.isNaN(d.getTime())
+    ? ''
+    : d.toLocaleDateString('en-IN', { day: 'numeric', month: 'long', year: 'numeric' });
+};
+
+function rowToOrder(row) {
+  const snapshot = row.data && typeof row.data === 'object' && !Array.isArray(row.data)
+    ? row.data
+    : {};
+  return {
+    ...snapshot,
+    id: row.order_id || snapshot.id,
+    createdAt: row.created_at || snapshot.createdAt,
+    createdAtLabel: snapshot.createdAtLabel || dateLabel(row.created_at),
+    status: row.status || snapshot.status || 'order_placed',
+    statusLabel: snapshot.statusLabel || 'Order received',
+    trackingNumber: row.tracking_number || snapshot.trackingNumber || '',
+    total: Number(row.total ?? snapshot.total ?? 0),
+    items: Array.isArray(snapshot.items) ? snapshot.items : [],
+    isDemo: snapshot.isDemo !== false,
+    remoteId: row.id,
+  };
+}
+
+function rowToReturn(row) {
+  const snapshot = row.data && typeof row.data === 'object' && !Array.isArray(row.data)
+    ? row.data
+    : {};
+  return {
+    ...snapshot,
+    id: row.return_id || snapshot.id,
+    orderId: row.order_id || snapshot.orderId,
+    createdAt: row.created_at || snapshot.createdAt,
+    createdAtLabel: snapshot.createdAtLabel || dateLabel(row.created_at),
+    steps: Array.isArray(snapshot.steps) ? snapshot.steps : [],
+    remoteId: row.id,
+  };
+}
+
+function orderPayload(order) {
+  if (!order?.id || !/^PL-[0-9]{6}$/.test(String(order.id))) {
+    throw new Error('This order cannot be saved to an account.');
+  }
+  const snapshot = { ...order };
+  delete snapshot.remoteId; // database row id is not part of the receipt
+  return {
+    user_id: authState.user.id,
+    order_id: String(order.id),
+    data: snapshot,
+    status: String(order.status || 'order_placed'),
+    tracking_number: order.trackingNumber || null,
+    total: Number(order.total) || 0,
+    created_at: order.createdAt || new Date().toISOString(),
+  };
+}
+
+function returnPayload(ret) {
+  if (!ret?.id || !/^RT-[0-9]{4}$/.test(String(ret.id))) {
+    throw new Error('This return cannot be saved to an account.');
+  }
+  const snapshot = { ...ret };
+  delete snapshot.remoteId;
+  return {
+    user_id: authState.user.id,
+    return_id: String(ret.id),
+    order_id: String(ret.orderId),
+    data: snapshot,
+    created_at: ret.createdAt || new Date().toISOString(),
+  };
+}
+
+export async function listRemoteOrders() {
+  requireUser();
+  const { data, error } = await supabase
+    .from('orders')
+    .select(ORDER_COLUMNS)
+    .eq('user_id', authState.user.id)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data || []).map(rowToOrder);
+}
+
+export async function saveRemoteOrder(order) {
+  requireUser();
+  const { data, error } = await supabase
+    .from('orders')
+    .upsert(orderPayload(order), { onConflict: 'user_id,order_id', ignoreDuplicates: true })
+    .select(ORDER_COLUMNS)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? rowToOrder(data) : rowToOrder({ order_id: order.id, data: order, created_at: order.createdAt });
+}
+
+export async function updateRemoteOrder(order) {
+  requireUser();
+  const payload = orderPayload(order);
+  delete payload.user_id;
+  delete payload.order_id;
+  delete payload.created_at;
+  const { data, error } = await supabase
+    .from('orders')
+    .update(payload)
+    .eq('user_id', authState.user.id)
+    .eq('order_id', String(order.id))
+    .select(ORDER_COLUMNS)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? rowToOrder(data) : null;
+}
+
+export async function listRemoteReturns() {
+  requireUser();
+  const { data, error } = await supabase
+    .from('returns')
+    .select(RETURN_COLUMNS)
+    .eq('user_id', authState.user.id)
+    .order('created_at', { ascending: false });
+  if (error) throw error;
+  return (data || []).map(rowToReturn);
+}
+
+export async function saveRemoteReturn(ret) {
+  requireUser();
+  const { data, error } = await supabase
+    .from('returns')
+    .upsert(returnPayload(ret), { onConflict: 'user_id,return_id', ignoreDuplicates: true })
+    .select(RETURN_COLUMNS)
+    .maybeSingle();
+  if (error) throw error;
+  return data ? rowToReturn(data) : rowToReturn({ return_id: ret.id, order_id: ret.orderId, data: ret, created_at: ret.createdAt });
+}
+
+// ---------------------------------------------------------------------------
 // Wishlist (database side; the local mirror lives in store.js)
 // ---------------------------------------------------------------------------
 export function isValidProductId(id) {

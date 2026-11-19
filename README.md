@@ -1,9 +1,10 @@
 # Playroom — Frontend Storefront with Customer Accounts
 
 A static, modular storefront built from the Playroom reference design. The shop
-itself runs entirely in the browser; customer accounts (profile, addresses and
-wish list) are backed by Supabase when configured. Checkout remains a clearly
-labelled demo and no real payment is charged or shipped.
+itself runs entirely in the browser; customer accounts (profile, addresses,
+wish list and demo order history) are backed by Supabase when configured.
+Checkout remains a clearly labelled demo and no real payment is charged or
+shipped.
 
 **Account setup:** [`docs/AUTH_SETUP.md`](./docs/AUTH_SETUP.md)
 **Database & RLS:** [`docs/DATABASE.md`](./docs/DATABASE.md)
@@ -43,7 +44,7 @@ locally.
 | Google OAuth | `#/account/login` | `provider: 'google'` |
 | Forgot / reset password | `#/account/forgot-password` | One-use recovery link |
 | Overview & profile | `#/account` | Name and phone editable; email read-only |
-| Orders | `#/account/orders` | Honest empty state — no fabricated orders |
+| Orders | `#/account/orders` | Saved demo orders with receipts, tracking and returns |
 | Saved addresses | `#/account/addresses` | Create / edit / delete / default |
 | Wish list | `#/wishlist` | localStorage for guests, Supabase when signed in |
 
@@ -87,10 +88,11 @@ in Postgres.
 
 ## Scope note
 
-This is a class-project concept storefront. **Orders, payments, loyalty leaves
-and referral codes remain local demo data.** If Supabase is configured, the
-profile, saved addresses and wish list are stored in your Supabase project under
-Row Level Security. The Stripe-style gateway and FedEx-style tracking are
+This is a class-project concept storefront. **No real payment is taken.** If
+Supabase is configured, the profile, saved addresses, wish list and demo order
+/ return snapshots are stored in your Supabase project under Row Level
+Security. Loyalty leaves and referral codes remain local demo data. The
+Stripe-style gateway and FedEx-style tracking are
 demo/test-mode UI stand-ins (random test data, simulated timelines) — fine print
 is surfaced in the checkout UI, tracking page, invoice and footer. No real
 charge, shipment or courier movement occurs.

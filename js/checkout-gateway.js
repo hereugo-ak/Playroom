@@ -6,6 +6,7 @@ import { formatMoney, state, discountAmount, cartSubtotal, clearCart, createDemo
 import { byId } from './data.js';
 import { effectiveDeliveryFee, chosenDelivery, setChosenDelivery } from './delivery.js';
 import { fling } from './spring.js';
+import { syncNewOrder } from './auth/order-sync.js';
 import {
   PAYMENT_METHODS, generatePayer, generatePayment, validatePayment,
   gatewayTxnId, CARRIER, fedexTrackingNumber, packageMeta,
@@ -295,6 +296,14 @@ export async function completeOrder({ form = null, methodLabel = 'Card · demo g
   order.package = packageMeta(lines, order.total);
   if (code) order.promoCode = code;
   Object.assign(order, extra);
+  // Signed in? Attach the receipt to the account before the visitor is routed
+  // to the confirmation page. A backend hiccup must never break the demo.
+  try {
+    order.syncedToAccount = await syncNewOrder(order);
+  } catch (error) {
+    order.syncedToAccount = false;
+    console.warn('[Playroom orders] could not save the order to the account', error?.message || error);
+  }
   persist();
   clearCart();
   sessionStorage.removeItem('pl-code');

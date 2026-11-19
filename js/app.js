@@ -29,12 +29,15 @@ import { initScrollExperience, refreshHeroScene } from './hero-scene.js';
 import { initSupport } from './support.js?v=3';
 import { initWelcome } from './welcome.js';
 import { wireGateway, renderGatewayPanel, rewirePay, brandRowHTML, confettiBurst, completeOrder } from './checkout-gateway.js';
-import { initAuth, consumeAuthLanding, ensureProfile } from './auth/auth-store.js';
-import { initAccountUI, renderAuthRoute, wireAuthPage } from './auth/account-ui.js';
+import { initAuth, consumeAuthLanding, ensureProfile, authState } from './auth/auth-store.js';
+import { initAccountUI, renderAuthRoute, wireAuthPage, registerAccountOrdersRenderer } from './auth/account-ui.js';
+import { accountShell } from './auth/pages.js';
 import { startWishlistSync } from './auth/wishlist-sync.js';
+import { startOrderSync, hydrateOrders, syncNewReturn } from './auth/order-sync.js';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let mobileMenu = false;
+let appReady = false;
 
 // ------------------------------------------------------------------
 // Drawer (cart / wishlist)
@@ -1240,7 +1243,7 @@ function renderConfirmation() {
       <div class="st-success-ring"><svg viewBox="0 0 24 24"><path d="M4.5 12.6 10 18 19.5 7.2"/></svg></div>
       <h1 class="st-success-h1">Payment successful</h1>
       <p class="st-success-paid">You paid <b>${formatMoney(order.total)}</b> — demo, nothing was charged.</p>
-      <p class="st-success-sub">Order <b>${safe(order.id)}</b> is confirmed${order.email ? ` for <b>${safe(order.email)}</b>` : ''}. Nothing is emailed or shipped in this prototype — your receipt is stored in this browser only.</p>
+      <p class="st-success-sub">Order <b>${safe(order.id)}</b> is confirmed${order.email ? ` for <b>${safe(order.email)}</b>` : ''}. Nothing is emailed or shipped in this prototype — ${authState.user ? 'your receipt is saved to your account and can be opened again from My orders.' : 'your receipt is stored in this browser only.'}</p>
       <div style="margin:2px 0 20px"><span class="st-trackpill">Tracking number <b>${safe(order.trackingNumber || '—')}</b></span></div>
       ${order.delivery ? `<p class="st-success-sub st-success-delivery">Arriving with <b>${safe(order.delivery.label)}</b>${order.delivery.dateLabel ? ` — promised <b>${safe(order.delivery.dateLabel)}</b>` : ''}. Demo estimate only.</p>` : ''}
       ${order.gift ? `<div class="st-giftcard"><span class="mono">✳ GIFT NOTE ENCLOSED</span><p>${order.gift.message ? `“${safe(order.gift.message)}”` : 'A hand-written card goes in the box.'}</p>${order.gift.from ? `<span class="st-giftcard-from">— ${safe(order.gift.from)}</span>` : ''}${order.gift.hidePrices ? '<span class="st-giftcard-note">Prices are hidden on the packing slip.</span>' : ''}</div>` : ''}
@@ -1252,7 +1255,7 @@ function renderConfirmation() {
     <div class="st-receipt">
       <div class="st-receipt-head"><span class="st-receipt-title">Your demo receipt</span><button class="st-btn st-btn--secondary st-btn--sm" type="button" onclick="window.print()">Download / print</button></div>
       <div class="invoice${order.gift && order.gift.hidePrices ? ' invoice--gift' : ''}" id="invoiceDoc">${invoiceHTML(order)}</div>
-      <p class="st-fineprint">Demo limitation: orders live only in this browser's storage. They are not sent to any shop or courier system, and no email is sent.</p>
+      <p class="st-fineprint">Demo limitation: nothing is charged, shipped or emailed. ${authState.user ? 'This order is saved to your account; your tracking timeline is simulated.' : 'Orders live only in this browser’s storage; your tracking timeline is simulated.'}</p>
     </div>
   </div>
 </div>`;
@@ -1325,7 +1328,7 @@ function fxShowResult(code) {
   setTimeout(() => {
     const order = getOrder(code);
     if (!order) {
-      r.innerHTML = `<div class="fx-empty fx-empty--miss"><span class="fx-empty-ico">${FX_ICONS.search}</span><b>No shipment matches “${safe(code)}”</b><p>Orders live only in this browser’s demo storage. Double-check the number on your receipt, or load your last demo order.</p>${state.lastOrderId ? `<button class="fx-action fx-action--solid" type="button" data-fx-uselast="${safe(state.lastOrderId)}">Track my last demo order</button>` : ''}</div>`;
+      r.innerHTML = `<div class="fx-empty fx-empty--miss"><span class="fx-empty-ico">${FX_ICONS.search}</span><b>No shipment matches “${safe(code)}”</b><p>${authState.user ? 'Check the number on a receipt saved to this account — demo orders from other accounts are not visible here.' : 'Orders live only in this browser’s demo storage.'} Double-check the number, or load your last demo order.</p>${state.lastOrderId ? `<button class="fx-action fx-action--solid" type="button" data-fx-uselast="${safe(state.lastOrderId)}">Track my last demo order</button>` : ''}</div>`;
       wireFxUseLast(r);
       return;
     }
@@ -1664,15 +1667,32 @@ function orderCardHTML(order) {
   </article>`;
 }
 
-function renderOrders() {
-  const orders = state.orders;
-  return `<div class="route-enter" id="ordersPage">
-  ${svHead(`<a href="#/">Home</a><span> / </span><span>Orders & returns</span>`, 'YOUR DEMO HISTORY', 'Orders &<br><em>returns.</em>', 'Every checkout you complete in this browser lands here — receipts to download, a buy-again button and a returns desk that walks you through its steps.')}
+function ordersListHTML(orders, { account = false } = {}) {
+  return `<div id="ordersPage"${account ? ' class="pl-account-orders"' : ' class="route-enter"'}>
+  ${account ? '' : svHead(`<a href="#/">Home</a><span> / </span><span>Orders & returns</span>`, 'YOUR DEMO HISTORY', 'Orders &<br><em>returns.</em>', 'Every checkout you complete in this browser lands here — receipts to download, a buy-again button and a returns desk that walks you through its steps.')}
   <section class="section wrap">
     <div class="post-stats"><div class="post-stat"><b>${orders.length}</b><span>demo orders</span></div><div class="post-stat"><b>${pointsBalance()}</b><span>play leaves</span></div><div class="post-stat"><b>${(state.returns || []).length}</b><span>returns & exchanges</span></div><div class="post-stat"><b>${state.wishlist.length}</b><span>saved things</span></div></div>
     ${orders.length ? orders.map(orderCardHTML).join('') : `<div class="empty-state"><div class="empty-icon">✳</div><h3>No demo orders yet.</h3><p>Complete a demo checkout and your receipt, tracking number and this returns desk all fill in.</p><a class="btn" href="#/catalog">Find something lovely ↗</a></div>`}
   </section></div>`;
 }
+
+function renderOrders() {
+  return ordersListHTML(state.orders);
+}
+
+/** Account history uses the same cards, receipts, tracker and returns desk. */
+function renderAccountOrdersPage() {
+  if (!accountShell) return renderOrders();
+  return accountShell({
+    page: 'orders',
+    active: 'orders',
+    title: 'Orders &<br><em>receipts.</em>',
+    intro: 'Every demo order you place while signed in is saved to your account — receipts, tracking and returns together in one place.',
+    body: ordersListHTML(state.orders, { account: true }),
+  });
+}
+
+registerAccountOrdersRenderer(renderAccountOrdersPage);
 
 function wireOrders() {
   const page = $('#ordersPage');
@@ -1697,7 +1717,7 @@ function wireOrders() {
     const inv = e.target.closest('[data-invoice]');
     if (inv) {
       const order = getOrder(inv.dataset.invoice);
-      if (order) openModal(`Invoice · ${order.id}`, `<div class="invoice invoice--modal">${invoiceHTML(order)}</div><div class="invoice-modal-foot"><button class="st-btn st-btn--primary" type="button" onclick="window.print()">Download / print</button><p class="pdp-fine">Demo invoice — it lives only in this browser.</p></div>`);
+      if (order) openModal(`Invoice · ${order.id}`, `<div class="invoice invoice--modal">${invoiceHTML(order)}</div><div class="invoice-modal-foot"><button class="st-btn st-btn--primary" type="button" onclick="window.print()">Download / print</button><p class="pdp-fine">Demo invoice — ${authState.user ? 'saved to your account.' : 'it lives only in this browser.'}</p></div>`);
       return;
     }
     const ret = e.target.closest('[data-return]');
@@ -1717,12 +1737,17 @@ function openReturnSheet(order) {
     <p class="pdp-fine">Personalised pieces can't be returned in a real shop — in this prototype everything is simulated anyway.</p>
     <button class="st-btn st-btn--primary return-submit" type="button" id="returnSubmit">Start this return (demo)</button>
   </div>`);
-  $('#returnSubmit')?.addEventListener('click', () => {
+  $('#returnSubmit')?.addEventListener('click', async () => {
     const picked = [...document.querySelectorAll('[data-return-item]:checked')].map((c) => items[+c.dataset.returnItem]).filter(Boolean);
     if (!picked.length) { toast('Pick at least one item.', 'The desk needs something to collect.'); return; }
     const reason = $('#returnReason')?.value || 'Changed my mind';
     const mode = document.querySelector('input[name="returnMode"]:checked')?.value || 'refund';
     const ret = createReturn(order, { items: picked.map((x) => ({ name: x.name, qty: x.qty })), reason, mode });
+    try {
+      await syncNewReturn(ret);
+    } catch (error) {
+      console.warn('[Playroom returns] could not save the return to the account', error?.message || error);
+    }
     closeModal();
     toast(`${ORDER_MODE_LABEL[mode]} ${ret.id} started.`, 'A simulated pickup is scheduled — watch the steps.');
     repaintRoute();
@@ -2177,8 +2202,24 @@ async function init() {
   // Auth is restored before the router paints: Supabase callback tokens live in
   // the URL and must be consumed before a route is chosen, and a protected page
   // must not flash its contents to a signed-out visitor.
+  // Both sync modules subscribe before initAuth() restores the session, so
+  // their first onAuthChange event hydrates the account data.
   startWishlistSync();
+  startOrderSync();
+  window.addEventListener('playroom:orders-updated', () => {
+    if (!appReady) return;
+    const path = route().path;
+    if (['/orders', '/account/orders', '/order-confirmation', '/track-order'].includes(path)) {
+      render();
+      window.__wirePage?.();
+    }
+  });
   await initAuth();
+  // Never hold the whole storefront hostage to a slow history request.
+  await Promise.race([
+    hydrateOrders(),
+    new Promise((resolve) => setTimeout(resolve, 4000)),
+  ]);
   initAccountUI();
 
   const landing = consumeAuthLanding();
@@ -2338,6 +2379,7 @@ async function init() {
   initScrollExperience();
   initWelcome();
   render();
+  appReady = true;
   motionRefresh();
   refreshHeroScene();
   window.addEventListener('hashchange', () => { render(); window.__wirePage(); motionRefresh(); refreshHeroScene(); });

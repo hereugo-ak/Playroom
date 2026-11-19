@@ -1,10 +1,15 @@
 # Database schema & Row Level Security
 
-Migration: [`supabase/migrations/20261119090000_playroom_accounts.sql`](../supabase/migrations/20261119090000_playroom_accounts.sql)
+Migrations:
 
-There are no orders or payments in the database. Checkout still creates a
-clearly-labelled demo order in the browser (`playroom-demo-v1-orders`), and the
-account orders page shows a real empty state rather than inventing history.
+1. [`20261119090000_playroom_accounts.sql`](../supabase/migrations/20261119090000_playroom_accounts.sql)
+2. [`20261119110000_playroom_orders.sql`](../supabase/migrations/20261119110000_playroom_orders.sql)
+
+Checkout still creates a clearly-labelled **demo** order — no payment, courier
+or email is involved — but the receipt snapshot is stored against the signed-in
+customer. Guest orders stay in `playroom-demo-v1-orders` until the visitor signs
+in, at which point they are uploaded to the account. Each customer sees only
+their own orders, returns, tracking numbers and receipts.
 
 ## Tables
 
@@ -63,10 +68,38 @@ Customers can read their own role. Only the service role or the dashboard can
 change it — there is no client insert/update/delete policy, so a signed-in user
 cannot promote themselves.
 
+### `public.orders`
+
+| Column | Type | Notes |
+| --- | --- | --- |
+| `id` | `uuid` PK | `gen_random_uuid()` (internal row id) |
+| `user_id` | `uuid` | owner, cascade delete |
+| `order_id` | `text` | readable checkout id `PL-123456`, unique per user |
+| `data` | `jsonb` | full receipt snapshot: customer, items, totals, gift, delivery, tracking, package, leaves |
+| `status` | `text` | `order_placed` (demo) |
+| `tracking_number` | `text` | 12-digit FedEx-style demo number, indexed per user |
+| `total` | `numeric(12,2)` | order total snapshots |
+| `created_at` / `updated_at` | `timestamptz` | trigger-maintained |
+
+### `public.returns`
+
+| Column | Type | Notes |
+| --- | --- | --- |
+| `id` | `uuid` PK | internal row id |
+| `user_id` | `uuid` | owner, cascade delete |
+| `return_id` | `text` | `RT-1234`, unique per user |
+| `order_id` | `text` | the `PL-…` order this return belongs to |
+| `data` | `jsonb` | picked items, reason, mode and simulated step timeline |
+| `created_at` / `updated_at` | `timestamptz` | trigger-maintained |
+
+The typed columns exist for ownership, sorting and lookups; the JSONB snapshot
+keeps the receipt exactly as checkout created it, so old orders never change
+when catalogue prices change.
+
 ## Triggers
 
-- `profiles_set_updated_at`, `addresses_set_updated_at` — set `updated_at = now()`
-  on every update.
+- `profiles_set_updated_at`, `addresses_set_updated_at`, `orders_set_updated_at`,
+  `returns_set_updated_at` — set `updated_at = now()` on every update.
 - `on_auth_user_created` → `public.handle_new_user()` — after any new row in
   `auth.users`, insert a `profiles` row (name and avatar taken from
   `raw_user_meta_data`, which is what Google and the register form provide) and
@@ -77,7 +110,7 @@ cannot promote themselves.
 
 ## Row Level Security
 
-RLS is enabled on all four tables. Every policy targets the `authenticated`
+RLS is enabled on all six tables. Every policy targets the `authenticated`
 role and compares the owner column with `auth.uid()`:
 
 | Table | SELECT | INSERT | UPDATE | DELETE |
@@ -86,6 +119,8 @@ role and compares the owner column with `auth.uid()`:
 | `addresses` | own rows | own rows | own rows | own rows |
 | `wishlist` | own rows | own rows | — | own rows |
 | `user_roles` | own row | — | — | — |
+| `orders` | own rows | own rows | own rows | own rows |
+| `returns` | own rows | own rows | own rows | own rows |
 
 `anon` has no table privileges at all. The frontend never decides
 authorisation; it only reflects what the database returns. There is deliberately
@@ -101,7 +136,7 @@ dashboard role, not a browser role.
 -- RLS on?
 select tablename, rowsecurity from pg_tables
 where schemaname = 'public'
-  and tablename in ('profiles','addresses','wishlist','user_roles');
+  and tablename in ('profiles','addresses','wishlist','user_roles','orders','returns');
 
 -- Policies
 select tablename, policyname, cmd, roles from pg_policies
@@ -109,5 +144,5 @@ where schemaname = 'public' order by tablename, policyname;
 ```
 
 To prove isolation, sign in as two different customers and check that each sees
-only their own profile, addresses and wish-list rows. The browser’s anon key
-cannot bypass these policies.
+only their own profile, addresses, wish-list rows, orders and returns. The
+browser’s anon key cannot bypass these policies.

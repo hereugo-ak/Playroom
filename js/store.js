@@ -274,8 +274,27 @@ export function createDemoOrder({ customer, lines, subtotal, discount, deliveryF
   return order;
 }
 
-export const getOrder = (id) =>
-  state.orders.find((o) => o.id.toLowerCase() === String(id).trim().toLowerCase()) || null;
+export const getOrder = (id) => {
+  const q = String(id || '').trim().toLowerCase();
+  if (!q) return null;
+  // The tracker accepts both the readable PL- order id and the 12-digit
+  // FedEx-style demo tracking number printed on the receipt.
+  return state.orders.find((o) => [o.id, o.trackingNumber]
+    .some((value) => String(value || '').toLowerCase() === q)) || null;
+};
+
+/** Replace the local order mirror with a signed-in customer's saved orders. */
+export function setOrders(orders) {
+  state.orders = Array.isArray(orders) ? orders : [];
+  state.lastOrderId = state.orders[0]?.id || null;
+  persist();
+}
+
+/** Replace the local returns mirror with a signed-in customer's saved returns. */
+export function setReturns(returns) {
+  state.returns = Array.isArray(returns) ? returns : [];
+  persist();
+}
 
 // ---------- Returns (demo, local) ----------
 export function createReturn(order, { items, reason, mode }) {

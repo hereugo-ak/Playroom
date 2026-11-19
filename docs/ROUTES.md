@@ -8,13 +8,13 @@ prefixes.
 | --- | --- | --- |
 | `#/` … `#/catalog`, `#/product/:slug` | Public | Existing storefront. Unchanged. |
 | `#/wishlist` | Public | Guest list from `localStorage`; signed-in list from Supabase. |
-| `#/orders` | Public | Existing demo-order page, stored in this browser. |
+| `#/orders` | Public | Demo-order page: local orders for guests, the signed-in customer's saved orders when signed in. |
 | `#/account/register` | Public (guests) | Create account: name, email, password + confirmation, terms. Sends the verification email. |
 | `#/account/login` | Public (guests) | Email + password, Google, link to reset. Honours `?next=`. |
 | `#/account/forgot-password` | Public | Sends a one-use reset link. Always shows the same confirmation, so it cannot be used to discover which emails have accounts. |
 | `#/account/reset-password` | Needs a recovery session | New password form. After saving, the session is ended and the visitor signs in again. |
 | `#/account` | Protected | Dashboard: editable name/phone, member since, email verification, local demo leaves and referral code. |
-| `#/account/orders` | Protected | Account order history; currently an honest empty state (no real orders exist). |
+| `#/account/orders` | Protected | The customer's saved demo orders: receipts, buy-again, FedEx-style tracking timeline and returns desk. |
 | `#/account/addresses` | Protected | List, create, edit, delete and set-default addresses. |
 
 ## Guard behaviour

@@ -60,7 +60,7 @@ Verified:
 - Addresses render; default is labelled; the card shows the saved address
 - Address create sends `POST /rest/v1/addresses` **including `user_id`** and the
   entered fields
-- Account orders shows the honest empty state (no fabricated orders)
+- Account orders shows an empty state when the account has no saved demo orders
 - Wish-list add sends `POST /rest/v1/wishlist` with `user_id` + `product_id`;
   remove sends `DELETE` scoped to both
 - A heart tapped while signed out stays local (no request); it renders filled
@@ -151,17 +151,21 @@ After completing [`AUTH_SETUP.md`](AUTH_SETUP.md):
     are asked to sign in with it. Try the same link again — it must fail.
 13. Sign out and confirm the header returns to guest state and the wish list no
     longer shows account-only items.
-14. In the Supabase SQL editor, confirm RLS is enabled on all four tables and
+14. In the Supabase SQL editor, confirm RLS is enabled on all six tables and
     test with two accounts that neither can read the other’s rows.
+15. Place a demo checkout while signed in, open `#/account/orders`, then reload
+    and sign in on another browser/device: the order, its receipt, tracking
+    number and any return started from the card must still be there. Sign out and
+    confirm the next account cannot see it.
 15. On a phone, check the account menu, forms, password toggle and error messages.
     Confirm the customer-care bubble does not cover the submit button.
 
 ## Known limitations
 
-- **Orders are still local demo data.** The account orders page intentionally
-  shows an empty state. Connecting checkout to an `orders` table was out of scope;
-  the existing public `#/orders` demo page and browser-stored demo orders are
-  unchanged.
+- **Orders are demo orders, not real purchases.** No payment, courier or email
+  is involved. The snapshot (receipt, items, tracking number, delivery promise
+  and returns) is stored in Supabase against the account; the FedEx-style
+  timeline is simulated from the order's `createdAt`.
 - **Demo loyalty and referral codes remain browser-local** and are labelled as
   such. They are not tied to the Supabase account yet.
 - **Email address changes** are not self-service. The UI points to customer care;

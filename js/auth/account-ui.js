@@ -23,6 +23,13 @@ const PUBLIC_AUTH = new Set(['/account/login', '/account/register', '/account/fo
 
 let addressCache = new Map();
 let initialized = false;
+// app.js registers the order-history renderer so this module never imports the
+// whole storefront shell (that would be a circular import). Until then, the
+// honest empty state below is used.
+let accountOrdersRenderer = null;
+export function registerAccountOrdersRenderer(fn) {
+  accountOrdersRenderer = typeof fn === 'function' ? fn : null;
+}
 
 // ---------------------------------------------------------------------------
 // Small form helpers
@@ -226,7 +233,9 @@ export function renderAuthRoute(r) {
     case '/account/register': return renderRegister(r);
     case '/account/forgot-password': return renderForgotPassword();
     case '/account/reset-password': return renderResetPassword();
-    case '/account/orders': return renderAccountOrders();
+    case '/account/orders': return accountOrdersRenderer
+      ? accountOrdersRenderer()
+      : renderAccountOrders();
     case '/account/addresses': return renderAddresses([...addressCache.values()]);
     case '/account': {
       if (!authState.session) return pageGuardCard('Please sign in to see your account.');

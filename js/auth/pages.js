@@ -458,4 +458,4 @@ export function renderAddresses(addresses = []) {
   });
 }
 
-export { pageGuardCard };
+export { pageGuardCard, accountShell };

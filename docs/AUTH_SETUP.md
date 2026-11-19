@@ -13,10 +13,14 @@ the Vercel deployment.
 ## 1. Create the Supabase project
 
 1. Create a project at <https://supabase.com/dashboard>.
-2. Open **SQL Editor** and run the whole of
-   [`supabase/migrations/20261119090000_playroom_accounts.sql`](../supabase/migrations/20261119090000_playroom_accounts.sql).
-   It creates `profiles`, `addresses`, `wishlist`, `user_roles`, their triggers,
-   indexes and Row Level Security policies. It is safe to run again.
+2. Open **SQL Editor** and run both migrations, in this order:
+   1. [`20261119090000_playroom_accounts.sql`](../supabase/migrations/20261119090000_playroom_accounts.sql) —
+      `profiles`, `addresses`, `wishlist`, `user_roles`.
+   2. [`20261119110000_playroom_orders.sql`](../supabase/migrations/20261119110000_playroom_orders.sql) —
+      `orders` and `returns`, with the same RLS pattern. This is the one that
+      makes order history and tracking follow the account.
+
+   Both are safe to run again.
 3. Open **Project Settings → API** (newer dashboards call this **API Keys**) and
    copy:
    - **Project URL** → `VITE_SUPABASE_URL`

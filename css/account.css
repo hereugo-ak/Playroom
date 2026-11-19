@@ -363,6 +363,13 @@ body:has(.pl-account) #plChatPanel { display: none !important; }
 .pl-address-actions .text-link { font-size: 9.5px; color: #6c4a3c; }
 .pl-address-actions .pl-danger { color: #a24c39; }
 
+/* Order history reuses the storefront's order cards inside the account grid. */
+.pl-account-orders .section { padding-top: 0; padding-bottom: 0; }
+.pl-account-orders .post-stats { margin-bottom: 18px; }
+.pl-account-orders .order-card-head,
+.pl-account-orders .order-items,
+.pl-account-orders .order-actions { padding-left: 18px; padding-right: 18px; }
+
 /* ---- responsive ------------------------------------------------------ */
 @media (max-width: 1000px) {
   .pl-auth-wrap { grid-template-columns: 1fr; }
