@@ -2,13 +2,76 @@
 // The greeting is a pre-recorded clip (assets/audio/playroom-greeting.mp3); the
 // captions highlight words off the real sentence boundaries returned by the
 // voice service, and the waveform reacts to the actual audio via Web Audio.
+//
+// The desk is context-aware: when a customer is signed in, its quick prompts
+// and answers read the same Supabase-backed order mirror as the account pages.
+import { safe } from './dom.js';
+import { state, formatMoney } from './store.js';
+import { authState, onAuthChange } from './auth/auth-store.js';
+import { fedexStatus } from './gateway.js';
+
 export function initSupport() {
   const $ = (s) => document.querySelector(s);
-  const chatPanel = $('#plChatPanel'), openChat = $('#plOpenChat'), closeChat = $('#plCloseChat'), chatForm = $('#plChatForm'), chatInput = $('#plChatInput'), messages = $('#plChatMessages');
-  const callOverlay = $('#plCallOverlay'), openCall = $('#plOpenCall'), closeCall = $('#plCloseCall'), endCall = $('#plEndCall');
+  const chatPanel = $('#plChatPanel'), openChat = $('#plOpenChat'), closeChat = $('#plCloseChat'), chatForm = $('#plChatForm'), chatInput = $('#plChatInput'), messages = $('#plChatMessages'), chatCount = $('#plChatCount'), chatContext = $('#plChatContext');
+  const callOverlay = $('#plCallOverlay'), openCall = $('#plOpenCall'), closeCall = $('#plCloseCall'), endCall = $('#plEndCall'), quick = $('#plChatQuick');
   if (!chatPanel || !callOverlay) return;
   const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   let chatBusy = false;
+  let noteCount = messages?.children.length || 1;
+
+  // ---------- account context ----------
+  const signedIn = () => Boolean(authState.session && authState.user);
+  const accountOrders = () => (signedIn() && Array.isArray(state.orders) ? state.orders : []);
+  const lastOrder = () => accountOrders()[0] || null;
+
+  function orderFrom(text) {
+    const orders = accountOrders();
+    if (!orders.length) return null;
+    const id = String(text).match(/PL-?\d{6}/i)?.[0]?.replace('-', '').toUpperCase();
+    if (id) return orders.find((o) => String(o.id || '').replace('-', '').toUpperCase() === id) || null;
+    const tracking = String(text).match(/\b\d{12}\b/)?.[0];
+    if (tracking) return orders.find((o) => String(o.trackingNumber || '') === tracking) || null;
+    return /last|my order|recent|track|return|receipt|invoice/i.test(String(text)) ? lastOrder() : null;
+  }
+
+  const promptHTML = (index, prompt, title, sub) => `
+    <button type="button" class="care-prompt" data-support-prompt="${safe(prompt)}">
+      <span class="care-prompt-no">${String(index).padStart(2, '0')}</span>
+      <b>${safe(title)}</b>
+      ${sub ? `<small>${safe(sub)}</small>` : ''}
+      <svg class="care-prompt-arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M7 17 17 7M9 7h8v8"/></svg>
+    </button>`;
+
+  function renderQuickPrompts() {
+    if (!quick) return;
+    const order = lastOrder();
+    if (signedIn() && order) {
+      quick.innerHTML = [
+        promptHTML(1, 'Tell me about my last order', 'My last order', `${order.id} · ${formatMoney(order.total || 0)}`),
+        promptHTML(2, `Track ${order.id}`, 'Track order', order.trackingNumber || 'Demo tracking'),
+        promptHTML(3, 'Start a return for my last order', 'Start a return', 'Saved to your account'),
+      ].join('');
+      if (chatContext) chatContext.textContent = `ACCOUNT · ${order.id}`;
+    } else if (signedIn()) {
+      quick.innerHTML = [
+        promptHTML(1, 'I need help choosing a gift.', 'Find a gift', 'By age, play & budget'),
+        promptHTML(2, 'When will my order arrive?', 'Delivery question', 'Demo estimates'),
+        promptHTML(3, 'What is your return policy?', 'Returns policy', '30-day story'),
+      ].join('');
+      if (chatContext) chatContext.textContent = 'YOUR ACCOUNT';
+    } else {
+      quick.innerHTML = [
+        promptHTML(1, 'Can you help me track my order?', 'Track an order', 'PL- number or tracking'),
+        promptHTML(2, 'I need help choosing a gift.', 'Find a gift', 'A thoughtful shortlist'),
+        promptHTML(3, 'What is your return policy?', 'Returns', 'The 30-day story'),
+      ].join('');
+      if (chatContext) chatContext.textContent = 'GUEST DESK';
+    }
+  }
+
+  renderQuickPrompts();
+  onAuthChange(renderQuickPrompts);
+  window.addEventListener('playroom:orders-updated', renderQuickPrompts);
 
   // ---------- floating character launcher ----------
   const fab = $('#plSupportFab'), fabToggle = $('#plFabToggle'), fabMenu = $('#plFabMenu'), fabHint = $('#plFabHint');
@@ -26,7 +89,9 @@ export function initSupport() {
     chatPanel.classList.toggle('is-open', open);
     chatPanel.setAttribute('aria-hidden', String(!open));
     openChat.setAttribute('aria-expanded', String(open));
-    if (open) { setTimeout(() => chatInput.focus(), reduced ? 0 : 180); } else openChat.focus();
+    document.body.classList.toggle('pl-chat-active', open);
+    if (open) { setTimeout(() => chatInput.focus(), reduced ? 0 : 180); }
+    else (fabToggle || openChat).focus();
   }
   function addMessage(text, kind = 'bot', label) {
     const row = document.createElement('div');
@@ -36,11 +101,29 @@ export function initSupport() {
     const p = document.createElement('p');
     p.textContent = text;
     row.append(small, p); messages.append(row); messages.scrollTop = messages.scrollHeight;
+    noteCount += 1;
+    if (chatCount) chatCount.textContent = `${String(noteCount).padStart(2, '0')} ${noteCount === 1 ? 'NOTE' : 'NOTES'}`;
     return row;
   }
   function replyFor(message) {
-    const m = message.toLowerCase();
-    if (/track|tracking|order status|where.*order|delivery status/.test(m)) return 'Of course. This storefront is running in demo mode, so I can’t see a live courier. After checkout, open “Track an order” in the site footer and enter the PL- number shown on your confirmation. The status and timeline are simulated on this browser.';
+    const m = String(message || '').toLowerCase();
+    const order = orderFrom(message);
+
+    // Account-aware answers first: a signed-in customer gets real details from
+    // their own saved orders, never another customer's data.
+    if (signedIn() && /start a return|return.*order|refund.*order|exchange.*order/.test(m)) {
+      if (!order) return 'You’re signed in, but there’s no saved order to return yet. Complete a demo checkout first — the receipt, tracking and a returns option will appear under My orders.';
+      return `I can see ${order.id} on your account. Open #/account/orders and use “Return or exchange” on that card. The simulated pickup steps are saved with your account; no one collects the parcel and no money moves.`;
+    }
+    if (order && /last order|my order|order status|track|where.*order|delivery status|receipt|invoice|summary|tell me about/.test(m)) {
+      const st = fedexStatus(order);
+      const tracking = order.trackingNumber ? `Tracking number ${order.trackingNumber}.` : 'A tracking number has not been generated yet.';
+      return `I found ${order.id} in your account. Placed ${order.createdAtLabel || 'recently'} · ${formatMoney(order.total || 0)} demo total · currently “${st.big}”. ${st.sub}. ${tracking} Open the order card or “Track an order” for the full timeline. Nothing is charged or shipped in this prototype.`;
+    }
+    if (signedIn() && !order && /track|my order|order status|delivery status|last order/.test(m)) {
+      return 'I checked your account and there are no saved orders yet. Once you complete a demo checkout, the receipt, tracking number and returns desk will all live under My orders.';
+    }
+    if (/track|tracking|order status|where.*order|delivery status/.test(m)) return 'Of course. This storefront is running in demo mode, so I can’t see a live courier. After checkout, open “Track an order” in the site footer and enter the PL- number shown on your confirmation. The status and timeline are simulated in this browser.';
     if (/deliver|shipping|ship|pincode|pin code|when.*arriv/.test(m)) return 'Delivery is complimentary on demo orders of ₹1,499 or more; otherwise the demo estimates ₹99. Product-page PIN checks show an illustrative 3–6 business day estimate. No real parcel is dispatched in this prototype.';
     if (/return|refund|exchange|damaged/.test(m)) return 'We can help you understand the demo returns flow. The prototype describes a 7-day easy-returns concept, but it does not process real returns or refunds. For a live store, this would be confirmed against the order and fulfilment system.';
     if (/gift|present|birthday|recommend|recommendation|choose|choosing|age|toy for/.test(m)) return 'Let’s find something thoughtful. The Gift Finder can narrow the collection by age, interest and budget. For open-ended play, try Building & STEM; for a quieter activity, look at Games & Puzzles; for little comfort gifts, explore Soft & Plush.';
@@ -66,7 +149,7 @@ export function initSupport() {
   openChat.addEventListener('click', () => setChat(!chatPanel.classList.contains('is-open')));
   closeChat.addEventListener('click', () => setChat(false));
   chatForm.addEventListener('submit', (e) => { e.preventDefault(); sendMessage(chatInput.value); });
-  $('#plChatQuick').addEventListener('click', (e) => { const b = e.target.closest('[data-support-prompt]'); if (b) sendMessage(b.dataset.supportPrompt); });
+  quick?.addEventListener('click', (e) => { const b = e.target.closest('[data-support-prompt]'); if (b) sendMessage(b.dataset.supportPrompt); });
 
   // Character toggle: tap the face to fan out the actions; tap away to tuck them back.
   if (fabToggle) {

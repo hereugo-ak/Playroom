@@ -12,7 +12,9 @@
 body:has(.pl-auth) #plSupportFab,
 body:has(.pl-account) #plSupportFab,
 body:has(.pl-auth) #plChatPanel,
-body:has(.pl-account) #plChatPanel { display: none !important; }
+body:has(.pl-account) #plChatPanel,
+body:has(.pl-auth) #plCallOverlay,
+body:has(.pl-account) #plCallOverlay { display: none !important; }
 
 /* ---- boot state ------------------------------------------------------- */
 .pl-boot {
