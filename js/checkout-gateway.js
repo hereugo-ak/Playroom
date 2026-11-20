@@ -2,11 +2,12 @@
 // Owns: the payment-method accordion, per-method payment forms, autofill,
 // validation, the pay-button state machine and the order hand-off.
 import { $, $$, safe, toast } from './dom.js';
-import { formatMoney, state, discountAmount, cartSubtotal, clearCart, createDemoOrder, persist } from './store.js';
+import { formatMoney, state, discountAmount, cartSubtotal, clearCart, createDemoOrder, persist, upsertOrder } from './store.js';
 import { byId } from './data.js';
 import { effectiveDeliveryFee, chosenDelivery, setChosenDelivery } from './delivery.js';
 import { fling } from './spring.js';
 import { syncNewOrder } from './auth/order-sync.js';
+import { getAccessToken } from './auth/auth-store.js';
 import {
   PAYMENT_METHODS, generatePayer, generatePayment, validatePayment,
   gatewayTxnId, CARRIER, fedexTrackingNumber, packageMeta,
@@ -21,6 +22,7 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 const CVC_ICON = '<svg width="30" height="20" viewBox="0 0 30 20" fill="currentColor" aria-hidden="true"><g opacity="0.74"><path fill-rule="evenodd" clip-rule="evenodd" d="M25.2061 0.00488281C27.3194 0.112115 29 1.85996 29 4V11.3291C28.5428 11.0304 28.0336 10.8304 27.5 10.7188V8H1.5V16C1.5 17.3807 2.61929 18.5 4 18.5H10.1104V20H4L3.79395 19.9951C1.7488 19.8913 0.108652 18.2512 0.00488281 16.2061L0 16V4C0 1.85996 1.68056 0.112115 3.79395 0.00488281L4 0H25L25.2061 0.00488281ZM4 1.5C2.61929 1.5 1.5 2.61929 1.5 4V5H27.5V4C27.5 2.61929 26.3807 1.5 25 1.5H4Z"></path><path d="M27.5 12.7988C28.3058 13.1128 28.7725 13.7946 28.7725 14.6406C28.7722 15.4002 28.2721 15.9399 27.6523 16.1699C28.1601 16.3319 28.6072 16.6732 28.8086 17.2207C28.3597 18.6222 27.1605 19.6862 25.6826 19.9404C24.8389 19.7707 24.1662 19.2842 23.834 18.5H25C25.0914 18.5 25.1816 18.4939 25.2705 18.4844C25.5434 18.7862 25.9284 18.9501 26.3623 18.9502C27.142 18.9501 27.6922 18.5297 27.6924 17.79C27.6923 17.4212 27.5473 17.1544 27.2998 16.9795C27.4281 16.6786 27.5 16.3478 27.5 16V15.0527C27.5397 14.9481 27.5625 14.8309 27.5625 14.7002C27.5625 14.5657 27.5399 14.4422 27.5 14.3311V12.7988Z"></path><path d="M15.2207 18.5V18.8301H16.8799V19.9004H12.1104V18.8301H13.9902V18.5H15.2207Z"></path><path d="M19.9307 18.5L19.5762 18.7803H22.8369V19.9004H17.8164V18.8604L18.2549 18.5H19.9307Z"></path></g><path d="M26.3822 20.01C24.9722 20.01 23.8522 19.25 23.6422 17.81L24.8722 17.58C24.9922 18.45 25.6022 18.95 26.3622 18.95C27.1422 18.95 27.6922 18.53 27.6922 17.79C27.6922 17.05 27.1122 16.72 26.2822 16.72H25.5722V15.67H26.3022C27.0622 15.67 27.5622 15.34 27.5622 14.7C27.5622 14.07 27.1022 13.68 26.3922 13.68C25.6422 13.68 25.1322 14.18 24.9822 14.92L23.8122 14.76C24.0022 13.55 24.9822 12.61 26.4322 12.61C27.8822 12.61 28.7722 13.47 28.7722 14.64C28.7722 15.4 28.2722 15.94 27.6522 16.17C28.3422 16.39 28.9222 16.94 28.9222 17.89C28.9222 19.04 27.9522 20.01 26.3822 20.01Z"></path><path d="M17.8161 18.86L19.6161 17.38C20.5961 16.58 21.4761 15.87 21.4761 14.97C21.4761 14.23 21.0161 13.7 20.2561 13.7C19.5061 13.7 19.0161 14.29 19.0161 15C19.0161 15.23 19.0561 15.46 19.1361 15.68H17.9461C17.8461 15.39 17.8161 15.2 17.8161 14.93C17.8161 13.58 18.9261 12.61 20.2861 12.61C21.7861 12.61 22.7461 13.54 22.7461 14.89C22.7461 16.16 21.7861 17.03 20.7761 17.83L19.5761 18.78H22.8361V19.9H17.8161V18.86Z"></path><path d="M14.25 12.67H15.22V18.83H16.88V19.9H12.11V18.83H13.99V14.92H12.15V13.99L12.88 13.93C13.78 13.86 14.18 13.58 14.25 12.67Z"></path></svg>';
 const CHECK_ICON = '<svg viewBox="0 0 10 8" aria-hidden="true"><path d="M1 4.2 3.8 7 9 1"/></svg>';
 const SPIN = '<span class="st-spinwrap" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/></svg></span> ';
+const friendlyServerError = (error) => String(error?.message || error || 'Please try again.').slice(0, 180);
 
 const BRAND_BADGES = ['visa', 'mastercard', 'amex', 'rupay'];
 const brandBadge = (b) => (b === 'rupay'
@@ -230,7 +232,20 @@ async function startPayAnimation(form) {
   await wait(430);
 
   const methodLabel = PAYMENT_METHODS.find((m) => m.id === method)?.label || 'Card';
-  const order = await completeOrder({ form, methodLabel: `${methodLabel} · demo gateway` });
+  let order;
+  try {
+    order = await completeOrder({ form, methodLabel: `${methodLabel} · demo gateway` });
+  } catch (error) {
+    if (btn) {
+      btn.classList.remove('is-success');
+      btn.removeAttribute('aria-busy');
+      btn.innerHTML = 'Try again';
+      btn.disabled = false;
+    }
+    if (form) form.dataset.submitting = '';
+    toast('We could not place the order.', friendlyServerError(error));
+    return;
+  }
 
   if (!document.getElementById('checkoutPage')) return; // user navigated away mid-animation; the order is saved
 
@@ -253,6 +268,60 @@ const readGift = () => {
   try { const raw = sessionStorage.getItem('pl-gift'); return raw ? JSON.parse(raw) : null; } catch { return null; }
 };
 export const clearGift = () => { try { sessionStorage.removeItem('pl-gift'); } catch {} };
+
+const CHECKOUT_KEY = 'pl-checkout-idempotency';
+function checkoutKey() {
+  try {
+    const saved = sessionStorage.getItem(CHECKOUT_KEY);
+    if (saved) return saved;
+  } catch { /* storage unavailable */ }
+  const key = (globalThis.crypto?.randomUUID?.() || `ck-${Date.now()}-${Math.random().toString(36).slice(2)}`).replace(/[^A-Za-z0-9_-]/g, '');
+  try { sessionStorage.setItem(CHECKOUT_KEY, key); } catch { /* ignore */ }
+  return key;
+}
+
+/** Server-owned checkout for signed-in customers. Prices come from the API. */
+async function createServerOrder({ form, customer, methodLabel }) {
+  const token = await getAccessToken();
+  if (!token) return null;
+  const fd = form ? new FormData(form) : new FormData();
+  const payload = {
+    idempotencyKey: checkoutKey(),
+    items: state.cart.filter((x) => x.special !== 'gift-wrap').map((x) => ({
+      productId: x.productId,
+      qty: x.qty,
+      personalisation: x.personalisation || '',
+    })),
+    customer: {
+      firstName: customer.firstName,
+      lastName: customer.lastName,
+      phone: String(fd.get('phone') || '').trim(),
+      addressLine1: String(fd.get('address') || '').trim(),
+      addressLine2: '',
+      city: String(fd.get('city') || '').trim(),
+      state: String(fd.get('state') || '').trim(),
+      pincode: String(fd.get('pincode') || '').trim(),
+      deliveryNote: String(fd.get('note') || '').trim(),
+    },
+    paymentMethod: methodLabel,
+    deliveryId: chosenDelivery()?.id || 'standard',
+    promoCode: sessionStorage.getItem('pl-code') || '',
+    gift: readGift(),
+  };
+
+  const response = await fetch('/api/orders', {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+    body: JSON.stringify(payload),
+  });
+  const data = await response.json().catch(() => ({}));
+  if (!response.ok) throw new Error(data.error || 'We could not place your order. Please try again.');
+  if (!data.order) throw new Error('The order response was incomplete. Please try again.');
+  data.order.emailStatus = data.email?.status || 'unknown';
+  upsertOrder(data.order);
+  try { sessionStorage.removeItem(CHECKOUT_KEY); } catch { /* ignore */ }
+  return data.order;
+}
 
 export async function completeOrder({ form = null, methodLabel = 'Card · demo gateway', extra = {} } = {}) {
   const sub = cartSubtotal();
@@ -288,6 +357,18 @@ export async function completeOrder({ form = null, methodLabel = 'Card · demo g
   });
   const gift = readGift();
   const delivery = chosenDelivery();
+
+  // Signed-in checkouts go through the server so pricing is trusted, the order
+  // is committed before the email, and retries cannot create duplicates.
+  const serverOrder = await createServerOrder({ form, customer, methodLabel });
+  if (serverOrder) {
+    clearCart();
+    sessionStorage.removeItem('pl-code');
+    clearGift();
+    setChosenDelivery(null);
+    return serverOrder;
+  }
+
   const order = createDemoOrder({ customer, lines, subtotal: sub, discount: disc, deliveryFee: fee, total, paymentMethod: methodLabel, gift, delivery });
   order.gatewayTxn = gatewayTxnId();
   order.trackingNumber = fedexTrackingNumber();

@@ -11,7 +11,8 @@
     "serve": "python3 serve.py"
   },
   "dependencies": {
-    "@supabase/supabase-js": "^2.119.1"
+    "@supabase/supabase-js": "^2.119.1",
+    "nodemailer": "^10.6.1"
   },
   "devDependencies": {
     "vite": "^7.3.8"

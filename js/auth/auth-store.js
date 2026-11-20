@@ -425,6 +425,13 @@ export function isEmailVerified(user = authState.user) {
   return Boolean(user?.email_confirmed_at || user?.confirmed_at);
 }
 
+/** Current access token for server-owned checkout requests. */
+export async function getAccessToken() {
+  if (!isSupabaseConfigured || !supabase || !authState.session) return '';
+  const { data } = await supabase.auth.getSession();
+  return data?.session?.access_token || '';
+}
+
 export function accountDisplayName() {
   const profile = authState.profile;
   const name = profile?.full_name || metadataName(authState.user);

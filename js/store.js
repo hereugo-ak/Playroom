@@ -290,6 +290,15 @@ export function setOrders(orders) {
   persist();
 }
 
+/** Add or replace one order in the local mirror after a server checkout. */
+export function upsertOrder(order) {
+  if (!order?.id) return;
+  const at = String(order.id).toLowerCase();
+  state.orders = [order, ...state.orders.filter((o) => String(o?.id || '').toLowerCase() !== at)];
+  state.lastOrderId = order.id;
+  persist();
+}
+
 /** Replace the local returns mirror with a signed-in customer's saved returns. */
 export function setReturns(returns) {
   state.returns = Array.isArray(returns) ? returns : [];

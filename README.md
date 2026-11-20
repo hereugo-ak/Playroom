@@ -9,6 +9,7 @@ shipped.
 **Account setup:** [`docs/AUTH_SETUP.md`](./docs/AUTH_SETUP.md)
 **Database & RLS:** [`docs/DATABASE.md`](./docs/DATABASE.md)
 **Routes:** [`docs/ROUTES.md`](./docs/ROUTES.md)
+**Order email setup:** [`docs/EMAIL_SETUP.md`](./docs/EMAIL_SETUP.md)
 **Testing & manual steps:** [`docs/TESTING.md`](./docs/TESTING.md)
 
 ## Quick start

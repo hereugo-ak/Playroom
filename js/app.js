@@ -992,7 +992,16 @@ function openExpressSheet(kind) {
     btn.disabled = true;
     btn.innerHTML = 'Approving… <span class="st-spinwrap" aria-hidden="true"><svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="7.5"/></svg></span>';
     await new Promise((r) => setTimeout(r, 900));
-    const order = await completeOrder({ form: $('#checkoutForm'), methodLabel: `${conf.label} · express sheet (demo)`, extra: { expressWallet: kind } });
+    let order;
+    try {
+      order = await completeOrder({ form: $('#checkoutForm'), methodLabel: `${conf.label} · express sheet (demo)`, extra: { expressWallet: kind } });
+    } catch (error) {
+      btn.dataset.busy = '';
+      btn.disabled = false;
+      btn.innerHTML = `Try again · ${formatMoney(total)}`;
+      toast('We could not place the order.', String(error?.message || error || 'Please try again.').slice(0, 180));
+      return;
+    }
     closeModal();
     toast(`${conf.label} approved (demo).`, order.trackingNumber);
     location.hash = '#/order-confirmation?order=' + encodeURIComponent(order.id);

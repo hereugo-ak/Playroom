@@ -4,6 +4,7 @@ Migrations:
 
 1. [`20261119090000_playroom_accounts.sql`](../supabase/migrations/20261119090000_playroom_accounts.sql)
 2. [`20261119110000_playroom_orders.sql`](../supabase/migrations/20261119110000_playroom_orders.sql)
+3. [`20261120120000_order_email_outbox.sql`](../supabase/migrations/20261120120000_order_email_outbox.sql)
 
 Checkout still creates a clearly-labelled **demo** order — no payment, courier
 or email is involved — but the receipt snapshot is stored against the signed-in
@@ -94,7 +95,25 @@ cannot promote themselves.
 
 The typed columns exist for ownership, sorting and lookups; the JSONB snapshot
 keeps the receipt exactly as checkout created it, so old orders never change
-when catalogue prices change.
+when catalogue prices change. The order email migration adds
+`idempotency_key` (unique, server-generated) and `payment_status`.
+
+### `public.email_outbox`
+
+| Column | Type | Notes |
+| --- | --- | --- |
+| `id` | `uuid` PK | internal row id |
+| `order_id` / `user_id` | `text` / `uuid` | order reference and owner |
+| `recipient` / `email_type` | `text` | destination and template key |
+| `status` | `text` | `pending`, `processing`, `sent`, `failed` |
+| `provider_message_id` | `text` | SMTP provider receipt |
+| `attempt_count` / `last_error` | `integer` / `text` | retry diagnostics |
+| `idempotency_key` | `text` | unique; prevents duplicate delivery |
+| `payload` | `jsonb` | order snapshot used by the mailer |
+| `sent_at` | `timestamptz` | confirmed provider acceptance |
+
+Only the serverless checkout function writes here with the service role. RLS is
+enabled and browser roles have no privileges.
 
 ## Triggers
 
