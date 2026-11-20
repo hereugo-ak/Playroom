@@ -7,15 +7,15 @@
 .pr-support,
 .pr-chat,
 .pr-call {
-  --ink: #202a23;
-  --ink-soft: #5d675d;
-  --line: #e4e4d9;
-  --paper: #fffefa;
-  --paper-warm: #f8f6ef;
-  --green: #284b37;
-  --green-hover: #355e45;
-  --coral: #ef8e76;
-  --lime: #d8ec8d;
+  --ink: #382a22;
+  --ink-soft: #6f5a4b;
+  --line: #e6d6c4;
+  --paper: #fffaf3;
+  --paper-warm: #f7f1e8;
+  --green: #4c3428;
+  --green-hover: #5f4030;
+  --coral: #b56f7b;
+  --lime: #f0c979;
   font-family: var(--sans, 'DM Sans', sans-serif);
   color: var(--ink);
 }
@@ -164,7 +164,7 @@ body.pl-call-active .pr-support { opacity: 0; pointer-events: none; }
   border: 0;
   border-radius: 16px;
   background: var(--green);
-  color: #fffefa;
+  color: #fffaf3;
   box-shadow: 0 14px 32px rgba(40, 75, 55, .24);
   cursor: pointer;
   transition: transform .35s var(--ease, ease), background .2s, box-shadow .25s;

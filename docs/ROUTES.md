@@ -7,7 +7,8 @@ prefixes.
 | Route | Access | What it does |
 | --- | --- | --- |
 | `#/` … `#/catalog`, `#/product/:slug` | Public | Existing storefront. Unchanged. |
-| `#/wishlist` | Public | Guest list from `localStorage`; signed-in list from Supabase. |
+| `#/wishlist` | Public | Guest wish list from `localStorage`. |
+| `#/account/wishlist` | Protected | The signed-in customer's wish list, rendered inside the account shell. |
 | `#/orders` | Public | Demo-order page: local orders for guests, the signed-in customer's saved orders when signed in. |
 | `#/account/register` | Public (guests) | Create account: name, email, password + confirmation, terms. Sends the verification email. |
 | `#/account/login` | Public (guests) | Email + password, Google, link to reset. Honours `?next=`. |

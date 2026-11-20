@@ -46,7 +46,7 @@ locally.
 | Overview & profile | `#/account` | Name and phone editable; email read-only |
 | Orders | `#/account/orders` | Saved demo orders with receipts, tracking and returns |
 | Saved addresses | `#/account/addresses` | Create / edit / delete / default |
-| Wish list | `#/wishlist` | localStorage for guests, Supabase when signed in |
+| Wish list | `#/wishlist` / `#/account/wishlist` | Guest list in browser; account list inside the account area |
 
 Protected routes remember the intended destination and return there after
 sign-in. The bag is never cleared by signing in or out. Account data is read and

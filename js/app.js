@@ -1992,6 +1992,7 @@ registerRoutes({
   '/account/reset-password': (r) => renderAuthRoute(r),
   '/account/orders': (r) => renderAuthRoute(r),
   '/account/addresses': (r) => renderAuthRoute(r),
+  '/account/wishlist': (r) => renderAuthRoute(r),
   '/account': (r) => renderAuthRoute(r),
   '/safety': renderSafetyPage,
   '/stage': (r) => (r.path === '/stage' ? renderStagesIndex() : renderStagePage(r.path.slice(7))),

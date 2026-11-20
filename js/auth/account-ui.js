@@ -15,10 +15,10 @@ import { AUTH_CONFIGURED, AUTH_CONFIG_MESSAGE } from './config.js';
 import { friendlyAuthError } from './errors.js';
 import {
   renderLogin, renderRegister, renderForgotPassword, renderResetPassword,
-  renderDashboard, renderAccountOrders, renderAddresses, pageGuardCard,
+  renderDashboard, renderAccountOrders, renderAccountWishlist, renderAddresses, pageGuardCard,
 } from './pages.js';
 
-const PROTECTED = new Set(['/account', '/account/orders', '/account/addresses']);
+const PROTECTED = new Set(['/account', '/account/orders', '/account/addresses', '/account/wishlist']);
 const PUBLIC_AUTH = new Set(['/account/login', '/account/register', '/account/forgot-password']);
 
 let addressCache = new Map();
@@ -123,7 +123,7 @@ function accountMenuHTML() {
         <a href="#/account" role="menuitem">My account</a>
         <a href="#/account/orders" role="menuitem">My orders</a>
         <a href="#/account/addresses" role="menuitem">Saved addresses</a>
-        <a href="#/wishlist" role="menuitem">Wish list</a>
+        <a href="#/account/wishlist" role="menuitem">Wish list</a>
       </nav>
       <button class="account-menu-signout" type="button" role="menuitem" data-auth-logout>Sign out</button>`;
   }
@@ -236,6 +236,7 @@ export function renderAuthRoute(r) {
     case '/account/orders': return accountOrdersRenderer
       ? accountOrdersRenderer()
       : renderAccountOrders();
+    case '/account/wishlist': return renderAccountWishlist();
     case '/account/addresses': return renderAddresses([...addressCache.values()]);
     case '/account': {
       if (!authState.session) return pageGuardCard('Please sign in to see your account.');

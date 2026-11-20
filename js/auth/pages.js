@@ -5,6 +5,8 @@
 // should read as another room in the same shop, not an embedded SaaS dashboard.
 import { safe } from '../dom.js';
 import { state } from '../store.js';
+import { byId } from '../data.js';
+import { productCard } from '../components.js';
 import { authState, isEmailVerified, accountDisplayName, sanitizeNext, takeAuthFlash, ensureProfile } from './auth-store.js';
 import { AUTH_CONFIGURED, AUTH_CONFIG_MESSAGE } from './config.js';
 
@@ -134,7 +136,7 @@ function accountShell({ page, active, title, intro, body, kicker = 'YOUR PLAYROO
             <a href="#/account"${active === 'overview' ? ' aria-current="page"' : ''}>Overview</a>
             <a href="#/account/orders"${active === 'orders' ? ' aria-current="page"' : ''}>My orders</a>
             <a href="#/account/addresses"${active === 'addresses' ? ' aria-current="page"' : ''}>Saved addresses</a>
-            <a href="#/wishlist">Wish list</a>
+            <a href="#/account/wishlist"${active === 'wishlist' ? ' aria-current="page"' : ''}>Wish list</a>
           </nav>
           <button class="pl-signout" type="button" data-auth-logout>Sign out</button>
         </aside>
@@ -333,7 +335,7 @@ export function renderDashboard() {
         <div><dt>Member since</dt><dd>${safe(fmtDate(user?.created_at))}</dd></div>
         <div><dt>Email status</dt><dd><span class="pl-verify-pill ${verified ? 'is-ok' : 'is-pending'}"><i aria-hidden="true"></i>${verified ? 'Verified' : 'Not verified'}</span>${verified ? '' : ' <button class="text-link" type="button" data-resend-verification>Resend link</button>'}</dd></div>
         <div><dt>Account type</dt><dd>Customer${authState.role === 'admin' ? ' administrator' : ''}</dd></div>
-        <div><dt>Wish list</dt><dd>${state.wishlist.length} saved ${state.wishlist.length === 1 ? 'thing' : 'things'} · <a href="#/wishlist">open the shelf</a></dd></div>
+        <div><dt>Wish list</dt><dd>${state.wishlist.length} saved ${state.wishlist.length === 1 ? 'thing' : 'things'} · <a href="#/account/wishlist">open the shelf</a></dd></div>
       </dl>
     </div>
 
@@ -363,13 +365,13 @@ export function renderAccountOrders() {
   if (!authState.session) return pageGuardCard('Please sign in to see your orders.');
   const body = `
     <div class="pl-greeting">
-      <div><span class="mono">MY ORDERS</span><h2>Nothing here<br><em>just yet.</em></h2></div>
-      <p>When orders are linked to customer accounts, every receipt and tracking update will land here automatically.</p>
+      <div><span class="mono">MY ORDERS</span><h2>No orders yet.</h2></div>
+      <p>Complete a demo checkout and the receipt, tracking and returns will appear here.</p>
     </div>
     <div class="pl-card pl-empty-card">
-      <span class="pl-empty-icon" aria-hidden="true">✳</span>
-      <h2>Your first little world is waiting.</h2>
-      <p>There are no account orders to show. In this project, checkout creates a clearly-labelled demo order in this browser rather than a real purchase.</p>
+      <span class="pl-empty-icon" aria-hidden="true">◇</span>
+      <h2>Nothing saved yet.</h2>
+      <p>Demo orders are saved to your account after checkout. Nothing is charged or shipped.</p>
       <div class="pl-empty-actions">
         <a class="btn" href="#/catalog">Explore the collection <span class="arrow" aria-hidden="true">↗</span></a>
         <a class="btn outline" href="#/orders">See demo orders on this device</a>
@@ -380,6 +382,35 @@ export function renderAccountOrders() {
     active: 'orders',
     title: 'Orders & receipts.',
     intro: 'Receipts, tracking and returns for demo orders saved to your account.',
+    body,
+  });
+}
+
+// ---------------------------------------------------------------------------
+// Wish list (inside the account shell)
+// ---------------------------------------------------------------------------
+export function renderAccountWishlist() {
+  if (!authState.session) return pageGuardCard('Please sign in to see your saved things.');
+  const items = state.wishlist.map(byId).filter(Boolean);
+  const body = `
+    <div class="pl-greeting">
+      <div><span class="mono">WISH LIST</span><h2>Saved things.</h2></div>
+      <p>The toys you set aside, kept with your account.</p>
+    </div>
+    ${items.length
+      ? `<div class="product-grid account-wishlist-grid">${items.map(productCard).join('')}</div>`
+      : `<div class="pl-card pl-empty-card">
+          <span class="pl-empty-icon" aria-hidden="true">♡</span>
+          <h2>Nothing saved yet.</h2>
+          <p>Tap the heart on anything that catches your eye and it will live here.</p>
+          <div class="pl-empty-actions"><a class="btn" href="#/catalog">Explore the collection <span class="arrow" aria-hidden="true">↗</span></a></div>
+        </div>`}
+  `;
+  return accountShell({
+    page: 'wishlist',
+    active: 'wishlist',
+    title: 'Saved things.',
+    intro: 'Your wish list, kept inside your account.',
     body,
   });
 }
@@ -412,8 +443,8 @@ export function renderAddresses(addresses = []) {
   if (!authState.session) return pageGuardCard('Please sign in to manage your addresses.');
   const body = `
     <div class="pl-greeting">
-      <div><span class="mono">SAVED ADDRESSES</span><h2>Where the parcels<br><em>should land.</em></h2></div>
-      <p>Keep the places you order to close at hand. Set one as the default for a faster checkout.</p>
+      <div><span class="mono">SAVED ADDRESSES</span><h2>Your places.</h2></div>
+      <p>Set a default so checkout starts where you usually order.</p>
     </div>
     ${authState.profileError ? `<div class="pl-form-message pl-form-message--error" role="alert">${safe(authState.profileError)}</div>` : ''}
     <div class="pl-address-list" data-address-list>
