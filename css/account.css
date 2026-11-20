@@ -6,6 +6,26 @@
 
 [hidden] { display: none !important; }
 
+/* The storefront redefines --green/--coral later in the cascade. Account and
+   auth surfaces pin their own tokens so they stay on the site's green system. */
+.account-wrap,
+.pl-auth,
+.pl-account {
+  --ink: #202a23;
+  --paper: #fffefa;
+  --line: #e2e5db;
+  --green: #284b37;
+  --green-hover: #355e45;
+  --lime: #d8ec8d;
+  --coral: #ef8e76;
+}
+#app .pl-account .btn,
+#app .pl-auth .btn {
+  --green: #284b37;
+  --lime: #d8ec8d;
+  border-radius: 9px;
+}
+
 /* Auth and account screens are focused forms. On a short phone screen the
    floating care bubble would sit on top of the submit button, so it steps
    aside while a customer is signing in. It returns on every shop page. */
@@ -112,7 +132,7 @@ body:has(.pl-account) #plCallOverlay { display: none !important; }
 .account-menu-avatar--guest .mark { width: 15px; height: 15px; border-radius: 5px 5px 5px 2px; }
 .account-menu-head div { min-width: 0; }
 .account-menu-head b { display: block; font: 600 12px var(--display, Manrope, sans-serif); letter-spacing: -.015em; }
-.account-menu-head span { display: block; font-size: 10px; color: #8a9388; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.account-menu-head div span { display: block; font-size: 10px; color: #8a9388; margin-top: 3px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .account-menu-status { display: flex; align-items: center; gap: 7px; padding: 10px 12px 3px; font: 8.5px var(--mono, 'DM Mono', monospace); letter-spacing: .06em; text-transform: uppercase; color: #8a9388; }
 .account-menu-status i { width: 5px; height: 5px; border-radius: 50%; background: var(--coral, #ef8e76); }
 .account-menu-status.is-ok i { background: #8fb66f; }
@@ -317,6 +337,22 @@ body:has(.pl-account) #plCallOverlay { display: none !important; }
 .pl-auth-simple--loading { gap: 12px; }
 
 /* ---- account pages --------------------------------------------------- */
+/* Account page head: compact, editorial, no shared decorative tail. */
+#app .pl-account .page-head {
+  max-width: 1240px;
+  padding: 26px 0 8px;
+  background: transparent;
+  text-align: left;
+}
+#app .pl-account .page-head .breadcrumbs { justify-content: flex-start; margin-bottom: 12px; }
+#app .pl-account .page-head > .mono.muted { display: flex; justify-content: flex-start; color: #8a9388; }
+#app .pl-account .page-head > .mono.muted:before,
+#app .pl-account .page-head > .mono.muted:after { display: none; }
+#app .pl-account .page-head .page-title { margin: 10px 0 6px; font-size: clamp(36px, 3.6vw, 52px); }
+#app .pl-account .page-head .page-intro { margin: 0; max-width: 620px; text-align: left; font-size: 12px; }
+#app .pl-account .page-head:after { display: none; }
+#app .pl-account-section.wrap { max-width: 1240px; }
+
 .pl-account-section { padding-top: 16px; }
 .pl-account-grid { display: grid; grid-template-columns: 224px minmax(0, 1fr); gap: 46px; align-items: start; }
 .pl-account-side {

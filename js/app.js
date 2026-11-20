@@ -1687,7 +1687,7 @@ function renderAccountOrdersPage() {
     page: 'orders',
     active: 'orders',
     title: 'Orders & receipts.',
-    intro: 'Demo orders saved to your account, with receipts, tracking and returns.',
+    intro: 'Receipts, tracking and returns for demo orders saved to your account.',
     body: ordersListHTML(state.orders, { account: true }),
   });
 }

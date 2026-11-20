@@ -307,7 +307,7 @@ export function renderDashboard() {
     ${authState.profileError ? `<div class="pl-form-message pl-form-message--error" role="alert">${safe(authState.profileError)}</div>` : ''}
     <div class="pl-greeting">
       <div><span class="mono">OVERVIEW</span><h2>Hello, <em>${safe(firstName)}.</em></h2></div>
-      <p>Your details, saved places and orders — kept together in one place.</p>
+      <p>Your name and phone number are saved securely to your account.</p>
     </div>
 
     <form class="pl-card" id="profileForm" novalidate>
@@ -351,7 +351,7 @@ export function renderDashboard() {
     page: 'dashboard',
     active: 'overview',
     title: 'Your account.',
-    intro: 'Your details, saved places and orders — kept together.',
+    intro: 'Manage your details, saved places and demo orders.',
     body,
   });
 }
@@ -379,7 +379,7 @@ export function renderAccountOrders() {
     page: 'orders',
     active: 'orders',
     title: 'Orders & receipts.',
-    intro: 'Demo orders saved to your account, with receipts and tracking.',
+    intro: 'Receipts, tracking and returns for demo orders saved to your account.',
     body,
   });
 }
