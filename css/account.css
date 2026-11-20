@@ -519,6 +519,7 @@ body:has(.pl-account) #plCallOverlay { display: none !important; }
    ================================================================== */
 #app .pl-account .page-head {
   max-width: 1240px;
+  margin: 0 auto;
   padding: 34px 0 4px;
   background: transparent;
   text-align: center;
@@ -571,7 +572,30 @@ body:has(.pl-account) #plCallOverlay { display: none !important; }
 }
 .pl-account-id { display: flex; align-items: center; gap: 11px; padding: 0; border: 0; }
 .pl-account-id > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-.pl-account-avatar { width: 38px; height: 38px; margin: 0; border-radius: 10px; flex: 0 0 auto; }
+.pl-account-avatar {
+  position: relative;
+  width: 42px;
+  height: 42px;
+  margin: 0;
+  border: 1px solid #d9c3a8;
+  border-radius: 12px;
+  background: linear-gradient(145deg, #5b3f30, #3f2b21);
+  box-shadow: inset 0 0 0 3px rgba(255, 250, 243, .07), 0 4px 12px rgba(63, 43, 33, .16);
+  flex: 0 0 auto;
+}
+.pl-account-avatar::after {
+  content: '';
+  position: absolute;
+  inset: 4px;
+  border: 1px solid rgba(240, 201, 121, .34);
+  border-radius: 9px;
+  pointer-events: none;
+}
+.pl-account-avatar span {
+  font: 500 15px var(--serif, Fraunces, serif);
+  letter-spacing: -.03em;
+  color: #f4e4c8;
+}
 .pl-account-id b { font-size: 12px; }
 .pl-account-id > div > span { font-size: 9.5px; max-width: 220px; }
 .pl-account-id > .pl-verify-pill { max-width: none; overflow: visible; white-space: nowrap; }

@@ -111,14 +111,12 @@ const isBusy = (form) => form?.dataset?.busy === '1';
 function accountMenuHTML() {
   if (authState.user) {
     const name = accountDisplayName();
-    const verified = isEmailVerified();
     const parts = String(name).trim().split(/\s+/);
     const ini = ((parts[0]?.[0] || 'P') + (parts[1]?.[0] || '')).toUpperCase();
     return `<div class="account-menu-head">
         <span class="account-menu-avatar" aria-hidden="true">${safe(ini)}</span>
         <div><b>${safe(name)}</b><span>${safe(authState.user.email || '')}</span></div>
       </div>
-      <div class="account-menu-status ${verified ? 'is-ok' : 'is-pending'}"><i aria-hidden="true"></i>${verified ? 'Email verified' : 'Email not verified'}</div>
       <nav class="account-menu-links" aria-label="Account">
         <a href="#/account" role="menuitem">My account</a>
         <a href="#/account/orders" role="menuitem">My orders</a>

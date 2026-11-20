@@ -126,12 +126,11 @@ function accountShell({ page, active, title, intro, body, kicker = 'YOUR PLAYROO
       ${flashHTML()}
       <div class="pl-account-bar">
         <div class="pl-account-id">
-          <span class="pl-account-avatar" aria-hidden="true">${safe(initials(name))}</span>
+          <span class="pl-account-avatar" aria-hidden="true"><span>${safe(initials(name))}</span></span>
           <div>
             <b>${safe(name)}</b>
             <span>${safe(user?.email || '')}</span>
           </div>
-          <span class="pl-verify-pill ${verified ? 'is-ok' : 'is-pending'}"><i aria-hidden="true"></i>${verified ? 'Verified' : 'Not verified'}</span>
         </div>
         <nav class="pl-account-nav" aria-label="Account sections">
           <a href="#/account"${active === 'overview' ? ' aria-current="page"' : ''}>Overview</a>
