@@ -10,7 +10,7 @@ prefixes.
 | `#/wishlist` | Public | Guest wish list from `localStorage`. |
 | `#/account/wishlist` | Protected | The signed-in customer's wish list, rendered inside the account shell. |
 | `#/orders` | Public | Demo-order page: local orders for guests, the signed-in customer's saved orders when signed in. |
-| `#/account/register` | Public (guests) | Create account: name, email, password + confirmation, terms. Sends the verification email. |
+| `#/account/register` | Public (guests) | Create account: name, email, password + confirmation, terms. Then verify with the emailed OTP or confirmation link. |
 | `#/account/login` | Public (guests) | Email + password, Google, link to reset. Honours `?next=`. |
 | `#/account/forgot-password` | Public | Sends a one-use reset link. Always shows the same confirmation, so it cannot be used to discover which emails have accounts. |
 | `#/account/reset-password` | Needs a recovery session | New password form. After saving, the session is ended and the visitor signs in again. |

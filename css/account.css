@@ -513,6 +513,26 @@ body:has(.pl-account) #plCallOverlay { display: none !important; }
   .account-menu, .pl-spinner { animation: none !important; }
 }
 
+/* OTP verification step after sign-up */
+.pl-verify-panel { display: grid; justify-items: center; gap: 10px; text-align: center; }
+.pl-verify-mark {
+  width: 48px; height: 48px; margin-bottom: 4px;
+  display: grid; place-items: center;
+  border: 1px solid #d9c3a8; border-radius: 12px;
+  background: #f0eadb; color: #4c3428; font-size: 18px;
+}
+.pl-verify-panel > .mono { color: #b56f7b; letter-spacing: .14em; }
+.pl-verify-panel h2 { margin: 2px 0 0; font: 500 30px/1.05 var(--serif, Fraunces, serif); letter-spacing: -.04em; }
+.pl-verify-panel > p { max-width: 360px; margin: 0; font-size: 11px; line-height: 1.7; color: #847264; }
+.pl-otp-form { width: 100%; margin-top: 8px; }
+.pl-otp-form input {
+  text-align: center;
+  font: 500 18px var(--mono, 'DM Mono', monospace);
+  letter-spacing: .32em;
+  padding-left: 1.2em;
+}
+.pl-verify-note { font-size: 9px !important; color: #a08e7f !important; }
+
 /* ==================================================================
    ACCOUNT SHELL — editorial header + compact horizontal account bar
    Replaces the empty side rail without fighting the storefront system.

@@ -6,7 +6,7 @@ import { go, route } from '../router.js';
 import { state } from '../store.js';
 import {
   authState, onAuthChange, signIn, signUp, signInWithGoogle, signOut,
-  requestPasswordReset, updatePassword, resendVerification, updateProfile,
+  requestPasswordReset, updatePassword, resendVerification, verifySignupOtp, updateProfile,
   listAddresses, createAddress, updateAddress, deleteAddress, makeDefaultAddress,
   accountDisplayName, isEmailVerified, sanitizeNext, rememberDestination,
   peekDestination, takeDestination, setAuthFlash,
@@ -610,7 +610,7 @@ async function handleRegister(form, event) {
       return;
     }
 
-    showCheckEmail(form, email.value.trim());
+    showOtpVerification(form, email.value.trim(), sanitizeNext(form.dataset.next) || '/account');
   } catch (error) {
     const message = friendlyAuthError(error, 'We could not create the account.');
     formMessage(form, message);
@@ -620,26 +620,74 @@ async function handleRegister(form, event) {
   }
 }
 
-function showCheckEmail(form, email) {
+function showOtpVerification(form, email, next) {
   const panel = document.createElement('div');
-  panel.className = 'pl-success';
-  panel.innerHTML = `<span class="pl-success-icon" aria-hidden="true">✉</span>
-    <h2>One last little step.</h2>
-    <p>We sent a verification link to <b>${safe(email)}</b>. Open it and your account will be ready. Check the spam folder if it has not arrived in a few minutes.</p>
-    <button class="btn full" type="button" data-resend-signup="${safe(email)}">Resend the link</button>
+  panel.className = 'pl-verify-panel';
+  panel.innerHTML = `
+    <div class="pl-verify-mark" aria-hidden="true">✳</div>
+    <span class="mono">ONE LAST STEP</span>
+    <h2>Enter your code.</h2>
+    <p>We sent a verification code to <b>${safe(email)}</b>. Enter it below to finish creating your account.</p>
+    <form class="pl-form pl-otp-form" id="authOtpForm" novalidate>
+      <div class="field pl-field">
+        <label for="otpCode">Verification code</label>
+        <input id="otpCode" name="otp" inputmode="numeric" autocomplete="one-time-code" maxlength="8" pattern="[0-9]*" placeholder="12345678" aria-describedby="otp-error" required>
+        <span class="field-error" id="otp-error" data-error-for="otpCode" role="alert"></span>
+      </div>
+      <div class="pl-form-message" data-form-message role="alert" hidden></div>
+      <button class="btn full pl-submit" type="submit"><span>Verify &amp; continue</span></button>
+    </form>
+    <button class="text-link" type="button" data-resend-signup>Resend the code</button>
+    <p class="pl-verify-note">If your email contained a link instead, open it — that verifies the account too.</p>
     <a class="pl-success-alt" href="#/account/login">Back to sign in</a>`;
   form.replaceWith(panel);
+
+  const otpForm = panel.querySelector('#authOtpForm');
+  const input = panel.querySelector('#otpCode');
+  input?.focus();
+
+  otpForm?.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    if (isBusy(otpForm)) return;
+    formMessage(otpForm, '');
+    setFieldError(input, '');
+    const code = String(input?.value || '').trim();
+    if (!/^\d{6,8}$/.test(code)) {
+      setFieldError(input, 'Enter the 6–8 digit code from your email.');
+      return;
+    }
+
+    setBusy(otpForm, true, 'Verifying…');
+    try {
+      const data = await verifySignupOtp(email, code);
+      if (data.session) {
+        const target = takeDestination(next);
+        toast('Your email is verified.', 'Welcome to Playroom.');
+        go(target);
+        return;
+      }
+      setAuthFlash('Your email is verified. Sign in to continue.', 'success');
+      go('/account/login');
+    } catch (error) {
+      const message = friendlyAuthError(error, 'That code could not be verified.');
+      formMessage(otpForm, message);
+      setFieldError(input, 'Check the code and try again.');
+    } finally {
+      setBusy(otpForm, false);
+    }
+  });
+
   panel.querySelector('[data-resend-signup]')?.addEventListener('click', async (event) => {
     const button = event.currentTarget;
     button.disabled = true;
     button.textContent = 'Sending…';
     try {
       await resendVerification(email);
-      button.textContent = 'Sent — check your inbox';
+      button.textContent = 'Code sent — check your inbox';
     } catch (error) {
       button.disabled = false;
-      button.textContent = 'Resend the link';
-      toast('Could not resend the link.', friendlyAuthError(error, 'Please try again.'));
+      button.textContent = 'Resend the code';
+      toast('Could not resend the code.', friendlyAuthError(error, 'Please try again.'));
     }
   });
 }

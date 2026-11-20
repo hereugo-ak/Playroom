@@ -399,6 +399,28 @@ export async function resendVerification(email) {
   if (error) throw error;
 }
 
+/**
+ * Verify the code Supabase sent after sign-up. Works with OTP email templates
+ * ({{ .Token }}) as well as projects configured for email OTP instead of links.
+ */
+export async function verifySignupOtp(email, token) {
+  requireClient();
+  const code = String(token || '').replace(/\s/g, '');
+  if (!/^\d{6,8}$/.test(code)) throw new Error('Enter the full verification code.');
+
+  const { data, error } = await supabase.auth.verifyOtp({
+    email: String(email || '').trim(),
+    token: code,
+    type: 'signup',
+  });
+  if (error) throw error;
+
+  setSession(data.session);
+  if (data.session?.user) await ensureProfile(true);
+  emit();
+  return data;
+}
+
 export function isEmailVerified(user = authState.user) {
   return Boolean(user?.email_confirmed_at || user?.confirmed_at);
 }

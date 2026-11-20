@@ -59,16 +59,27 @@ The app sends Supabase a redirect of the form
 entries above are required. If you use a different domain or preview URL, add
 that origin too.
 
-Under **Authentication → Providers → Email**, keep **Confirm email** on. That
-is what produces the verification link the register flow waits for.
+Under **Authentication → Providers → Email**, keep **Confirm email** on. The
+frontend supports both confirmation modes:
+
+- **Link / token hash** — the email contains a confirmation link. Opening it
+  returns to the site with the session in the URL fragment.
+- **OTP** — the email contains a numeric `{{ .Token }}`. After sign-up the
+  frontend shows a verification field; the code is checked with
+  `supabase.auth.verifyOtp({ type: 'signup' })` and the session is created on
+  the same page.
 
 ### Email templates
 
-The default Supabase templates work. If you customise them, keep
-`{{ .ConfirmationURL }}` (or `{{ .TokenHash }}`) intact — the app reads the
-session tokens Supabase appends to that URL. The storefront deliberately uses
-the **implicit** flow so a confirmation or reset link also works when it is
-opened on a different device or browser; PKCE would fail in that case.
+The default Supabase templates work for link-based confirmation. If your
+project is configured for OTP, the **Confirm signup** template should include
+`{{ .Token }}`. The storefront accepts **6–8 digit** codes, so an 8-digit OTP
+works without any frontend changes. Keep `{{ .ConfirmationURL }}` (or
+`{{ .TokenHash }}`) as well if you want link-based confirmation to keep working
+alongside OTP.
+
+The app uses the implicit flow for links so confirmation or reset links also
+work when the email is opened on a different device or browser.
 
 For a branded reset email, a link to `{{ .SiteURL }}/?recovery=1` is not enough
 on its own — use the default `{{ .ConfirmationURL }}`, which already carries the
