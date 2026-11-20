@@ -124,25 +124,25 @@ function accountShell({ page, active, title, intro, body, kicker = 'YOUR PLAYROO
     </div>
     <section class="section wrap pl-account-section">
       ${flashHTML()}
-      <div class="pl-account-grid">
-        <aside class="pl-account-side">
-          <div class="pl-account-id">
-            <span class="pl-account-avatar" aria-hidden="true">${safe(initials(name))}</span>
+      <div class="pl-account-bar">
+        <div class="pl-account-id">
+          <span class="pl-account-avatar" aria-hidden="true">${safe(initials(name))}</span>
+          <div>
             <b>${safe(name)}</b>
             <span>${safe(user?.email || '')}</span>
-            <span class="pl-verify-pill ${verified ? 'is-ok' : 'is-pending'}"><i aria-hidden="true"></i>${verified ? 'Email verified' : 'Email not verified'}</span>
           </div>
-          <nav class="pl-account-nav" aria-label="Account sections">
-            <a href="#/account"${active === 'overview' ? ' aria-current="page"' : ''}>Overview</a>
-            <a href="#/account/orders"${active === 'orders' ? ' aria-current="page"' : ''}>My orders</a>
-            <a href="#/account/addresses"${active === 'addresses' ? ' aria-current="page"' : ''}>Saved addresses</a>
-            <a href="#/account/wishlist"${active === 'wishlist' ? ' aria-current="page"' : ''}>Wish list</a>
-          </nav>
-          <button class="pl-signout" type="button" data-auth-logout>Sign out</button>
-        </aside>
-        <div class="pl-account-main">
-          ${body}
+          <span class="pl-verify-pill ${verified ? 'is-ok' : 'is-pending'}"><i aria-hidden="true"></i>${verified ? 'Verified' : 'Not verified'}</span>
         </div>
+        <nav class="pl-account-nav" aria-label="Account sections">
+          <a href="#/account"${active === 'overview' ? ' aria-current="page"' : ''}>Overview</a>
+          <a href="#/account/orders"${active === 'orders' ? ' aria-current="page"' : ''}>My orders</a>
+          <a href="#/account/addresses"${active === 'addresses' ? ' aria-current="page"' : ''}>Addresses</a>
+          <a href="#/account/wishlist"${active === 'wishlist' ? ' aria-current="page"' : ''}>Wish list</a>
+        </nav>
+        <button class="pl-signout" type="button" data-auth-logout>Sign out</button>
+      </div>
+      <div class="pl-account-main">
+        ${body}
       </div>
     </section>
   </div>`;
@@ -352,7 +352,7 @@ export function renderDashboard() {
   return accountShell({
     page: 'dashboard',
     active: 'overview',
-    title: 'Your account.',
+    title: 'Your <em>account.</em>',
     intro: 'Manage your details, saved places and demo orders.',
     body,
   });
@@ -380,7 +380,7 @@ export function renderAccountOrders() {
   return accountShell({
     page: 'orders',
     active: 'orders',
-    title: 'Orders & receipts.',
+    title: 'Orders <em>& receipts.</em>',
     intro: 'Receipts, tracking and returns for demo orders saved to your account.',
     body,
   });
@@ -409,7 +409,7 @@ export function renderAccountWishlist() {
   return accountShell({
     page: 'wishlist',
     active: 'wishlist',
-    title: 'Saved things.',
+    title: 'Saved <em>things.</em>',
     intro: 'Your wish list, kept inside your account.',
     body,
   });
@@ -483,7 +483,7 @@ export function renderAddresses(addresses = []) {
   return accountShell({
     page: 'addresses',
     active: 'addresses',
-    title: 'Saved addresses.',
+    title: 'Saved <em>addresses.</em>',
     intro: 'The places you order to, private to your account.',
     body,
   });

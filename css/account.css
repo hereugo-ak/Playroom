@@ -512,3 +512,94 @@ body:has(.pl-account) #plCallOverlay { display: none !important; }
 @media (prefers-reduced-motion: reduce) {
   .account-menu, .pl-spinner { animation: none !important; }
 }
+
+/* ==================================================================
+   ACCOUNT SHELL — editorial header + compact horizontal account bar
+   Replaces the empty side rail without fighting the storefront system.
+   ================================================================== */
+#app .pl-account .page-head {
+  max-width: 1240px;
+  padding: 34px 0 4px;
+  background: transparent;
+  text-align: center;
+}
+#app .pl-account .page-head .breadcrumbs { justify-content: center; margin-bottom: 14px; }
+#app .pl-account .page-head > .mono.muted {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  color: #a08e7f;
+  letter-spacing: .16em;
+}
+#app .pl-account .page-head > .mono.muted:before,
+#app .pl-account .page-head > .mono.muted:after {
+  display: block;
+  content: '';
+  width: 36px;
+  height: 1px;
+  background: #d8c5ad;
+}
+#app .pl-account .page-head .page-title {
+  margin: 14px auto 10px;
+  max-width: 900px;
+  font-size: clamp(42px, 5vw, 68px);
+}
+#app .pl-account .page-head .page-title em {
+  color: #b56f7b;
+  font-style: italic;
+  font-weight: 400;
+}
+#app .pl-account .page-head .page-intro {
+  margin: 0 auto;
+  max-width: 620px;
+  text-align: center;
+  font-size: 12.5px;
+}
+#app .pl-account-section.wrap { max-width: 1240px; padding-top: 12px; }
+
+.pl-account-bar {
+  display: grid;
+  grid-template-columns: minmax(260px, auto) 1fr auto;
+  align-items: center;
+  gap: 22px;
+  margin-bottom: 24px;
+  padding: 13px 16px;
+  border: 1px solid #e6d6c4;
+  border-radius: 12px;
+  background: #fffaf3;
+}
+.pl-account-id { display: flex; align-items: center; gap: 11px; padding: 0; border: 0; }
+.pl-account-id > div { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.pl-account-avatar { width: 38px; height: 38px; margin: 0; border-radius: 10px; flex: 0 0 auto; }
+.pl-account-id b { font-size: 12px; }
+.pl-account-id > div > span { font-size: 9.5px; max-width: 220px; }
+.pl-account-id > .pl-verify-pill { max-width: none; overflow: visible; white-space: nowrap; }
+.pl-verify-pill { margin: 0; }
+.pl-account-nav { display: flex; justify-content: flex-end; flex-wrap: wrap; gap: 4px; padding: 0; }
+.pl-account-nav a { margin: 0; padding: 8px 11px; font-size: 10.5px; white-space: nowrap; }
+.pl-signout {
+  width: auto;
+  margin: 0;
+  padding: 9px 12px;
+  border: 1px solid #e6d6c4;
+  border-radius: 8px;
+  font-size: 10px;
+}
+.pl-account-main { max-width: none; }
+.pl-greeting { grid-template-columns: 1fr; gap: 8px; padding: 0 0 2px; }
+.pl-greeting h2 { font-size: clamp(29px, 3vw, 40px); }
+
+@media (max-width: 1000px) {
+  .pl-account-bar { grid-template-columns: 1fr auto; gap: 12px; }
+  .pl-account-id { grid-column: 1; }
+  .pl-signout { grid-column: 2; grid-row: 1; }
+  .pl-account-nav { grid-column: 1 / -1; justify-content: flex-start; }
+}
+@media (max-width: 700px) {
+  #app .pl-account .page-head { padding: 26px 0 4px; }
+  #app .pl-account .page-head .page-title { font-size: clamp(34px, 9vw, 48px); }
+  .pl-account-bar { grid-template-columns: 1fr; }
+  .pl-signout { grid-column: 1; grid-row: auto; justify-self: start; }
+  .pl-account-nav { justify-content: flex-start; }
+}

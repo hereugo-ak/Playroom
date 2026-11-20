@@ -1686,7 +1686,7 @@ function renderAccountOrdersPage() {
   return accountShell({
     page: 'orders',
     active: 'orders',
-    title: 'Orders & receipts.',
+    title: 'Orders <em>& receipts.</em>',
     intro: 'Receipts, tracking and returns for demo orders saved to your account.',
     body: ordersListHTML(state.orders, { account: true }),
   });
