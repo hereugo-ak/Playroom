@@ -1686,8 +1686,8 @@ function renderAccountOrdersPage() {
   return accountShell({
     page: 'orders',
     active: 'orders',
-    title: 'Orders &<br><em>receipts.</em>',
-    intro: 'Every demo order you place while signed in is saved to your account — receipts, tracking and returns together in one place.',
+    title: 'Orders & receipts.',
+    intro: 'Demo orders saved to your account, with receipts, tracking and returns.',
     body: ordersListHTML(state.orders, { account: true }),
   });
 }

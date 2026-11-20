@@ -120,19 +120,19 @@ function accountMenuHTML() {
       </div>
       <div class="account-menu-status ${verified ? 'is-ok' : 'is-pending'}"><i aria-hidden="true"></i>${verified ? 'Email verified' : 'Email not verified'}</div>
       <nav class="account-menu-links" aria-label="Account">
-        <a href="#/account" role="menuitem"><span>My account</span><i aria-hidden="true">↗</i></a>
-        <a href="#/account/orders" role="menuitem"><span>My orders</span><i aria-hidden="true">↗</i></a>
-        <a href="#/account/addresses" role="menuitem"><span>Saved addresses</span><i aria-hidden="true">↗</i></a>
-        <a href="#/wishlist" role="menuitem"><span>Wish list</span><i aria-hidden="true">↗</i></a>
+        <a href="#/account" role="menuitem">My account</a>
+        <a href="#/account/orders" role="menuitem">My orders</a>
+        <a href="#/account/addresses" role="menuitem">Saved addresses</a>
+        <a href="#/wishlist" role="menuitem">Wish list</a>
       </nav>
       <button class="account-menu-signout" type="button" role="menuitem" data-auth-logout>Sign out</button>`;
   }
   return `<div class="account-menu-head">
-      <span class="account-menu-avatar account-menu-avatar--guest" aria-hidden="true">✳</span>
-      <div><b>Welcome to Playroom</b><span>Sign in to keep your things together.</span></div>
+      <span class="account-menu-avatar account-menu-avatar--guest" aria-hidden="true"><i class="mark"></i></span>
+      <div><b>Welcome back.</b><span>Sign in to keep your things together.</span></div>
     </div>
-    <a class="btn full account-menu-cta" href="#/account/login" role="menuitem">Sign in <span class="arrow" aria-hidden="true">↗</span></a>
-    <a class="account-menu-create" href="#/account/register" role="menuitem">New here? Create an account <span aria-hidden="true">↗</span></a>`;
+    <a class="btn full account-menu-cta" href="#/account/login" role="menuitem">Sign in</a>
+    <a class="account-menu-create" href="#/account/register" role="menuitem">Create an account</a>`;
 }
 
 export function refreshAccountHeader() {

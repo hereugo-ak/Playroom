@@ -84,7 +84,7 @@ function authShell({ page, kicker, title, intro, children, alt }) {
         </figure>
         <div class="pl-auth-aside-note">
           <span class="pl-auth-aside-mark">✳</span>
-          <p>Your saved things, orders and addresses stay together in one quiet corner of Playroom.</p>
+          <p>Your saved things, orders and addresses stay together in one place.</p>
         </div>
       </aside>
 
@@ -131,10 +131,10 @@ function accountShell({ page, active, title, intro, body, kicker = 'YOUR PLAYROO
             <span class="pl-verify-pill ${verified ? 'is-ok' : 'is-pending'}"><i aria-hidden="true"></i>${verified ? 'Email verified' : 'Email not verified'}</span>
           </div>
           <nav class="pl-account-nav" aria-label="Account sections">
-            <a href="#/account"${active === 'overview' ? ' aria-current="page"' : ''}><span>Overview</span><i aria-hidden="true">↗</i></a>
-            <a href="#/account/orders"${active === 'orders' ? ' aria-current="page"' : ''}><span>My orders</span><i aria-hidden="true">↗</i></a>
-            <a href="#/account/addresses"${active === 'addresses' ? ' aria-current="page"' : ''}><span>Saved addresses</span><i aria-hidden="true">↗</i></a>
-            <a href="#/wishlist"><span>Wish list</span><i aria-hidden="true">↗</i></a>
+            <a href="#/account"${active === 'overview' ? ' aria-current="page"' : ''}>Overview</a>
+            <a href="#/account/orders"${active === 'orders' ? ' aria-current="page"' : ''}>My orders</a>
+            <a href="#/account/addresses"${active === 'addresses' ? ' aria-current="page"' : ''}>Saved addresses</a>
+            <a href="#/wishlist">Wish list</a>
           </nav>
           <button class="pl-signout" type="button" data-auth-logout>Sign out</button>
         </aside>
@@ -276,7 +276,7 @@ function leavesCard() {
   const leaves = state.points.reduce((a, x) => a + (x.delta || 0), 0);
   const codes = Object.keys(state.redemptions || {});
   return `<div class="pl-card pl-leaves" id="leavesCard">
-    <div class="pl-card-head"><div><span class="mono">PLAY LEAVES · DEMO LOYALTY</span><h2>A little thanks, saved up.</h2></div><span class="pl-leaf-balance"><b>${leaves}</b> leaves</span></div>
+    <div class="pl-card-head"><div><span class="mono">PLAY LEAVES · DEMO</span><h2>Play leaves.</h2></div><span class="pl-leaf-balance"><b>${leaves}</b> leaves</span></div>
     <div class="leaves-progress"><i style="width:${Math.min(100, leaves / 400 * 100)}%"></i></div>
     <p>One leaf for every ₹50 spent on a demo order. Four hundred leaves become a <b>₹200 code</b> you can use at checkout.</p>
     <button class="btn small" id="redeemLeaves" type="button" ${leaves < 400 ? 'disabled' : ''}>Redeem 400 leaves <span class="arrow" aria-hidden="true">↗</span></button>
@@ -288,7 +288,7 @@ function leavesCard() {
 function referralCard() {
   const code = state.referralCode || '';
   return `<div class="pl-card pl-referral">
-    <div class="pl-card-head"><div><span class="mono">REFER A FRIEND · DEMO</span><h2>Good things travel.</h2></div></div>
+    <div class="pl-card-head"><div><span class="mono">REFER A FRIEND · DEMO</span><h2>Refer a friend.</h2></div></div>
     <div class="referral-code"><b>${safe(code || 'PLAY-••••')}</b><button class="text-link" id="copyReferral" type="button">Copy</button></div>
     <p>In a live programme you would both receive 200 leaves. Here the code is a demonstration, kept in this browser.</p>
     <div class="referral-foot"><button class="text-link" id="copyShareLink" type="button">Copy wish-list share link <span aria-hidden="true">↗</span></button></div>
@@ -306,12 +306,12 @@ export function renderDashboard() {
   const body = `
     ${authState.profileError ? `<div class="pl-form-message pl-form-message--error" role="alert">${safe(authState.profileError)}</div>` : ''}
     <div class="pl-greeting">
-      <div><span class="mono">WELCOME BACK</span><h2>Hello, <em>${safe(firstName)}.</em></h2></div>
-      <p>Everything personal to you lives here — your details, the addresses you use and the little things you have saved.</p>
+      <div><span class="mono">OVERVIEW</span><h2>Hello, <em>${safe(firstName)}.</em></h2></div>
+      <p>Your details, saved places and orders — kept together in one place.</p>
     </div>
 
     <form class="pl-card" id="profileForm" novalidate>
-      <div class="pl-card-head"><div><span class="mono">YOUR DETAILS</span><h2>Keep them current.</h2></div><span class="pl-card-aside">Only you can see these</span></div>
+      <div class="pl-card-head"><div><span class="mono">YOUR DETAILS</span><h2>Your details.</h2></div><span class="pl-card-aside">Only you can see these</span></div>
       <div class="form-grid">
         ${textField({ id: 'profileName', name: 'fullName', label: 'Full name', autocomplete: 'name', value: profile.full_name || '', placeholder: 'Your name' })}
         ${textField({ id: 'profilePhone', name: 'phone', label: 'Phone number', type: 'tel', autocomplete: 'tel', value: profile.phone || '', placeholder: '+91 98765 43210', required: false, inputmode: 'tel' })}
@@ -328,7 +328,7 @@ export function renderDashboard() {
     </form>
 
     <div class="pl-card">
-      <div class="pl-card-head"><div><span class="mono">ACCOUNT</span><h2>The small print.</h2></div></div>
+      <div class="pl-card-head"><div><span class="mono">ACCOUNT</span><h2>Account details.</h2></div></div>
       <dl class="pl-detail-list">
         <div><dt>Member since</dt><dd>${safe(fmtDate(user?.created_at))}</dd></div>
         <div><dt>Email status</dt><dd><span class="pl-verify-pill ${verified ? 'is-ok' : 'is-pending'}"><i aria-hidden="true"></i>${verified ? 'Verified' : 'Not verified'}</span>${verified ? '' : ' <button class="text-link" type="button" data-resend-verification>Resend link</button>'}</dd></div>
@@ -350,8 +350,8 @@ export function renderDashboard() {
   return accountShell({
     page: 'dashboard',
     active: 'overview',
-    title: 'A quiet corner,<br><em>just for you.</em>',
-    intro: 'A quiet corner for your details, your addresses and the things you have saved.',
+    title: 'Your account.',
+    intro: 'Your details, saved places and orders — kept together.',
     body,
   });
 }
@@ -378,8 +378,8 @@ export function renderAccountOrders() {
   return accountShell({
     page: 'orders',
     active: 'orders',
-    title: 'Orders &<br><em>receipts.</em>',
-    intro: 'A home for order history. Nothing is fabricated here — when there is an order, it will appear.',
+    title: 'Orders & receipts.',
+    intro: 'Demo orders saved to your account, with receipts and tracking.',
     body,
   });
 }
@@ -452,8 +452,8 @@ export function renderAddresses(addresses = []) {
   return accountShell({
     page: 'addresses',
     active: 'addresses',
-    title: 'Saved<br><em>addresses.</em>',
-    intro: 'The places you order to, kept private to your account and protected in the database.',
+    title: 'Saved addresses.',
+    intro: 'The places you order to, private to your account.',
     body,
   });
 }
