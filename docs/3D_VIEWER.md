@@ -2,19 +2,19 @@
 
 A premium interactive 3D viewer for selected products. Built with Three.js inside the existing Vite app and loaded only when the 3D route is opened.
 
-## First product
-
-```text
-Little Architect Wooden Blocks
-```
-
-Route:
-
-```text
-#/3d/little-architect-wooden-blocks
-```
+## Enabled products
 
 The product page shows a **View in 3D** button only when `has3D` is true.
+
+| Product | Route | Scene |
+| --- | --- | --- |
+| Little Architect Wooden Blocks | `#/3d/little-architect-wooden-blocks` | `wooden-blocks` |
+| Orbit Magnetic Building Tiles | `#/3d/orbit-magnetic-building-tiles` | `magnetic-tiles` |
+| The City Bus — Wooden | `#/3d/the-city-bus-wooden` | `wooden-bus` |
+| First Shapes Wooden Sorter | `#/3d/first-shapes-wooden-sorter` | `stacking-rings` |
+| The Tiny Parade Xylophone | `#/3d/the-tiny-parade-drum` | `xylophone` |
+
+Each scene samples its material palette and texture grain from the product's own catalogue image.
 
 ## Stack
 

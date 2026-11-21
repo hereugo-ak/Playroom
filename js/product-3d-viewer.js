@@ -10,6 +10,16 @@ let current = null;
 
 const clamp01 = (v) => Math.max(0, Math.min(1, v));
 
+const DEFAULT_PALETTE_REGIONS = {
+  cream: [0.22, 0.06, 0.18, 0.2],
+  rust: [0.25, 0.24, 0.18, 0.14],
+  mustard: [0.34, 0.39, 0.16, 0.12],
+  sage: [0.39, 0.58, 0.2, 0.16],
+  slate: [0.68, 0.47, 0.13, 0.13],
+  rose: [0.58, 0.73, 0.2, 0.11],
+  wood: [0.86, 0.57, 0.1, 0.1],
+};
+
 function hexToRgb(hex) {
   const c = new THREE.Color(hex);
   return [Math.round(c.r * 255), Math.round(c.g * 255), Math.round(c.b * 255)];
@@ -19,7 +29,7 @@ function rgbToHex(r, g, b) {
   return `#${[r, g, b].map((v) => Math.max(0, Math.min(255, Math.round(v))).toString(16).padStart(2, '0')).join('')}`;
 }
 
-async function imagePalette(url, fallback) {
+async function imagePalette(url, fallback = {}, regions = DEFAULT_PALETTE_REGIONS) {
   const fallbackPalette = {
     cream: '#e9d9b8',
     rust: '#c8735c',
@@ -30,6 +40,7 @@ async function imagePalette(url, fallback) {
     wood: '#d8b985',
     ...fallback,
   };
+  const sampleRegions = { ...DEFAULT_PALETTE_REGIONS, ...regions };
   try {
     const texture = await new THREE.TextureLoader().loadAsync(url);
     const image = texture.image;
@@ -62,13 +73,13 @@ async function imagePalette(url, fallback) {
     };
 
     const palette = {
-      cream: sample(0.22, 0.06, 0.18, 0.2, fallbackPalette.cream),
-      rust: sample(0.25, 0.24, 0.18, 0.14, fallbackPalette.rust),
-      mustard: sample(0.34, 0.39, 0.16, 0.12, fallbackPalette.mustard),
-      sage: sample(0.39, 0.58, 0.2, 0.16, fallbackPalette.sage),
-      slate: sample(0.68, 0.47, 0.13, 0.13, fallbackPalette.slate),
-      rose: sample(0.58, 0.73, 0.2, 0.11, fallbackPalette.rose),
-      wood: sample(0.86, 0.57, 0.1, 0.1, fallbackPalette.wood),
+      cream: sample(...sampleRegions.cream, fallbackPalette.cream),
+      rust: sample(...sampleRegions.rust, fallbackPalette.rust),
+      mustard: sample(...sampleRegions.mustard, fallbackPalette.mustard),
+      sage: sample(...sampleRegions.sage, fallbackPalette.sage),
+      slate: sample(...sampleRegions.slate, fallbackPalette.slate),
+      rose: sample(...sampleRegions.rose, fallbackPalette.rose),
+      wood: sample(...sampleRegions.wood, fallbackPalette.wood),
     };
     texture.dispose();
     return palette;
@@ -116,9 +127,11 @@ function materialTexture(hex, wood = true) {
 }
 
 async function makeMaterials(config) {
-  const palette = await imagePalette(config.poster);
+  const palette = await imagePalette(config.poster, config.fallbackPalette, config.paletteRegions);
   const [wr, wg, wb] = hexToRgb(palette.wood);
+  const [sr, sg, sb] = hexToRgb(palette.slate);
   palette.woodDark = rgbToHex(wr * 0.82, wg * 0.82, wb * 0.82);
+  palette.dark = rgbToHex(sr * 0.45, sg * 0.45, sb * 0.45);
   const pbr = (hex, wood = false, clearcoat = 0.12) => new THREE.MeshPhysicalMaterial({
     map: materialTexture(hex, wood),
     roughness: wood ? 0.55 : 0.42,
@@ -137,6 +150,7 @@ async function makeMaterials(config) {
     rose: pbr(palette.rose, false),
     wood: pbr(palette.wood, true, 0.08),
     woodDark: pbr(palette.woodDark, true, 0.08),
+    dark: pbr(palette.dark, false, 0.18),
     floor: new THREE.MeshStandardMaterial({ color: 0xf0e5d7, roughness: 0.95, metalness: 0 }),
   };
 }
@@ -205,7 +219,7 @@ function roundedBlock(width, height, depth, material, position, rotation = [0, 0
   return mesh;
 }
 
-function createProduct(mats) {
+function createRainbowBlocks(mats) {
   const group = new THREE.Group();
   group.name = 'product';
 
@@ -236,6 +250,190 @@ function createProduct(mats) {
 
   group.userData.focusBlock = group.children[1];
   return group;
+}
+
+function translucentMaterial(hex) {
+  return new THREE.MeshPhysicalMaterial({
+    map: materialTexture(hex, false),
+    roughness: 0.16,
+    metalness: 0,
+    transmission: 0.28,
+    transparent: true,
+    opacity: 0.94,
+    thickness: 0.35,
+    ior: 1.42,
+    clearcoat: 1,
+    clearcoatRoughness: 0.1,
+    side: THREE.DoubleSide,
+  });
+}
+
+function triangularTile(width, height, material, position, rotation = [0, 0, 0]) {
+  const shape = new THREE.Shape();
+  shape.moveTo(-width / 2, -height / 2);
+  shape.lineTo(width / 2, -height / 2);
+  shape.lineTo(0, height / 2);
+  shape.closePath();
+  const geometry = new THREE.ExtrudeGeometry(shape, {
+    depth: 0.16,
+    bevelEnabled: true,
+    bevelSegments: 4,
+    bevelSize: 0.035,
+    bevelThickness: 0.03,
+  });
+  geometry.translate(0, 0, -0.08);
+  const mesh = new THREE.Mesh(geometry, material);
+  mesh.position.set(...position);
+  mesh.rotation.set(...rotation);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  return mesh;
+}
+
+function createMagneticTiles(mats) {
+  const group = new THREE.Group();
+  group.name = 'product';
+  const colors = mats.palette;
+  const red = translucentMaterial(colors.rust);
+  const amber = translucentMaterial(colors.mustard);
+  const lime = translucentMaterial(colors.sage);
+  const blue = translucentMaterial(colors.slate);
+  const violet = translucentMaterial(colors.rose);
+  const cream = translucentMaterial(colors.cream);
+
+  group.add(triangularTile(1.7, 1.35, red, [-1.35, 0.78, 0]));
+  group.add(triangularTile(1.7, 1.35, amber, [-1.35, 0.78, 0.2]));
+  group.add(roundedBlock(0.72, 0.72, 0.18, blue, [-1.35, 0.35, 0.42], [0, 0, Math.PI / 4]));
+
+  group.add(triangularTile(1.9, 1.5, lime, [0.15, 0.85, -0.1]));
+  group.add(triangularTile(1.25, 1.0, cream, [0.15, 1.15, 0.14]));
+  group.add(roundedBlock(0.8, 0.8, 0.18, violet, [0.15, 0.36, 0.38], [0, 0, Math.PI / 4]));
+
+  group.add(triangularTile(1.55, 1.2, blue, [1.55, 0.72, 0.05]));
+  group.add(triangularTile(1.1, 0.86, red, [1.55, 0.96, 0.24]));
+  group.add(roundedBlock(0.7, 0.7, 0.18, amber, [1.55, 0.34, 0.42], [0, 0, Math.PI / 4]));
+
+  group.userData.focusBlock = group.children[3];
+  return group;
+}
+
+function cylinder(radius, length, material, position, rotation = [Math.PI / 2, 0, 0]) {
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, length, 32), material);
+  mesh.position.set(...position);
+  mesh.rotation.set(...rotation);
+  mesh.castShadow = true;
+  mesh.receiveShadow = true;
+  return mesh;
+}
+
+function createWoodenBus(mats) {
+  const group = new THREE.Group();
+  group.name = 'product';
+
+  group.add(roundedBlock(2.9, 0.9, 0.95, mats.sage, [0, 0.72, 0]));
+  group.add(roundedBlock(2.65, 0.24, 0.9, mats.cream, [0, 1.28, 0]));
+  group.add(roundedBlock(2.1, 0.42, 0.06, mats.dark, [-0.12, 1.0, 0.5]));
+  group.add(roundedBlock(0.62, 0.42, 0.06, mats.dark, [1.05, 1.0, 0.5]));
+  group.add(roundedBlock(0.06, 0.42, 0.72, mats.dark, [1.46, 1.0, 0]));
+
+  [-1.0, 0.95].forEach((x) => {
+    [-0.52, 0.52].forEach((z) => {
+      group.add(cylinder(0.25, 0.16, mats.dark, [x, 0.3, z]));
+      group.add(cylinder(0.1, 0.18, mats.cream, [x, 0.3, z]));
+    });
+  });
+
+  group.add(roundedBlock(0.12, 0.18, 0.9, mats.woodDark, [1.5, 0.55, 0]));
+  group.add(cylinder(0.09, 0.08, mats.mustard, [1.53, 0.78, 0.3], [Math.PI / 2, 0, 0]));
+  group.add(cylinder(0.09, 0.08, mats.mustard, [1.53, 0.78, -0.3], [Math.PI / 2, 0, 0]));
+
+  group.add(roundedBlock(0.42, 0.52, 0.42, mats.cream, [-1.75, 0.45, -0.45]));
+  group.add(roundedBlock(0.42, 0.7, 0.42, mats.rust, [-1.75, 0.58, 0.1]));
+  group.add(roundedBlock(0.42, 0.42, 0.42, mats.mustard, [-1.75, 0.38, 0.62]));
+
+  group.userData.focusBlock = group.children[0];
+  return group;
+}
+
+function createStackingRings(mats) {
+  const group = new THREE.Group();
+  group.name = 'product';
+
+  group.add(cylinder(0.09, 1.45, mats.wood, [0, 0.78, 0], [0, 0, 0]));
+  const rings = [
+    [0.58, 0.14, mats.wood, 0.2],
+    [0.5, 0.13, mats.sage, 0.43],
+    [0.42, 0.12, mats.rose, 0.64],
+    [0.34, 0.11, mats.mustard, 0.83],
+    [0.26, 0.1, mats.slate, 1.0],
+  ];
+  rings.forEach(([r, t, m, y]) => group.add(createRing(r, t, 0.2, m, [0, y, 0])));
+
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.28, 32, 24), mats.wood);
+  head.position.set(0, 1.38, 0);
+  head.castShadow = true;
+  group.add(head);
+  [-0.18, 0.18].forEach((x) => {
+    const ear = new THREE.Mesh(new THREE.SphereGeometry(0.1, 20, 16), mats.woodDark);
+    ear.position.set(x, 1.55, 0);
+    ear.castShadow = true;
+    group.add(ear);
+  });
+  const snout = new THREE.Mesh(new THREE.SphereGeometry(0.1, 20, 16), mats.cream);
+  snout.position.set(0, 1.34, 0.24);
+  group.add(snout);
+
+  group.add(createRing(0.34, 0.12, mats.wood, [-1.35, 0.22, 0.45]));
+  group.add(createRing(0.27, 0.1, mats.rust, [1.3, 0.2, 0.5], [Math.PI / 2, 0, 0.3]));
+  group.add(roundedBlock(0.34, 0.34, 0.34, mats.sage, [1.45, 0.25, -0.4], [0, 0.2, 0]));
+
+  group.userData.focusBlock = group.children[2];
+  return group;
+}
+
+function createXylophone(mats) {
+  const group = new THREE.Group();
+  group.name = 'product';
+
+  group.add(roundedBlock(3.5, 0.16, 0.28, mats.wood, [0, 0.22, 0.72]));
+  group.add(roundedBlock(3.5, 0.16, 0.28, mats.wood, [0, 0.22, -0.72]));
+  group.add(roundedBlock(3.7, 0.2, 0.3, mats.woodDark, [0, 0.1, 0]));
+
+  const barMaterials = [mats.rust, mats.mustard, mats.sage, mats.slate, mats.rose, mats.rust, mats.mustard, mats.sage];
+  const lengths = [1.65, 1.55, 1.45, 1.35, 1.28, 1.2, 1.12, 1.04];
+  barMaterials.forEach((material, i) => {
+    const x = -1.54 + i * 0.44;
+    group.add(roundedBlock(0.34, 0.1, lengths[i], material, [x, 0.5, 0]));
+    group.add(cylinder(0.035, 0.04, mats.dark, [x, 0.58, -0.42], [0, 0, 0]));
+  });
+
+  const mallet = (x, z, rotation) => {
+    const g = new THREE.Group();
+    g.add(cylinder(0.035, 0.9, mats.wood, [0, 0, 0], [0, 0, Math.PI / 2]));
+    const head = new THREE.Mesh(new THREE.SphereGeometry(0.14, 20, 16), mats.rose);
+    head.position.x = 0.48;
+    head.castShadow = true;
+    g.add(head);
+    g.position.set(x, 0.16, z);
+    g.rotation.y = rotation;
+    return g;
+  };
+  group.add(mallet(-0.35, 1.1, 0.25));
+  group.add(mallet(0.45, 1.25, -0.18));
+
+  group.userData.focusBlock = group.children[4];
+  return group;
+}
+
+function createProduct(mats, config) {
+  switch (config.scene) {
+    case 'magnetic-tiles': return createMagneticTiles(mats);
+    case 'wooden-bus': return createWoodenBus(mats);
+    case 'stacking-rings': return createStackingRings(mats);
+    case 'xylophone': return createXylophone(mats);
+    case 'wooden-blocks':
+    default: return createRainbowBlocks(mats);
+  }
 }
 
 function createContactShadow() {
@@ -335,7 +533,7 @@ export async function mountProduct3D(slug, config) {
 
     const mats = await makeMaterials(config);
     const scene = new THREE.Scene();
-    const product = createProduct(mats);
+    const product = createProduct(mats, config);
     scene.add(product);
     scene.add(createContactShadow());
 
