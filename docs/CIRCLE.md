@@ -112,7 +112,7 @@ SITE_URL
 
 ## Local development
 
-Vite serves the frontend at `http://localhost:5173/`, but it does not run Vercel serverless functions. The Circle UI can be previewed locally, but activation, request saving, guide downloads and email sending must be tested on a Vercel preview or production deployment.
+Vite serves the frontend at `http://localhost:5173/`, but it does not run Vercel serverless functions. The Circle UI can be previewed locally, but activation, request saving, guide downloads and email sending must be tested on a Vercel preview or production deployment. If you approve a demo payment on localhost, the form now shows a clear message explaining that the API step is only available on Vercel. This is not a Supabase migration error.
 
 ## Current verification
 

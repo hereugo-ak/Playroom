@@ -74,6 +74,14 @@ const ICONS = {
 
 let selectedMethod = 'card';
 
+const isLocalDev = ['localhost', '127.0.0.1'].includes(window.location.hostname);
+function apiError(response, result, fallback) {
+  if (!response.ok && isLocalDev && response.status === 404) {
+    return 'Circle activation runs on Vercel server functions. The local Vite server cannot complete payment — open the deployed preview or production site to test this step.';
+  }
+  return result?.error || fallback;
+}
+
 function benefitRows(compact = false) {
   return CIRCLE_BENEFITS.map((b, i) => `
     <article class="circle-benefit">
@@ -479,7 +487,7 @@ async function wireCheckout() {
         }),
       });
       const result = await response.json().catch(() => ({}));
-      if (!response.ok) throw new Error(result.error || 'We could not activate your membership.');
+      if (!response.ok) throw new Error(apiError(response, result, 'We could not activate your membership.'));
 
       try { sessionStorage.removeItem(`pl-circle-key:${plan.code}`); } catch { /* ignore */ }
       await loadMembership(true);
@@ -523,7 +531,7 @@ async function wireRequestForms() {
           }),
         });
         const result = await response.json().catch(() => ({}));
-        if (!response.ok) throw new Error(result.error || 'Could not save your request.');
+        if (!response.ok) throw new Error(apiError(response, result, 'Could not save your request.'));
         await loadMembership(true);
         toast('Request saved.', 'It is now in your Circle desk.');
         render();
@@ -553,7 +561,7 @@ function wireGuide() {
       const response = await fetch(`/api/membership/guide?month=${encodeURIComponent(month)}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
-      if (!response.ok) throw new Error('Could not open the guide.');
+      if (!response.ok) throw new Error(apiError(response, {}, 'Could not open the guide.'));
       const blob = await response.blob();
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
