@@ -402,6 +402,38 @@ body.p3d-fullscreen { overflow: hidden !important; }
   .p3d-hotspot-card { width: 170px; left: 24px; }
 }
 
+/* Tighten only the home play-section rhythm; cards stay untouched. */
+#app .home-play-section {
+  padding-top: 64px;
+  padding-bottom: 42px;
+}
+#app .home-play-section .home-section-top {
+  margin-bottom: 26px;
+}
+#app .home-play-grid {
+  row-gap: 24px;
+}
+#app .home-play-section + .home-trust-strip {
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+#app .home-trust-strip + .home-favorites {
+  padding-top: 58px;
+}
+
+@media (max-width: 600px) {
+  #app .home-play-section {
+    padding-top: 48px;
+    padding-bottom: 34px;
+  }
+  #app .home-play-section .home-section-top {
+    margin-bottom: 20px;
+  }
+  #app .home-trust-strip + .home-favorites {
+    padding-top: 48px;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   .p3d-spinner,
   .p3d-canvas,
