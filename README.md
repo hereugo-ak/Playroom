@@ -2,7 +2,8 @@
 
 A static, modular storefront built from the Playroom reference design. The shop
 itself runs entirely in the browser; customer accounts (profile, addresses,
-wish list and demo order history) are backed by Supabase when configured.
+wish list, demo order history and the Playroom Circle demo membership are
+backed by Supabase when configured.
 Checkout remains a clearly labelled demo and no real payment is charged or
 shipped.
 
@@ -10,6 +11,7 @@ shipped.
 **Database & RLS:** [`docs/DATABASE.md`](./docs/DATABASE.md)
 **Routes:** [`docs/ROUTES.md`](./docs/ROUTES.md)
 **Order email setup:** [`docs/EMAIL_SETUP.md`](./docs/EMAIL_SETUP.md)
+**Playroom Circle:** [`docs/CIRCLE.md`](./docs/CIRCLE.md)
 **Testing & manual steps:** [`docs/TESTING.md`](./docs/TESTING.md)
 
 ## Quick start

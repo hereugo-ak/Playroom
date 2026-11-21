@@ -5,6 +5,7 @@ Migrations:
 1. [`20261119090000_playroom_accounts.sql`](../supabase/migrations/20261119090000_playroom_accounts.sql)
 2. [`20261119110000_playroom_orders.sql`](../supabase/migrations/20261119110000_playroom_orders.sql)
 3. [`20261120120000_order_email_outbox.sql`](../supabase/migrations/20261120120000_order_email_outbox.sql)
+4. [`20261120130000_playroom_circle.sql`](../supabase/migrations/20261120130000_playroom_circle.sql)
 
 Checkout still creates a clearly-labelled **demo** order — no payment, courier
 or email is involved — but the receipt snapshot is stored against the signed-in
@@ -115,6 +116,16 @@ when catalogue prices change. The order email migration adds
 Only the serverless checkout function writes here with the service role. RLS is
 enabled and browser roles have no privileges.
 
+### Playroom Circle tables
+
+`subscription_plans` stores the two demo plans: monthly ₹499 and yearly ₹4,499.
+`subscriptions` tracks the customer's active period and status.
+`subscription_payments` records demo payment approvals with a unique
+idempotency key. `member_requests` stores Build with us, repair and priority
+support requests. Customers can read their own rows; only the server writes.
+
+See [`CIRCLE.md`](./CIRCLE.md) for the full benefit-to-code mapping.
+
 ## Triggers
 
 - `profiles_set_updated_at`, `addresses_set_updated_at`, `orders_set_updated_at`,
@@ -155,7 +166,7 @@ dashboard role, not a browser role.
 -- RLS on?
 select tablename, rowsecurity from pg_tables
 where schemaname = 'public'
-  and tablename in ('profiles','addresses','wishlist','user_roles','orders','returns');
+  and tablename in ('profiles','addresses','wishlist','user_roles','orders','returns','subscriptions','subscription_payments','member_requests');
 
 -- Policies
 select tablename, policyname, cmd, roles from pg_policies

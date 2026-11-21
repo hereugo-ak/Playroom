@@ -12,13 +12,14 @@ import {
   peekDestination, takeDestination, setAuthFlash,
 } from './auth-store.js';
 import { AUTH_CONFIGURED, AUTH_CONFIG_MESSAGE } from './config.js';
+import { membershipState, onMembershipChange } from './membership.js';
 import { friendlyAuthError } from './errors.js';
 import {
   renderLogin, renderRegister, renderForgotPassword, renderResetPassword,
   renderDashboard, renderAccountOrders, renderAccountWishlist, renderAddresses, pageGuardCard,
 } from './pages.js';
 
-const PROTECTED = new Set(['/account', '/account/orders', '/account/addresses', '/account/wishlist']);
+const PROTECTED = new Set(['/account', '/account/orders', '/account/addresses', '/account/wishlist', '/account/membership']);
 const PUBLIC_AUTH = new Set(['/account/login', '/account/register', '/account/forgot-password']);
 
 let addressCache = new Map();
@@ -117,11 +118,13 @@ function accountMenuHTML() {
         <span class="account-menu-avatar" aria-hidden="true">${safe(ini)}</span>
         <div><b>${safe(name)}</b><span>${safe(authState.user.email || '')}</span></div>
       </div>
+      ${membershipState.active ? '<div class="account-menu-circle circle-member-badge"><i aria-hidden="true"></i>Circle member</div>' : ''}
       <nav class="account-menu-links" aria-label="Account">
         <a href="#/account" role="menuitem">My account</a>
         <a href="#/account/orders" role="menuitem">My orders</a>
         <a href="#/account/addresses" role="menuitem">Saved addresses</a>
         <a href="#/account/wishlist" role="menuitem">Wish list</a>
+        <a href="#/account/membership" role="menuitem">Membership</a>
       </nav>
       <button class="account-menu-signout" type="button" role="menuitem" data-auth-logout>Sign out</button>`;
   }
@@ -130,7 +133,8 @@ function accountMenuHTML() {
       <div><b>Welcome back.</b><span>Sign in to keep your things together.</span></div>
     </div>
     <a class="btn full account-menu-cta" href="#/account/login" role="menuitem">Sign in</a>
-    <a class="account-menu-create" href="#/account/register" role="menuitem">Create an account</a>`;
+    <a class="account-menu-create" href="#/account/register" role="menuitem">Create an account</a>
+    <a class="account-menu-create" href="#/circle" role="menuitem">Explore Playroom Circle</a>`;
 }
 
 export function refreshAccountHeader() {
@@ -841,6 +845,7 @@ export function initAccountUI() {
   initialized = true;
   wireHeader();
   wireDelegated();
+  onMembershipChange(() => refreshAccountHeader());
   onAuthChange((auth) => {
     refreshAccountHeader();
     if (!auth.user) addressCache = new Map();

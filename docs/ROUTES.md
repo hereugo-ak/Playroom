@@ -11,6 +11,10 @@ prefixes.
 | `#/account/wishlist` | Protected | The signed-in customer's wish list, rendered inside the account shell. |
 | `#/orders` | Public | Demo-order page: local orders for guests, the signed-in customer's saved orders when signed in. |
 | `#/checkout` | Signed-in customers | Guests see a branded sign-in gate with `?next=/checkout`; their bag stays intact. All order creation goes through `POST /api/orders`. |
+| `#/circle` | Public | Playroom Circle benefits and pricing. |
+| `#/circle/checkout` | Signed-in customers | Demo payment checkout using the existing Stripe-style UI; guests see a sign-in gate. |
+| `#/circle/success` | Signed-in customers | Post-activation Circle welcome state. |
+| `#/account/membership` | Protected | Active membership, benefits, demo payment history, play guide download and service requests. |
 | `#/account/register` | Public (guests) | Create account: name, email, password + confirmation, terms. Then verify with the emailed OTP or confirmation link. |
 | `#/account/login` | Public (guests) | Email + password, Google, link to reset. Honours `?next=`. |
 | `#/account/forgot-password` | Public | Sends a one-use reset link. Always shows the same confirmation, so it cannot be used to discover which emails have accounts. |
