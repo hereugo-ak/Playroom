@@ -1,0 +1,198 @@
+/* ==================================================================
+   CHECKOUT SIGN-IN GATE
+   A quiet, editorial pause before checkout. Uses the storefront's
+   existing cocoa / rose / cream system — no separate app skin.
+   ================================================================== */
+
+.checkout-gate {
+  color: #382a22;
+}
+
+.checkout-gate-head {
+  width: min(1240px, calc(100% - 64px)) !important;
+  margin: 0 auto !important;
+  padding-top: 44px !important;
+}
+
+.checkout-gate-head .page-title em {
+  color: #b56f7b;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.checkout-gate-section {
+  padding-top: 18px;
+  padding-bottom: 86px;
+}
+
+.checkout-gate-card {
+  display: grid;
+  grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr);
+  align-items: stretch;
+  max-width: 980px;
+  margin: 0 auto;
+  border: 1px solid #e6d6c4;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #fffaf3;
+  box-shadow: 0 24px 70px rgba(63, 43, 33, .08);
+}
+
+.checkout-gate-copy {
+  padding: clamp(28px, 4vw, 52px);
+}
+
+.checkout-gate-kicker {
+  display: block;
+  margin-bottom: 14px;
+  color: #b56f7b;
+  font: 700 9px var(--mono, 'DM Mono', monospace);
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+
+.checkout-gate-copy h2 {
+  margin: 0 0 14px;
+  font: 500 clamp(31px, 3.4vw, 44px)/1.06 var(--serif, Fraunces, serif);
+  letter-spacing: -.045em;
+}
+
+.checkout-gate-copy h2 em {
+  color: #b56f7b;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.checkout-gate-copy > p {
+  max-width: 470px;
+  margin: 0 0 26px;
+  color: #806b5a;
+  font-size: 12.5px;
+  line-height: 1.85;
+}
+
+.checkout-gate-actions {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+  flex-wrap: wrap;
+}
+
+.checkout-gate-actions .btn {
+  border-radius: 9px;
+}
+
+.checkout-gate-note {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-top: 30px;
+  padding-top: 18px;
+  border-top: 1px solid #eee2d3;
+  color: #806b5a;
+  font-size: 10.5px;
+  line-height: 1.7;
+}
+
+.checkout-gate-note i {
+  flex: 0 0 auto;
+  color: #b56f7b;
+  font-style: normal;
+  font-size: 14px;
+  line-height: 1;
+}
+
+.checkout-gate-bag {
+  padding: clamp(28px, 3.5vw, 42px);
+  background:
+    linear-gradient(rgba(255, 250, 243, .9), rgba(255, 250, 243, .9)),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(181, 111, 123, .06) 31px 32px),
+    #f8f1e8;
+  border-left: 1px solid #e6d6c4;
+}
+
+.checkout-gate-bag > span {
+  display: block;
+  margin-bottom: 18px;
+  color: #b56f7b;
+  font: 700 9px var(--mono, 'DM Mono', monospace);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+
+.checkout-gate-bag dl {
+  margin: 0;
+  display: grid;
+  gap: 0;
+}
+
+.checkout-gate-bag dl > div {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  padding: 13px 0;
+  border-bottom: 1px solid #e7d9c8;
+}
+
+.checkout-gate-bag dt {
+  color: #806b5a;
+  font: 9px var(--mono, 'DM Mono', monospace);
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+
+.checkout-gate-bag dd {
+  margin: 0;
+  color: #382a22;
+  font-size: 12px;
+  text-align: right;
+}
+
+.checkout-gate-bag .checkout-gate-total dd {
+  font: 600 17px var(--display, Manrope, sans-serif);
+}
+
+.checkout-gate-bag p {
+  margin: 18px 0 0;
+  color: #9a8672;
+  font-size: 10px;
+  line-height: 1.7;
+}
+
+@media (max-width: 800px) {
+  .checkout-gate-card {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-gate-bag {
+    border-left: 0;
+    border-top: 1px solid #e6d6c4;
+  }
+}
+
+@media (max-width: 600px) {
+  .checkout-gate-head {
+    width: calc(100% - 32px) !important;
+    padding-top: 26px !important;
+  }
+
+  .checkout-gate-section {
+    padding-bottom: 60px;
+  }
+
+  .checkout-gate-copy,
+  .checkout-gate-bag {
+    padding: 24px 20px;
+  }
+
+  .checkout-gate-actions {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  .checkout-gate-actions .btn {
+    width: 100%;
+  }
+}

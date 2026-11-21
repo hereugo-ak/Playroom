@@ -154,6 +154,7 @@ export const products = seedData.map((s, i) => {
     stock: (i * 7) % 31 < 5 ? 2 + (i % 3) : 14 + (i * 7) % 47,
     featured: [0, 2, 8, 16, 24, 30, 37, 48, 54].includes(i) || (i >= 60 && i % 9 === 0),
     fresh: [4, 10, 20, 31, 43, 50].includes(i) || (i >= 60 && i % 7 === 0),
+    circleEarly: i >= 100,
     image: images[0],
     images,
     seller,

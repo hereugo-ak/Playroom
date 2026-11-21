@@ -32,14 +32,22 @@ function absoluteImage(path, site) {
   }
 }
 
-function deliveryFor(id, subtotal) {
-  if (id === 'express') return { id, label: 'Express', fee: EXPRESS_FEE, dateLabel: 'Next business day (demo)' };
+function deliveryFor(id, subtotal, memberActive = false) {
+  if (id === 'express') {
+    return {
+      id,
+      label: memberActive ? 'Express · Circle' : 'Express',
+      fee: memberActive ? 0 : EXPRESS_FEE,
+      dateLabel: 'Next business day (demo)',
+      circleBenefit: memberActive,
+    };
+  }
   if (id === 'pickday') return { id, label: 'Pick a day', fee: PICKDAY_FEE, dateLabel: 'Chosen weekday (demo)' };
   const fee = subtotal >= FREE_DELIVERY_THRESHOLD ? 0 : DELIVERY_FEE;
   return { id: 'standard', label: 'Standard', fee, dateLabel: '2–4 business days (demo)' };
 }
 
-function buildOrder(body, user) {
+function buildOrder(body, user, memberActive = false) {
   const rawItems = Array.isArray(body.items) ? body.items : [];
   if (!rawItems.length || rawItems.length > 30) throw new Error('Your bag needs between 1 and 30 items.');
 
@@ -48,8 +56,12 @@ function buildOrder(body, user) {
     const product = byId(clean(raw.productId, 40));
     const qty = Math.max(1, Math.min(20, Number(raw.qty || 1)));
     if (!product) throw new Error(`One of your items is no longer available.`);
-    const personalisation = clean(raw.personalisation, 10);
-    const unitPrice = Number(product.price || 0) + (personalisation && product.persKind ? PERSONALISE_FEE : 0);
+    if (product.circleEarly && !memberActive) {
+      throw new Error(`${product.name} is a Circle first-look toy. Join Playroom Circle to add it to your order.`);
+    }
+    const personalisation = clean(raw.personalisation, memberActive ? 60 : 10);
+    const personaliseFee = personalisation && product.persKind ? (memberActive ? 0 : PERSONALISE_FEE) : 0;
+    const unitPrice = Number(product.price || 0) + personaliseFee;
     lines.push({
       productId: product.id,
       name: product.name,
@@ -72,17 +84,19 @@ function buildOrder(body, user) {
   } : null;
 
   if (gift?.wrap) {
+    const wrapPrice = memberActive ? 0 : GIFT_WRAP_PRICE;
     lines.push({
       productId: 'gift-wrap', name: 'Gift wrapping', image: '',
-      unitPrice: GIFT_WRAP_PRICE, qty: 1, lineTotal: GIFT_WRAP_PRICE,
+      unitPrice: wrapPrice, qty: 1, lineTotal: wrapPrice,
       personalisation: null, persKind: null, special: 'gift-wrap',
+      circleBenefit: memberActive,
     });
-    subtotal += GIFT_WRAP_PRICE;
+    subtotal += wrapPrice;
   }
 
   const promoCode = clean(body.promoCode, 24).toUpperCase();
   const discount = promoCode === 'PLAY10' ? Math.round(subtotal * PROMO_PLAY10) : 0;
-  const delivery = deliveryFor(clean(body.deliveryId, 20), subtotal);
+  const delivery = deliveryFor(clean(body.deliveryId, 20), subtotal, memberActive);
   const total = Math.max(0, subtotal - discount + delivery.fee);
 
   const c = body.customer && typeof body.customer === 'object' ? body.customer : {};
@@ -143,6 +157,10 @@ function buildOrder(body, user) {
     pointsEarned: Math.floor(total / 50),
     isDemo: true,
     source: 'server_checkout',
+    circleMember: memberActive,
+    circleBenefitsApplied: memberActive
+      ? ['free_next_day_delivery', 'gift_wrapping_included', 'customisation_included']
+      : [],
   };
 }
 
@@ -263,7 +281,23 @@ export default async function handler(req, res) {
     if (existingError) throw existingError;
     if (existing?.data) return json(res, 200, { order: existing.data, email: { status: 'already_requested' } });
 
-    const order = buildOrder(body, auth.user);
+    // Circle benefits are entitlement checks, never frontend flags.
+    let memberActive = false;
+    try {
+      const { data: circleRows, error: circleError } = await admin
+        .from('subscriptions')
+        .select('id')
+        .eq('user_id', auth.user.id)
+        .eq('status', 'active')
+        .gt('current_period_end', new Date().toISOString())
+        .limit(1);
+      if (circleError) throw circleError;
+      memberActive = Boolean(circleRows?.length);
+    } catch (circleError) {
+      console.warn('[orders API] Circle status unavailable', circleError?.message || circleError);
+    }
+
+    const order = buildOrder(body, auth.user, memberActive);
     const row = await insertOrder(admin, auth.user.id, order, key);
     const committed = row?.data || order;
 

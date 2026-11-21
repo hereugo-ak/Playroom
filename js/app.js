@@ -4,7 +4,7 @@ import { $, $$, safe, toast } from './dom.js';
 import {
   formatMoney, state, addToCart, changeQty, removeFromCart, clearCart,
   cartSubtotal, cartCount, deliveryFee, discountAmount, persist,
-  createDemoOrder, getOrder, toggleWishlist, listeners,
+  getOrder, toggleWishlist, listeners,
   read as storageRead, write as storageWrite,
   PERSONALISE_FEE, GIFT_WRAP_ID, GIFT_WRAP_PRICE, addGiftWrap, hasGiftWrap, removeGiftWrap,
   pointsBalance, pointsEarnedFor, redeemLeaves, ensureReferral,
@@ -34,10 +34,16 @@ import { initAccountUI, renderAuthRoute, wireAuthPage, registerAccountOrdersRend
 import { accountShell } from './auth/pages.js';
 import { startWishlistSync } from './auth/wishlist-sync.js';
 import { startOrderSync, hydrateOrders, syncNewReturn } from './auth/order-sync.js';
+import { membershipState, startMembershipSync, hydrateMembership } from './auth/membership.js';
+import {
+  renderCircleLanding, renderCircleCheckout, renderCircleSuccess,
+  renderCircleMembership, wireCirclePage,
+} from './circle.js';
 
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let mobileMenu = false;
 let appReady = false;
+window.__appReady = false;
 
 // ------------------------------------------------------------------
 // Drawer (cart / wishlist)
@@ -474,7 +480,7 @@ function renderProduct(p) {
   const related = products.filter((x) => x.category === p.category && x.id !== p.id).slice(0, 4);
   const seller = p.seller;
   const sellerPanel = seller ? sellerCardHTML(seller, p.id) : '';
-  return `<div class="route-enter"><div class="wrap product-page"><div class="breadcrumbs"><a href="#/">Home</a><span>/</span><a href="#/catalog">Shop</a><span>/</span><a href="#/catalog?category=${encodeURIComponent(p.category)}">${safe(p.category)}</a><span>/</span><span>${safe(p.name)}</span></div><div class="pdp-grid"><div class="gallery"><div class="thumbs">${p.images.map((im, i) => `<button class="thumb ${i === 0 ? 'active' : ''}" data-gallery="${i}" aria-label="Product photo ${i + 1}"><img src="${im}" alt="${safe(p.name)} view ${i + 1}" loading="eager" decoding="async"></button>`).join('')}</div><div class="main-photo"><img id="mainProductImage" src="${p.images[0]}" alt="${safe(p.name)}" fetchpriority="high" decoding="async"><span class="product-badge ${p.old > p.price ? 'sale' : ''}" style="top:15px;left:15px">${p.fresh ? 'Just landed' : p.old > p.price ? 'A little less' : 'Playroom pick'}</span><button class="zoom-hint" type="button" data-zoom aria-label="Open the photos full screen"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6"/><path d="m12.8 12.8 4 4M8.6 6v5.2M6 8.6h5.2"/></svg>Full screen</button></div></div><div class="pdp-copy"><div class="mono muted">${safe(p.category)} · ${safe(p.age)}</div><h1>${safe(p.name)}</h1><div class="pdp-rating">★★★★★ <span>${p.rating} / 5 · ${p.reviews} customer notes</span></div><div class="price-row" style="margin-top:17px"><span class="pdp-price">${formatMoney(p.price)}</span>${p.old > p.price ? `<span class="old-price">${formatMoney(p.old)}</span><span class="pill">Save ${Math.round((1 - p.price / p.old) * 100)}%</span>` : ''}</div><p class="pdp-description">${safe(p.desc)} Designed for open-ended play, this is the kind of find that gets brought back out again and again.</p>${pdpPromiseHTML(p)}<div class="pdp-divider"></div><div class="mono muted">Why it earns a place</div><p style="font-size:12px;line-height:1.8">${safe(p.benefit)} · ${safe(p.detail)} · A thoughtful choice for ${safe(p.age.toLowerCase())}.</p>${pdpSkillsHTML(p)}${pdpPersonaliseHTML(p)}<div class="qty-row"><div><span class="pdp-label">Quantity</span><div class="qty"><button id="pdpQtyMinus" aria-label="Decrease quantity">−</button><span id="pdpQty">1</span><button id="pdpQtyPlus" aria-label="Increase quantity">+</button></div></div><div style="padding-top:20px;font-size:10px;color:var(--muted)">Dispatches from the studio in 1–2 business days${p.stock <= 4 ? ` · ${p.stock} left of this run` : ''}</div></div><div class="pdp-actions"><button class="btn" id="pdpAdd">Add to bag — ${formatMoney(p.price)} <span class="arrow">↗</span></button><button class="btn outline" data-wish="${p.id}" aria-label="Save to wishlist">${state.wishlist.includes(p.id) ? '♥' : '♡'}</button></div><div class="delivery-check"><input id="pincode" inputmode="numeric" maxlength="6" placeholder="6-digit PIN code" aria-label="Delivery PIN code"><button id="checkDelivery">Check delivery</button></div><div class="delivery-result" id="deliveryResult">Enter your PIN code for a date-accurate estimate — standard lands ${fmtDay(standardDate())}, express ${fmtDay(expressDate())}.</div>${sellerPanel}<div class="pdp-divider"></div><div class="details-accordion"><details class="acc" open><summary>The little details</summary><div class="acc-content"><table class="spec-table"><tr><td>Recommended age</td><td>${safe(p.age)}</td></tr><tr><td>Category</td><td>${safe(p.category)}</td></tr><tr><td>What's included</td><td>${safe(p.detail)}</td></tr><tr><td>Play value</td><td>${safe(p.benefit)}</td></tr><tr><td>Made from</td><td>${safe(p.materials.made)}</td></tr><tr><td>Finish</td><td>${safe(p.materials.finish)}</td></tr><tr><td>Availability</td><td>${p.stock} in the studio (demo inventory)</td></tr></table></div></details><details class="acc"><summary>Delivery &amp; returns</summary><div class="acc-content">Complimentary standard delivery on orders above ₹1,499; express and pick-a-day options live at checkout. Thirty-day returns with free pickup — start one any time from your orders page. This prototype does not dispatch products; dates shown are demo estimates.</div></details><details class="acc"><summary>Gifting this piece</summary><div class="acc-content">Add gift wrapping (₹149), a handwritten note and hidden prices at checkout. The recipient sees the note, never the invoice — and the parcel arrives with the delivery promise you chose.</div></details></div><button class="text-link" style="margin-top:22px" data-compare-add="${p.id}">${window.__compare?.includes(p.id) ? 'Remove from comparison' : 'Compare this toy'} <span>↗</span></button></div></div></div>${p.video ? clipBandHTML(p) : ''}${howToPlayHTML(p)}${pdpSafetyHTML(p)}${fbtHTML(p)}<section class="section wrap">${sectionHead('Keep exploring', 'More from this corner', 'A few other ideas from the same kind of play.', '#/catalog?category=' + encodeURIComponent(p.category), 'Shop this category')}<div class="product-grid">${related.map((item, i) => productCard(item, i, true)).join('')}</div></section>${reviewsSectionHTML(p)}${qnaHTML(p)}${ugcHTML(p)}${lightboxHTML(p)}</div>`;
+  return `<div class="route-enter"><div class="wrap product-page"><div class="breadcrumbs"><a href="#/">Home</a><span>/</span><a href="#/catalog">Shop</a><span>/</span><a href="#/catalog?category=${encodeURIComponent(p.category)}">${safe(p.category)}</a><span>/</span><span>${safe(p.name)}</span></div><div class="pdp-grid"><div class="gallery"><div class="thumbs">${p.images.map((im, i) => `<button class="thumb ${i === 0 ? 'active' : ''}" data-gallery="${i}" aria-label="Product photo ${i + 1}"><img src="${im}" alt="${safe(p.name)} view ${i + 1}" loading="eager" decoding="async"></button>`).join('')}</div><div class="main-photo"><img id="mainProductImage" src="${p.images[0]}" alt="${safe(p.name)}" fetchpriority="high" decoding="async"><span class="product-badge ${p.old > p.price ? 'sale' : ''}" style="top:15px;left:15px">${p.fresh ? 'Just landed' : p.old > p.price ? 'A little less' : 'Playroom pick'}</span><button class="zoom-hint" type="button" data-zoom aria-label="Open the photos full screen"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6"/><path d="m12.8 12.8 4 4M8.6 6v5.2M6 8.6h5.2"/></svg>Full screen</button></div></div><div class="pdp-copy"><div class="mono muted">${safe(p.category)} · ${safe(p.age)}</div>${p.circleEarly ? '<div class="pdp-circle-note">Circle members get first access to this piece. <a href="#/circle">Join the Circle</a> to add it to your order.</div>' : ''}<h1>${safe(p.name)}</h1><div class="pdp-rating">★★★★★ <span>${p.rating} / 5 · ${p.reviews} customer notes</span></div><div class="price-row" style="margin-top:17px"><span class="pdp-price">${formatMoney(p.price)}</span>${p.old > p.price ? `<span class="old-price">${formatMoney(p.old)}</span><span class="pill">Save ${Math.round((1 - p.price / p.old) * 100)}%</span>` : ''}</div><p class="pdp-description">${safe(p.desc)} Designed for open-ended play, this is the kind of find that gets brought back out again and again.</p>${pdpPromiseHTML(p)}<div class="pdp-divider"></div><div class="mono muted">Why it earns a place</div><p style="font-size:12px;line-height:1.8">${safe(p.benefit)} · ${safe(p.detail)} · A thoughtful choice for ${safe(p.age.toLowerCase())}.</p>${pdpSkillsHTML(p)}${pdpPersonaliseHTML(p)}<div class="qty-row"><div><span class="pdp-label">Quantity</span><div class="qty"><button id="pdpQtyMinus" aria-label="Decrease quantity">−</button><span id="pdpQty">1</span><button id="pdpQtyPlus" aria-label="Increase quantity">+</button></div></div><div style="padding-top:20px;font-size:10px;color:var(--muted)">Dispatches from the studio in 1–2 business days${p.stock <= 4 ? ` · ${p.stock} left of this run` : ''}</div></div><div class="pdp-actions"><button class="btn" id="pdpAdd">Add to bag — ${formatMoney(p.price)} <span class="arrow">↗</span></button><button class="btn outline" data-wish="${p.id}" aria-label="Save to wishlist">${state.wishlist.includes(p.id) ? '♥' : '♡'}</button></div><div class="delivery-check"><input id="pincode" inputmode="numeric" maxlength="6" placeholder="6-digit PIN code" aria-label="Delivery PIN code"><button id="checkDelivery">Check delivery</button></div><div class="delivery-result" id="deliveryResult">Enter your PIN code for a date-accurate estimate — standard lands ${fmtDay(standardDate())}, express ${fmtDay(expressDate())}.</div>${sellerPanel}<div class="pdp-divider"></div><div class="details-accordion"><details class="acc" open><summary>The little details</summary><div class="acc-content"><table class="spec-table"><tr><td>Recommended age</td><td>${safe(p.age)}</td></tr><tr><td>Category</td><td>${safe(p.category)}</td></tr><tr><td>What's included</td><td>${safe(p.detail)}</td></tr><tr><td>Play value</td><td>${safe(p.benefit)}</td></tr><tr><td>Made from</td><td>${safe(p.materials.made)}</td></tr><tr><td>Finish</td><td>${safe(p.materials.finish)}</td></tr><tr><td>Availability</td><td>${p.stock} in the studio (demo inventory)</td></tr></table></div></details><details class="acc"><summary>Delivery &amp; returns</summary><div class="acc-content">Complimentary standard delivery on orders above ₹1,499; express and pick-a-day options live at checkout. Thirty-day returns with free pickup — start one any time from your orders page. This prototype does not dispatch products; dates shown are demo estimates.</div></details><details class="acc"><summary>Gifting this piece</summary><div class="acc-content">Add gift wrapping (₹149), a handwritten note and hidden prices at checkout. The recipient sees the note, never the invoice — and the parcel arrives with the delivery promise you chose.</div></details></div><button class="text-link" style="margin-top:22px" data-compare-add="${p.id}">${window.__compare?.includes(p.id) ? 'Remove from comparison' : 'Compare this toy'} <span>↗</span></button></div></div></div>${p.video ? clipBandHTML(p) : ''}${howToPlayHTML(p)}${pdpSafetyHTML(p)}${fbtHTML(p)}<section class="section wrap">${sectionHead('Keep exploring', 'More from this corner', 'A few other ideas from the same kind of play.', '#/catalog?category=' + encodeURIComponent(p.category), 'Shop this category')}<div class="product-grid">${related.map((item, i) => productCard(item, i, true)).join('')}</div></section>${reviewsSectionHTML(p)}${qnaHTML(p)}${ugcHTML(p)}${lightboxHTML(p)}</div>`;
 }
 
 /* ---- buy-box helpers ------------------------------------------------ */
@@ -493,7 +499,9 @@ function pdpSkillsHTML(p) {
 function pdpPersonaliseHTML(p) {
   if (!p.persKind) return '';
   const engrave = p.persKind === 'engraving';
-  return `<div class="pdp-pers" id="pdpPers"><div class="pdp-pers-top"><b>${engrave ? 'Add a name, engraved' : 'Add a name, embroidered'}</b><span class="pdp-pers-fee">+${formatMoney(PERSONALISE_FEE)}</span></div><p class="pdp-pers-sub">${engrave ? 'Laser-engraved in a clean serif on the base of the piece — up to ten characters.' : 'Hand-embroidered in cotton thread by the studio — up to ten characters.'} Personalised pieces are final sale, as they should be.</p><div class="pdp-pers-row"><input id="pdpPersInput" maxlength="10" placeholder="${engrave ? 'e.g. ARA' : 'e.g. MIRA'}" aria-label="Personalisation name" autocomplete="off"><button class="text-link" id="pdpPersClear" type="button">Clear</button></div><div class="pdp-pers-hint" id="pdpPersHint" hidden></div><p class="pdp-pers-fine">Demo service — in a live studio the name would be ${engrave ? 'cut into the wood' : 'stitched by hand'} before dispatch. Here it changes the bag, receipt and order to match.</p></div>`;
+  const circle = membershipState.active;
+  const max = circle ? 60 : 10;
+  return `<div class="pdp-pers" id="pdpPers"><div class="pdp-pers-top"><b>${engrave ? 'Add a name, engraved' : 'Add a name, embroidered'}</b><span class="pdp-pers-fee">${circle ? 'Included with Circle' : `+${formatMoney(PERSONALISE_FEE)}`}</span></div><p class="pdp-pers-sub">${engrave ? 'Laser-engraved in a clean serif on the base of the piece' : 'Hand-embroidered in cotton thread by the studio'} — up to ${circle ? 'sixty characters' : 'ten characters'}. ${circle ? 'Your Circle membership includes longer custom notes.' : 'Personalised pieces are final sale, as they should be.'}</p><div class="pdp-pers-row"><input id="pdpPersInput" maxlength="${max}" placeholder="${engrave ? 'e.g. ARA' : 'e.g. MIRA'}" aria-label="Personalisation name" autocomplete="off"><button class="text-link" id="pdpPersClear" type="button">Clear</button></div><div class="pdp-pers-hint" id="pdpPersHint" hidden></div><p class="pdp-pers-fine">Demo service — in a live studio the name would be ${engrave ? 'cut into the wood' : 'stitched by hand'} before dispatch. Here it changes the bag, receipt and order to match.</p></div>`;
 }
 
 /* ---- clip band + player --------------------------------------------- */
@@ -712,12 +720,13 @@ function wirePdp(p) {
   const persOf = () => {
     const el = $('#pdpPersInput');
     const v = (el?.value || '').trim();
-    return /^[A-Za-z][A-Za-z .'’-]{0,9}$/.test(v) ? v : '';
+    const pattern = membershipState.active ? /^[A-Za-z][A-Za-z0-9 .'’-]{0,59}$/ : /^[A-Za-z][A-Za-z .'’-]{0,9}$/;
+    return pattern.test(v) ? v : '';
   };
   const paintPrice = () => {
     const btn = $('#pdpAdd');
     if (!btn) return;
-    const extra = p.persKind && persOf() ? PERSONALISE_FEE : 0;
+    const extra = p.persKind && persOf() ? (membershipState.active ? 0 : PERSONALISE_FEE) : 0;
     btn.innerHTML = `Add to bag — ${formatMoney(p.price + extra)} <span class="arrow">↗</span>`;
   };
   $('#pdpQtyMinus')?.addEventListener('click', () => { $('#pdpQty').textContent = q = Math.max(1, q - 1); });
@@ -921,6 +930,43 @@ function notFound() {
 // ------------------------------------------------------------------
 // Checkout (Stripe-style payment page + demo order snapshot, handoff §8.3–8.5)
 // ------------------------------------------------------------------
+// Guests can build a bag, but placing an order is account-only. The bag stays
+// in localStorage while the customer signs in and returns to checkout.
+function renderCheckoutSignIn() {
+  const count = cartCount();
+  const subtotal = cartSubtotal();
+  return `<div class="route-enter checkout-gate">
+  <div class="wrap page-head checkout-gate-head">
+    <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Checkout</span></div>
+    <div class="mono muted">YOUR PLAYROOM ACCOUNT</div>
+    <h1 class="page-title">One step before <em>checkout.</em></h1>
+    <p class="page-intro">Sign in to place your order, keep the receipt and follow its demo tracking from your account.</p>
+  </div>
+  <section class="section wrap checkout-gate-section">
+    <div class="checkout-gate-card">
+      <div class="checkout-gate-copy">
+        <span class="checkout-gate-kicker">CUSTOMER ACCOUNT REQUIRED</span>
+        <h2>Sign in to finish <em>your order.</em></h2>
+        <p>Your bag is saved right here. Once you sign in, we’ll bring you straight back to checkout — with your items, delivery choice and discount still waiting.</p>
+        <div class="checkout-gate-actions">
+          <a class="btn" href="#/account/login?next=%2Fcheckout">Sign in to continue <span class="arrow" aria-hidden="true">↗</span></a>
+          <a class="text-link" href="#/catalog">Continue exploring <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="checkout-gate-note"><i aria-hidden="true">✳</i><span>New here? Create an account from the sign-in page. Your bag will still be here when you return.</span></div>
+      </div>
+      <aside class="checkout-gate-bag">
+        <span>YOUR BAG</span>
+        <dl>
+          <div><dt>Items</dt><dd>${count} ${count === 1 ? 'toy' : 'toys'}</dd></div>
+          <div><dt>Subtotal</dt><dd>${formatMoney(subtotal)}</dd></div>
+          <div class="checkout-gate-total"><dt>Ready for checkout</dt><dd>${formatMoney(subtotal)}</dd></div>
+        </dl>
+        <p>Nothing is charged in this demo storefront. Signing in only connects the order to your Playroom account.</p>
+      </aside>
+    </div>
+  </section>
+</div>`;
+}
 // --- Stripe-Checkout-style payment page -----------------------------
 const ST_STATES = ['Andaman & Nicobar', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra & Nagar Haveli & Daman & Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu & Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'];
 const GW_ICONS = {
@@ -1009,6 +1055,7 @@ function openExpressSheet(kind) {
 }
 
 function renderCheckout() {
+  if (!authState.session || !authState.user) return renderCheckoutSignIn();
   if (!state.cart.length) return `<div class="st-page"><div class="st-wrap"><div class="st-topbar"><a class="st-back" href="#/catalog">${ST_BACK}Back to the toy box</a></div><div class="st-empty"><div class="st-empty-card"><div class="st-brandrow" style="justify-content:center;margin-bottom:16px"><i class="mark st-mark" aria-hidden="true"></i><span>Pay Playroom</span></div><h2 class="st-h2" style="margin-bottom:8px">Your bag is taking a breather.</h2><p style="font-size:13px;color:var(--st-400);line-height:1.7;margin:0 0 22px">Add something lovely before you check out. This is a demo checkout — no real payment is ever collected.</p><a class="st-btn st-btn--primary" href="#/catalog">Explore the collection</a></div></div></div></div>`;
   const sub = cartSubtotal();
   const fee = effectiveDeliveryFee(sub);
@@ -2002,7 +2049,11 @@ registerRoutes({
   '/account/orders': (r) => renderAuthRoute(r),
   '/account/addresses': (r) => renderAuthRoute(r),
   '/account/wishlist': (r) => renderAuthRoute(r),
+  '/account/membership': renderCircleMembership,
   '/account': (r) => renderAuthRoute(r),
+  '/circle/checkout': renderCircleCheckout,
+  '/circle/success': renderCircleSuccess,
+  '/circle': renderCircleLanding,
   '/safety': renderSafetyPage,
   '/stage': (r) => (r.path === '/stage' ? renderStagesIndex() : renderStagePage(r.path.slice(7))),
   '/gift-finder': renderGiftFinder,
@@ -2094,6 +2145,7 @@ function wirePage() {
   wireWish();
   wireAccount();
   wireAuthPage();
+  wireCirclePage();
   wireSponsored(); // home — swipeable sponsored picks
 
   // Community — the playroom (posts, replies, likes, filters, sorting)
@@ -2216,6 +2268,7 @@ async function init() {
   // their first onAuthChange event hydrates the account data.
   startWishlistSync();
   startOrderSync();
+  startMembershipSync();
   window.addEventListener('playroom:orders-updated', () => {
     if (!appReady) return;
     const path = route().path;
@@ -2228,6 +2281,10 @@ async function init() {
   // Never hold the whole storefront hostage to a slow history request.
   await Promise.race([
     hydrateOrders(),
+    new Promise((resolve) => setTimeout(resolve, 4000)),
+  ]);
+  await Promise.race([
+    hydrateMembership(),
     new Promise((resolve) => setTimeout(resolve, 4000)),
   ]);
   initAccountUI();
@@ -2383,6 +2440,7 @@ async function init() {
   window.__closeModal = closeModal;
   window.__openQuickView = openQuickView;
   window.__wirePage = wirePage;
+  window.__openModal = openModal;
   window.__appToggleCompare = toggleCompare;
   initMotion();
   initSupport();
@@ -2390,6 +2448,7 @@ async function init() {
   initWelcome();
   render();
   appReady = true;
+  window.__appReady = true;
   motionRefresh();
   refreshHeroScene();
   window.addEventListener('hashchange', () => { render(); window.__wirePage(); motionRefresh(); refreshHeroScene(); });

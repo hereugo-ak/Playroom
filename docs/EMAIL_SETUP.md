@@ -86,6 +86,14 @@ Subject lines:
 
 Payment status is never invented. The server accepts `cod` from the trusted payment-method label and otherwise records `demo_not_charged`; browser-supplied “paid” values are ignored.
 
+## Playroom Circle confirmation
+
+`api/subscriptions/activate.js` uses the same transport and outbox pattern for
+`subscription_confirmation` messages. The template is
+`emails/subscription-confirmation.js`. It sends only after the subscription and
+demo payment are committed to Supabase, and it clearly states that no real
+payment was collected. Full details: [`CIRCLE.md`](./CIRCLE.md).
+
 ## Testing status
 
 Completed locally:

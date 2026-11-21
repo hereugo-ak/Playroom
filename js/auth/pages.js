@@ -8,6 +8,7 @@ import { state } from '../store.js';
 import { byId } from '../data.js';
 import { productCard } from '../components.js';
 import { authState, isEmailVerified, accountDisplayName, sanitizeNext, takeAuthFlash, ensureProfile } from './auth-store.js';
+import { membershipState } from './membership.js';
 import { AUTH_CONFIGURED, AUTH_CONFIG_MESSAGE } from './config.js';
 
 const ART = 'assets/img/hero.jpg';
@@ -131,12 +132,14 @@ function accountShell({ page, active, title, intro, body, kicker = 'YOUR PLAYROO
             <b>${safe(name)}</b>
             <span>${safe(user?.email || '')}</span>
           </div>
+          ${membershipState.active ? '<span class="circle-member-badge account-bar-circle"><i aria-hidden="true"></i>Circle</span>' : ''}
         </div>
         <nav class="pl-account-nav" aria-label="Account sections">
           <a href="#/account"${active === 'overview' ? ' aria-current="page"' : ''}>Overview</a>
           <a href="#/account/orders"${active === 'orders' ? ' aria-current="page"' : ''}>My orders</a>
           <a href="#/account/addresses"${active === 'addresses' ? ' aria-current="page"' : ''}>Addresses</a>
           <a href="#/account/wishlist"${active === 'wishlist' ? ' aria-current="page"' : ''}>Wish list</a>
+          <a href="#/account/membership"${active === 'membership' ? ' aria-current="page"' : ''}>Membership</a>
         </nav>
         <button class="pl-signout" type="button" data-auth-logout>Sign out</button>
       </div>

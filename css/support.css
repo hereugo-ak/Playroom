@@ -426,6 +426,19 @@ body.pl-call-active .pr-support { opacity: 0; pointer-events: none; }
 
 .pr-chat-suggestions::-webkit-scrollbar { display: none; }
 
+.pr-suggestion--circle { border-color: #d8c5ad; background: #f8f1e8; }
+.pr-suggestion--circle b { color: #b56f7b; }
+.support-priority-note {
+  margin: 0 0 18px;
+  padding: 12px 14px;
+  border: 1px solid #e6d6c4;
+  border-radius: 9px;
+  background: #f8f1e8;
+  color: #806b5a;
+  font-size: 11px;
+  line-height: 1.7;
+}
+
 .pr-suggestion {
   flex: 0 0 auto;
   display: flex;

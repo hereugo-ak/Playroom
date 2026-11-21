@@ -7,7 +7,8 @@
 // and answers read the same Supabase-backed order mirror as the account pages.
 import { safe } from './dom.js';
 import { state, formatMoney } from './store.js';
-import { authState, onAuthChange } from './auth/auth-store.js';
+import { authState, onAuthChange, getAccessToken } from './auth/auth-store.js';
+import { membershipState, onMembershipChange } from './auth/membership.js';
 import { fedexStatus } from './gateway.js';
 
 export function initSupport() {
@@ -40,6 +41,11 @@ export function initSupport() {
       ${sub ? `<small>${safe(sub)}</small>` : ''}
     </button>`;
 
+  function priorityPrompt() {
+    if (!membershipState.active) return '';
+    return `<button type="button" class="pr-suggestion pr-suggestion--circle" data-support-priority><b>Priority care</b><small>Circle desk</small></button>`;
+  }
+
   function renderQuickPrompts() {
     if (!quick) return;
     const order = lastOrder();
@@ -48,6 +54,7 @@ export function initSupport() {
         promptHTML(1, 'Tell me about my last order', 'My last order', `${order.id} · ${formatMoney(order.total || 0)}`),
         promptHTML(2, `Track ${order.id}`, 'Track order', order.trackingNumber || 'Demo tracking'),
         promptHTML(3, 'Start a return for my last order', 'Start a return', 'Saved to your account'),
+        priorityPrompt(),
       ].join('');
       if (chatContext) chatContext.textContent = `ACCOUNT · ${order.id}`;
     } else if (signedIn()) {
@@ -55,8 +62,9 @@ export function initSupport() {
         promptHTML(1, 'I need help choosing a gift.', 'Find a gift', 'By age, play & budget'),
         promptHTML(2, 'When will my order arrive?', 'Delivery question', 'Demo estimates'),
         promptHTML(3, 'What is your return policy?', 'Returns policy', '30-day story'),
+        priorityPrompt(),
       ].join('');
-      if (chatContext) chatContext.textContent = 'YOUR ACCOUNT';
+      if (chatContext) chatContext.textContent = membershipState.active ? 'CIRCLE MEMBER' : 'YOUR ACCOUNT';
     } else {
       quick.innerHTML = [
         promptHTML(1, 'Can you help me track my order?', 'Track an order', 'PL- number or tracking'),
@@ -69,6 +77,7 @@ export function initSupport() {
 
   renderQuickPrompts();
   onAuthChange(renderQuickPrompts);
+  onMembershipChange(renderQuickPrompts);
   window.addEventListener('playroom:orders-updated', renderQuickPrompts);
 
   // ---------- floating character launcher ----------
@@ -147,7 +156,62 @@ export function initSupport() {
   openChat.addEventListener('click', () => setChat(!chatPanel.classList.contains('is-open')));
   closeChat.addEventListener('click', () => setChat(false));
   chatForm.addEventListener('submit', (e) => { e.preventDefault(); sendMessage(chatInput.value); });
-  quick?.addEventListener('click', (e) => { const b = e.target.closest('[data-support-prompt]'); if (b) sendMessage(b.dataset.supportPrompt); });
+  function openPriorityForm() {
+    if (!window.__openModal) {
+      toast('Priority care is opening.', 'Try again in a moment.');
+      return;
+    }
+    window.__openModal('Priority care · Circle', `<form class="pl-form" id="supportPriorityForm" novalidate>
+      <p class="support-priority-note">Circle requests are marked Priority and saved to your account. This is a demo care desk — no live agent is connected.</p>
+      <div class="field pl-field"><label for="supportPriorityTitle">What do you need?</label><input id="supportPriorityTitle" name="title" placeholder="A question about my last order" required></div>
+      <div class="field pl-field"><label for="supportPriorityDetails">Details</label><textarea id="supportPriorityDetails" name="details" rows="4" placeholder="Tell us enough to help…" required></textarea></div>
+      <div class="pl-form-message" data-support-error role="alert" hidden></div>
+      <button class="btn full" type="submit">Save priority request <span class="arrow" aria-hidden="true">↗</span></button>
+    </form>`);
+
+    const form = document.getElementById('supportPriorityForm');
+    form?.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const fd = new FormData(form);
+      const details = String(fd.get('details') || '').trim();
+      const errorEl = form.querySelector('[data-support-error]');
+      if (details.length < 10) {
+        errorEl.hidden = false;
+        errorEl.textContent = 'Add a little more detail so we can help.';
+        return;
+      }
+      const button = form.querySelector('button[type="submit"]');
+      if (button) { button.disabled = true; button.textContent = 'Saving…'; }
+      try {
+        const token = await getAccessToken();
+        if (!token) throw new Error('Please sign in again.');
+        const response = await fetch('/api/membership/requests', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json', Authorization: `Bearer ${token}` },
+          body: JSON.stringify({
+            kind: 'support',
+            title: String(fd.get('title') || 'Priority care'),
+            details,
+          }),
+        });
+        const result = await response.json().catch(() => ({}));
+        if (!response.ok) throw new Error(result.error || 'Could not save your request.');
+        window.__closeModal?.();
+        addMessage('Your priority care request is saved. You can see it under Membership in your account.', 'bot', 'Playroom Care · Priority desk');
+        toast('Priority request saved.', 'It is marked Priority in your Circle desk.');
+      } catch (error) {
+        errorEl.hidden = false;
+        errorEl.textContent = String(error?.message || error || 'Please try again.');
+        if (button) { button.disabled = false; button.innerHTML = 'Save priority request <span class="arrow" aria-hidden="true">↗</span>'; }
+      }
+    });
+  }
+
+  quick?.addEventListener('click', (e) => {
+    if (e.target.closest('[data-support-priority]')) { openPriorityForm(); return; }
+    const b = e.target.closest('[data-support-prompt]');
+    if (b) sendMessage(b.dataset.supportPrompt);
+  });
 
   // Character toggle: tap the face to fan out the actions; tap away to tuck them back.
   if (fabToggle) {
