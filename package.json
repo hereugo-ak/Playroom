@@ -12,7 +12,8 @@
   },
   "dependencies": {
     "@supabase/supabase-js": "^2.119.1",
-    "nodemailer": "^10.6.1"
+    "nodemailer": "^10.6.1",
+    "three": "^0.187.0"
   },
   "devDependencies": {
     "vite": "^7.3.8"

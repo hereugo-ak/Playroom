@@ -155,6 +155,7 @@ export const products = seedData.map((s, i) => {
     featured: [0, 2, 8, 16, 24, 30, 37, 48, 54].includes(i) || (i >= 60 && i % 9 === 0),
     fresh: [4, 10, 20, 31, 43, 50].includes(i) || (i >= 60 && i % 7 === 0),
     circleEarly: i >= 100,
+    has3D: ['pl1', 'pl2', 'pl24', 'pl36', 'pl109'].includes('pl' + (i + 1)),
     image: images[0],
     images,
     seller,
@@ -171,6 +172,100 @@ export const products = seedData.map((s, i) => {
       : (/(^| )wood|wooden|architect|beech/i.test(s[0]) || s[6] === 'wood' ? 'engraving' : null),
   };
 });
+
+// Reusable 3D product configuration. Add an entry here and set has3D on a
+// product to bring more pieces into the viewer. GLB is optional; when omitted
+// the viewer builds the art-directed procedural scene for the configured type.
+export const PRODUCT_3D_CONFIG = {
+  pl1: {
+    productId: 'pl1',
+    slug: 'orbit-magnetic-building-tiles',
+    scene: 'magnetic-tiles',
+    modelType: 'procedural',
+    modelUrl: '',
+    poster: 'assets/img/photo-00.jpg',
+    title: 'Orbit Magnetic Building Tiles',
+    kicker: 'THE 3D STUDIO',
+    intro: 'Build a little skyline in 3D — translucent tiles, saturated colour and clean geometric edges.',
+    fallbackPalette: { cream: '#f0c94a', rust: '#d9553f', mustard: '#e79b32', sage: '#5fa56f', slate: '#2d77b8', rose: '#9b5ca8', wood: '#d8b985' },
+    paletteRegions: { cream: [0.20, 0.18, 0.12, 0.16], rust: [0.38, 0.02, 0.14, 0.15], mustard: [0.08, 0.48, 0.14, 0.16], sage: [0.64, 0.48, 0.14, 0.16], slate: [0.52, 0.22, 0.14, 0.16], rose: [0.78, 0.20, 0.12, 0.14], wood: [0.45, 0.75, 0.08, 0.08] },
+    hotspots: [
+      { id: 'tiles', label: 'Translucent tiles', detail: 'Light passes through the coloured faces for a clean, architectural feel.', point: [0.55, 1.2, 0.2] },
+      { id: 'build', label: 'Build upward', detail: 'Triangles and squares make towers, tunnels and little cities.', point: [-0.45, 0.8, 0.35] },
+      { id: 'magnet', label: 'Snap together', detail: 'Hidden magnets hold each piece at a satisfying right angle.', point: [0.1, 0.3, 0.7] },
+    ],
+  },
+  pl2: {
+    productId: 'pl2',
+    slug: 'little-architect-wooden-blocks',
+    scene: 'wooden-blocks',
+    modelType: 'procedural',
+    modelUrl: '',
+    poster: 'assets/img/photo-01.jpg',
+    title: 'Little Architect Wooden Blocks',
+    kicker: 'THE 3D STUDIO',
+    intro: 'Turn the pieces, inspect the wood finish and explore the set from every angle.',
+    hotspots: [
+      { id: 'finish', label: 'Beechwood finish', detail: 'Smooth, tactile arches and rings with softly rounded edges.', point: [0.95, 0.75, -0.25] },
+      { id: 'build', label: 'Open-ended build', detail: 'The same pieces become a rainbow, a bridge or a little city.', point: [-0.2, 1.3, 0.05] },
+      { id: 'scale', label: 'Just-right scale', detail: 'Chunky enough for small hands, simple enough for big ideas.', point: [-1.55, 0.35, 0.58] },
+    ],
+  },
+  pl24: {
+    productId: 'pl24',
+    slug: 'the-city-bus-wooden',
+    scene: 'wooden-bus',
+    modelType: 'procedural',
+    modelUrl: '',
+    poster: 'assets/img/photo-16.jpg',
+    title: 'The City Bus — Wooden',
+    kicker: 'THE 3D STUDIO',
+    intro: 'A rounded wooden bus with a proper little route through the city.',
+    fallbackPalette: { cream: '#e5d2a8', rust: '#c46a4a', mustard: '#d8a84e', sage: '#5f7f65', slate: '#2f5d63', rose: '#b86f67', wood: '#d3ad79' },
+    paletteRegions: { cream: [0.50, 0.16, 0.12, 0.12], rust: [0.72, 0.50, 0.10, 0.12], mustard: [0.83, 0.38, 0.10, 0.12], sage: [0.18, 0.55, 0.14, 0.14], slate: [0.35, 0.55, 0.14, 0.12], rose: [0.60, 0.72, 0.10, 0.10], wood: [0.12, 0.78, 0.12, 0.08] },
+    hotspots: [
+      { id: 'body', label: 'Rounded wooden body', detail: 'Smooth edges and a solid, satisfying weight in the hand.', point: [0.1, 1.0, 0.45] },
+      { id: 'wheels', label: 'Easy-roll wheels', detail: 'Wide wooden wheels that keep the bus steady on the floor.', point: [0.85, 0.25, 0.5] },
+      { id: 'route', label: 'Little city route', detail: 'Blocks become the world around it — stop, start, repeat.', point: [-1.25, 0.45, -0.2] },
+    ],
+  },
+  pl36: {
+    productId: 'pl36',
+    slug: 'first-shapes-wooden-sorter',
+    scene: 'stacking-rings',
+    modelType: 'procedural',
+    modelUrl: '',
+    poster: 'assets/img/photo-28.jpg',
+    title: 'First Shapes Wooden Sorter',
+    kicker: 'THE 3D STUDIO',
+    intro: 'Soft colour, smooth wood and a stack that feels as good as it looks.',
+    fallbackPalette: { cream: '#e8d6b8', rust: '#c98562', mustard: '#d6a454', sage: '#8da578', slate: '#5d7f8b', rose: '#c97675', wood: '#d7b487' },
+    paletteRegions: { cream: [0.48, 0.22, 0.12, 0.12], rust: [0.43, 0.58, 0.12, 0.10], mustard: [0.43, 0.44, 0.12, 0.10], sage: [0.54, 0.34, 0.12, 0.10], slate: [0.26, 0.55, 0.12, 0.10], rose: [0.20, 0.68, 0.12, 0.10], wood: [0.78, 0.62, 0.10, 0.10] },
+    hotspots: [
+      { id: 'rings', label: 'Stacking rings', detail: 'Chunky rings slide onto the post and settle with a soft wooden click.', point: [0.1, 0.8, 0.4] },
+      { id: 'finish', label: 'Soft-touch finish', detail: 'Each ring is sanded smooth and finished in calm, considered colour.', point: [-0.35, 0.45, 0.5] },
+      { id: 'shape', label: 'First shapes', detail: 'Simple forms help little hands recognise size, order and balance.', point: [0.6, 0.3, 0.35] },
+    ],
+  },
+  pl109: {
+    productId: 'pl109',
+    slug: 'the-tiny-parade-drum',
+    scene: 'xylophone',
+    modelType: 'procedural',
+    modelUrl: '',
+    poster: 'assets/img/photo-22.jpg',
+    title: 'The Tiny Parade Xylophone',
+    kicker: 'THE 3D STUDIO',
+    intro: 'Colour-coded bars, a warm wooden frame and two mallets ready for a first tune.',
+    fallbackPalette: { cream: '#e9d9b7', rust: '#c65f4e', mustard: '#d7a94f', sage: '#7e9f6b', slate: '#3f7b80', rose: '#b85f70', wood: '#d6b17a' },
+    paletteRegions: { cream: [0.18, 0.80, 0.12, 0.10], rust: [0.16, 0.42, 0.10, 0.14], mustard: [0.30, 0.38, 0.10, 0.14], sage: [0.45, 0.35, 0.10, 0.14], slate: [0.60, 0.34, 0.10, 0.14], rose: [0.76, 0.36, 0.10, 0.14], wood: [0.84, 0.78, 0.10, 0.10] },
+    hotspots: [
+      { id: 'bars', label: 'Colour-coded bars', detail: 'Eight graduated bars make first melodies easy to find.', point: [0.1, 0.65, 0.3] },
+      { id: 'frame', label: 'Warm wooden frame', detail: 'A solid frame keeps the bars lifted so every note rings clearly.', point: [-0.8, 0.25, 0.5] },
+      { id: 'mallets', label: 'Soft mallets', detail: 'Rounded heads are gentle on the bars and comfortable for small hands.', point: [0.75, 0.12, 0.85] },
+    ],
+  },
+};
 
 export const categoryPhoto = {
   'Building & STEM': photos[0],  'Games & Puzzles': photos[8],

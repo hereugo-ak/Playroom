@@ -10,7 +10,7 @@ import {
   pointsBalance, pointsEarnedFor, redeemLeaves, ensureReferral,
   createReturn, returnsForOrder,
 } from './store.js';
-import { products, byId, bySlug, categories, photos, heroPhoto, img, photo, SELLERS, fbtFor, stageProducts } from './data.js';
+import { products, byId, bySlug, categories, photos, heroPhoto, img, photo, SELLERS, fbtFor, stageProducts, PRODUCT_3D_CONFIG } from './data.js';
 import { productCard, sectionHead, bindProductActions } from './components.js';
 import {
   AGE_STAGES, stageById, ADVISORY_NOTE, ADVISORS, DESIGN_STANDARDS, MATERIALS_BY_KIND,
@@ -43,6 +43,7 @@ import {
 const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let mobileMenu = false;
 let appReady = false;
+let current3dSlug = null;
 window.__appReady = false;
 
 // ------------------------------------------------------------------
@@ -239,11 +240,28 @@ function sponsoredSlide(s, i, n) {
 // ------------------------------------------------------------------
 // Pages
 // ------------------------------------------------------------------
+function homePlayCardHTML(product, index, threeD = false) {
+  const card = productCard(product, index, true);
+  if (!threeD) return card;
+  return card.replace(
+    '<div class="product-image">',
+    '<div class="product-image"><span class="home-3d-ribbon">Interactive 3D</span>',
+  );
+}
+
 function renderHome() {
   const featured = products.filter((p) => p.featured).slice(0, 8);
   const picks = sponsoredPicks();
   const tone = ['#e7d7c5', '#dbe6d5', '#ead4cb', '#d5e2e8', '#eadfbd', '#d9d7c9', '#e6d8c8', '#dce5dd', '#e9d9b5', '#dce4e8'];
   const catImage = { 'Building & STEM': 0, 'Games & Puzzles': 8, 'Soft & Plush': 12, 'Vehicles & Adventures': 16, 'Art & Imagination': 20, 'Baby & Early Years': 28, 'Pretend & Role Play': 18, 'Outdoor & Active': 24, 'Science & Discovery': 26, 'Music & Movement': 22 };
+
+  // Exactly ten products: five with 3D, five normal, interleaved.
+  const play3DIds = ['pl1', 'pl2', 'pl24', 'pl36', 'pl109'];
+  const playNormalIds = ['pl9', 'pl17', 'pl30', 'pl48', 'pl53'];
+  const playProducts = play3DIds.flatMap((id, i) => [
+    { product: byId(id), threeD: true },
+    { product: byId(playNormalIds[i]), threeD: false },
+  ]).filter((item) => item.product);
   const ageCards = [
     { age: '0–2 years', label: 'First little discoveries', img: photos[28], note: 'Soft beginnings', href: '#/stage/first-discoveries' },
     { age: '3–5 years', label: 'Big imaginations', img: photos[18], note: 'Make-believe magic', href: '#/stage/big-imaginations' },
@@ -277,7 +295,7 @@ function renderHome() {
   <div class="hero-scene-caption"><span>SCROLL TO EXPLORE</span><i></i></div>
  </div></section>
  <div class="home-main" data-home-main>
- <section class="section wrap home-categories-section"><div class="home-section-top"><div><div class="mono muted">A PLACE TO BEGIN</div><h2>What kind of play<br><em>feels right today?</em></h2></div><div class="home-section-aside"><p>Follow their current obsession, make room for a new one, or find a toy that invites them to make the rules.</p><a class="text-link" href="#/catalog">Shop all 110+ toys <span>↗</span></a></div></div><div class="home-category-grid">${categories.map((c, i) => `<button class="home-category-card reveal" data-category="${safe(c[0])}" style="--card-tone:${tone[i]};--delay:${(i % 5) * 60}ms"><span class="home-category-num">${String(i + 1).padStart(2, '0')}</span><div class="home-category-image"><img src="${photos[catImage[c[0]]]}" alt="${safe(c[0])} collection" loading="lazy" decoding="async"><span class="home-category-arrow">↗</span></div><div class="home-category-title"><div><h3>${safe(c[0])}</h3><p>${safe(c[1])}</p></div><span class="home-category-count">${products.filter((p) => p.category === c[0]).length} ideas</span></div></button>`).join('')}</div></section>
+ <section class="section wrap home-categories-section"><div class="home-section-top"><div><div class="mono muted">A PLACE TO BEGIN</div><h2>What kind of play<br><em>feels right today?</em></h2></div><div class="home-section-aside"><p>Five pieces open in the 3D studio. The rest are favourites from the shelf — choose the kind of play that fits today.</p><a class="text-link" href="#/catalog">Shop all 110+ toys <span>↗</span></a></div></div><div class="product-grid home-play-grid">${playProducts.map((item, i) => homePlayCardHTML(item.product, i, item.threeD)).join('')}</div></section>
  <section class="section wrap home-favorites"><div class="home-section-top"><div><div class="mono muted">THE ONES WORTH COMING BACK TO</div><h2>Small things.<br><em>Lasting favourites.</em></h2></div><div class="home-section-aside"><p>For the rainy afternoon that turns into a whole world, the birthday they’ve been counting down to, or a little surprise for no reason at all.</p><a class="text-link" href="#/catalog?sort=popular">Browse the favourites <span>↗</span></a></div></div><div class="product-grid">${featured.map((p, i) => productCard(p, i)).join('')}</div></section>
  <div class="home-trust-strip"><span>SAFETY-TESTED MATERIALS</span><i></i><span>NON-TOXIC FINISHES</span><i></i><span>AGES 0–12</span><i></i><span>SUMMER 2026 EDIT</span></div>
  <section class="section wrap home-sponsored"><div class="home-section-top sponsored-top"><div><div class="mono muted">SPONSORED PLACEMENTS · PAID FOR, CLEARLY LABELLED</div><h2>The partner shelf,<br><em>openly sponsored.</em></h2></div><div class="home-section-aside"><p>Three independent workshops paid for a spot in this band. We chose the pieces and styled them ourselves — and every slide names who it comes from.</p><span class="sponsored-swipe-hint" data-sphint><span class="sponsored-swipe-ico" aria-hidden="true">↔</span> Drag or swipe the shelf — or use the arrows</span></div></div><div class="sponsored-carousel reveal" data-sponsored><div class="sponsored-viewport" data-spviewport tabindex="0" role="region" aria-label="Sponsored picks — swipe or drag sideways, or use the arrows"><div class="sponsored-track" data-sptrack>${picks.map((s, i) => sponsoredSlide(s, i, picks.length)).join('')}</div></div><div class="sponsored-controls"><div class="sponsored-nav"><button class="sponsored-arrow" type="button" data-sparrow="-1" aria-label="Previous sponsored pick">←</button><button class="sponsored-arrow" type="button" data-sparrow="1" aria-label="Next sponsored pick">→</button></div><div class="sponsored-dots" data-spdots>${picks.map((s, i) => `<button class="sponsored-dot${i === 0 ? ' active' : ''}" type="button" data-spdot="${i}" aria-label="Sponsored pick ${i + 1}"></button>`).join('')}</div><span class="sponsored-count mono" data-spcount aria-live="polite">01 / ${String(picks.length).padStart(2, '0')}</span></div></div></section>
@@ -480,7 +498,64 @@ function renderProduct(p) {
   const related = products.filter((x) => x.category === p.category && x.id !== p.id).slice(0, 4);
   const seller = p.seller;
   const sellerPanel = seller ? sellerCardHTML(seller, p.id) : '';
-  return `<div class="route-enter"><div class="wrap product-page"><div class="breadcrumbs"><a href="#/">Home</a><span>/</span><a href="#/catalog">Shop</a><span>/</span><a href="#/catalog?category=${encodeURIComponent(p.category)}">${safe(p.category)}</a><span>/</span><span>${safe(p.name)}</span></div><div class="pdp-grid"><div class="gallery"><div class="thumbs">${p.images.map((im, i) => `<button class="thumb ${i === 0 ? 'active' : ''}" data-gallery="${i}" aria-label="Product photo ${i + 1}"><img src="${im}" alt="${safe(p.name)} view ${i + 1}" loading="eager" decoding="async"></button>`).join('')}</div><div class="main-photo"><img id="mainProductImage" src="${p.images[0]}" alt="${safe(p.name)}" fetchpriority="high" decoding="async"><span class="product-badge ${p.old > p.price ? 'sale' : ''}" style="top:15px;left:15px">${p.fresh ? 'Just landed' : p.old > p.price ? 'A little less' : 'Playroom pick'}</span><button class="zoom-hint" type="button" data-zoom aria-label="Open the photos full screen"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6"/><path d="m12.8 12.8 4 4M8.6 6v5.2M6 8.6h5.2"/></svg>Full screen</button></div></div><div class="pdp-copy"><div class="mono muted">${safe(p.category)} · ${safe(p.age)}</div>${p.circleEarly ? '<div class="pdp-circle-note">Circle members get first access to this piece. <a href="#/circle">Join the Circle</a> to add it to your order.</div>' : ''}<h1>${safe(p.name)}</h1><div class="pdp-rating">★★★★★ <span>${p.rating} / 5 · ${p.reviews} customer notes</span></div><div class="price-row" style="margin-top:17px"><span class="pdp-price">${formatMoney(p.price)}</span>${p.old > p.price ? `<span class="old-price">${formatMoney(p.old)}</span><span class="pill">Save ${Math.round((1 - p.price / p.old) * 100)}%</span>` : ''}</div><p class="pdp-description">${safe(p.desc)} Designed for open-ended play, this is the kind of find that gets brought back out again and again.</p>${pdpPromiseHTML(p)}<div class="pdp-divider"></div><div class="mono muted">Why it earns a place</div><p style="font-size:12px;line-height:1.8">${safe(p.benefit)} · ${safe(p.detail)} · A thoughtful choice for ${safe(p.age.toLowerCase())}.</p>${pdpSkillsHTML(p)}${pdpPersonaliseHTML(p)}<div class="qty-row"><div><span class="pdp-label">Quantity</span><div class="qty"><button id="pdpQtyMinus" aria-label="Decrease quantity">−</button><span id="pdpQty">1</span><button id="pdpQtyPlus" aria-label="Increase quantity">+</button></div></div><div style="padding-top:20px;font-size:10px;color:var(--muted)">Dispatches from the studio in 1–2 business days${p.stock <= 4 ? ` · ${p.stock} left of this run` : ''}</div></div><div class="pdp-actions"><button class="btn" id="pdpAdd">Add to bag — ${formatMoney(p.price)} <span class="arrow">↗</span></button><button class="btn outline" data-wish="${p.id}" aria-label="Save to wishlist">${state.wishlist.includes(p.id) ? '♥' : '♡'}</button></div><div class="delivery-check"><input id="pincode" inputmode="numeric" maxlength="6" placeholder="6-digit PIN code" aria-label="Delivery PIN code"><button id="checkDelivery">Check delivery</button></div><div class="delivery-result" id="deliveryResult">Enter your PIN code for a date-accurate estimate — standard lands ${fmtDay(standardDate())}, express ${fmtDay(expressDate())}.</div>${sellerPanel}<div class="pdp-divider"></div><div class="details-accordion"><details class="acc" open><summary>The little details</summary><div class="acc-content"><table class="spec-table"><tr><td>Recommended age</td><td>${safe(p.age)}</td></tr><tr><td>Category</td><td>${safe(p.category)}</td></tr><tr><td>What's included</td><td>${safe(p.detail)}</td></tr><tr><td>Play value</td><td>${safe(p.benefit)}</td></tr><tr><td>Made from</td><td>${safe(p.materials.made)}</td></tr><tr><td>Finish</td><td>${safe(p.materials.finish)}</td></tr><tr><td>Availability</td><td>${p.stock} in the studio (demo inventory)</td></tr></table></div></details><details class="acc"><summary>Delivery &amp; returns</summary><div class="acc-content">Complimentary standard delivery on orders above ₹1,499; express and pick-a-day options live at checkout. Thirty-day returns with free pickup — start one any time from your orders page. This prototype does not dispatch products; dates shown are demo estimates.</div></details><details class="acc"><summary>Gifting this piece</summary><div class="acc-content">Add gift wrapping (₹149), a handwritten note and hidden prices at checkout. The recipient sees the note, never the invoice — and the parcel arrives with the delivery promise you chose.</div></details></div><button class="text-link" style="margin-top:22px" data-compare-add="${p.id}">${window.__compare?.includes(p.id) ? 'Remove from comparison' : 'Compare this toy'} <span>↗</span></button></div></div></div>${p.video ? clipBandHTML(p) : ''}${howToPlayHTML(p)}${pdpSafetyHTML(p)}${fbtHTML(p)}<section class="section wrap">${sectionHead('Keep exploring', 'More from this corner', 'A few other ideas from the same kind of play.', '#/catalog?category=' + encodeURIComponent(p.category), 'Shop this category')}<div class="product-grid">${related.map((item, i) => productCard(item, i, true)).join('')}</div></section>${reviewsSectionHTML(p)}${qnaHTML(p)}${ugcHTML(p)}${lightboxHTML(p)}</div>`;
+  return `<div class="route-enter"><div class="wrap product-page"><div class="breadcrumbs"><a href="#/">Home</a><span>/</span><a href="#/catalog">Shop</a><span>/</span><a href="#/catalog?category=${encodeURIComponent(p.category)}">${safe(p.category)}</a><span>/</span><span>${safe(p.name)}</span></div><div class="pdp-grid"><div class="gallery"><div class="thumbs">${p.images.map((im, i) => `<button class="thumb ${i === 0 ? 'active' : ''}" data-gallery="${i}" aria-label="Product photo ${i + 1}"><img src="${im}" alt="${safe(p.name)} view ${i + 1}" loading="eager" decoding="async"></button>`).join('')}</div><div class="main-photo"><img id="mainProductImage" src="${p.images[0]}" alt="${safe(p.name)}" fetchpriority="high" decoding="async"><span class="product-badge ${p.old > p.price ? 'sale' : ''}" style="top:15px;left:15px">${p.fresh ? 'Just landed' : p.old > p.price ? 'A little less' : 'Playroom pick'}</span><button class="zoom-hint" type="button" data-zoom aria-label="Open the photos full screen"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6"/><path d="m12.8 12.8 4 4M8.6 6v5.2M6 8.6h5.2"/></svg>Full screen</button></div></div><div class="pdp-copy"><div class="mono muted">${safe(p.category)} · ${safe(p.age)}</div>${p.circleEarly ? '<div class="pdp-circle-note">Circle members get first access to this piece. <a href="#/circle">Join the Circle</a> to add it to your order.</div>' : ''}<h1>${safe(p.name)}</h1><div class="pdp-rating">★★★★★ <span>${p.rating} / 5 · ${p.reviews} customer notes</span></div><div class="price-row" style="margin-top:17px"><span class="pdp-price">${formatMoney(p.price)}</span>${p.old > p.price ? `<span class="old-price">${formatMoney(p.old)}</span><span class="pill">Save ${Math.round((1 - p.price / p.old) * 100)}%</span>` : ''}</div><p class="pdp-description">${safe(p.desc)} Designed for open-ended play, this is the kind of find that gets brought back out again and again.</p>${pdpPromiseHTML(p)}<div class="pdp-divider"></div><div class="mono muted">Why it earns a place</div><p style="font-size:12px;line-height:1.8">${safe(p.benefit)} · ${safe(p.detail)} · A thoughtful choice for ${safe(p.age.toLowerCase())}.</p>${pdpSkillsHTML(p)}${pdpPersonaliseHTML(p)}<div class="qty-row"><div><span class="pdp-label">Quantity</span><div class="qty"><button id="pdpQtyMinus" aria-label="Decrease quantity">−</button><span id="pdpQty">1</span><button id="pdpQtyPlus" aria-label="Increase quantity">+</button></div></div><div style="padding-top:20px;font-size:10px;color:var(--muted)">Dispatches from the studio in 1–2 business days${p.stock <= 4 ? ` · ${p.stock} left of this run` : ''}</div></div><div class="pdp-actions"><button class="btn" id="pdpAdd">Add to bag — ${formatMoney(p.price)} <span class="arrow">↗</span></button><button class="btn outline" data-wish="${p.id}" aria-label="Save to wishlist">${state.wishlist.includes(p.id) ? '♥' : '♡'}</button></div>${p.has3D ? `<a class="btn outline pdp-3d-btn" href="#/3d/${p.slug}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>View in 3D <span class="arrow" aria-hidden="true">↗</span></a>` : ''}<div class="delivery-check"><input id="pincode" inputmode="numeric" maxlength="6" placeholder="6-digit PIN code" aria-label="Delivery PIN code"><button id="checkDelivery">Check delivery</button></div><div class="delivery-result" id="deliveryResult">Enter your PIN code for a date-accurate estimate — standard lands ${fmtDay(standardDate())}, express ${fmtDay(expressDate())}.</div>${sellerPanel}<div class="pdp-divider"></div><div class="details-accordion"><details class="acc" open><summary>The little details</summary><div class="acc-content"><table class="spec-table"><tr><td>Recommended age</td><td>${safe(p.age)}</td></tr><tr><td>Category</td><td>${safe(p.category)}</td></tr><tr><td>What's included</td><td>${safe(p.detail)}</td></tr><tr><td>Play value</td><td>${safe(p.benefit)}</td></tr><tr><td>Made from</td><td>${safe(p.materials.made)}</td></tr><tr><td>Finish</td><td>${safe(p.materials.finish)}</td></tr><tr><td>Availability</td><td>${p.stock} in the studio (demo inventory)</td></tr></table></div></details><details class="acc"><summary>Delivery &amp; returns</summary><div class="acc-content">Complimentary standard delivery on orders above ₹1,499; express and pick-a-day options live at checkout. Thirty-day returns with free pickup — start one any time from your orders page. This prototype does not dispatch products; dates shown are demo estimates.</div></details><details class="acc"><summary>Gifting this piece</summary><div class="acc-content">Add gift wrapping (₹149), a handwritten note and hidden prices at checkout. The recipient sees the note, never the invoice — and the parcel arrives with the delivery promise you chose.</div></details></div><button class="text-link" style="margin-top:22px" data-compare-add="${p.id}">${window.__compare?.includes(p.id) ? 'Remove from comparison' : 'Compare this toy'} <span>↗</span></button></div></div></div>${p.video ? clipBandHTML(p) : ''}${howToPlayHTML(p)}${pdpSafetyHTML(p)}${fbtHTML(p)}<section class="section wrap">${sectionHead('Keep exploring', 'More from this corner', 'A few other ideas from the same kind of play.', '#/catalog?category=' + encodeURIComponent(p.category), 'Shop this category')}<div class="product-grid">${related.map((item, i) => productCard(item, i, true)).join('')}</div></section>${reviewsSectionHTML(p)}${qnaHTML(p)}${ugcHTML(p)}${lightboxHTML(p)}</div>`;
+}
+
+function renderProduct3D(r) {
+  const slug = r.path.slice(4);
+  const product = bySlug(slug);
+  const config = product && PRODUCT_3D_CONFIG[product.id];
+  if (!product || !config || !product.has3D) return notFound();
+
+  return `<div class="route-enter p3d-page">
+    <div class="wrap page-head p3d-head">
+      <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><a href="#/product/${product.slug}">${safe(product.name)}</a><span> / </span><span>3D studio</span></div>
+      <div class="mono muted">${safe(config.kicker)}</div>
+      <h1 class="page-title">See it from <em>every angle.</em></h1>
+      <p class="page-intro">${safe(config.intro)}</p>
+    </div>
+    <section class="section wrap p3d-section">
+      <div class="p3d-shell">
+        <div class="p3d-stage" id="p3dStage">
+          <img class="p3d-poster" src="${safe(config.poster)}" alt="${safe(product.name)}" loading="eager" decoding="async">
+          <button class="p3d-exit" type="button" data-p3d-exit>Exit full view</button>
+          <div class="p3d-hotspots" aria-label="Product details"></div>
+          <div class="p3d-loading" data-p3d-loading><span class="p3d-spinner" aria-hidden="true"></span>Preparing the studio…</div>
+          <div class="p3d-fallback" data-p3d-fallback hidden>
+            <b>3D is unavailable on this device.</b>
+            <p>Explore the product photos or return to the product page.</p>
+            <a class="btn small" href="#/product/${product.slug}">Back to product <span class="arrow" aria-hidden="true">↗</span></a>
+          </div>
+        </div>
+        <aside class="p3d-panel">
+          <span class="p3d-kicker">PLAYROOM 3D STUDIO</span>
+          <h2>${safe(config.title)}</h2>
+          <p class="p3d-lede">${safe(product.benefit)} · ${safe(product.detail)}</p>
+
+          <p class="p3d-caption" data-p3d-caption>Drag to turn the piece. Open a marker for the small details.</p>
+
+          <div class="p3d-controls">
+            <button type="button" data-p3d-rotate aria-pressed="true" class="active"><span aria-hidden="true">↻</span> Auto-rotate</button>
+            <button type="button" data-p3d-reset><span aria-hidden="true">⌖</span> Reset view</button>
+          </div>
+          <div class="p3d-fullscreen-controls">
+            <button type="button" data-p3d-expand><span aria-hidden="true">⤢</span> Full view</button>
+          </div>
+
+          <div class="p3d-help">
+            <span class="mono">HOW TO EXPLORE</span>
+            <p>Drag to orbit · scroll or pinch to zoom · tap a marker for details. Full view gives the product the whole screen.</p>
+          </div>
+
+          <div class="p3d-actions">
+            <a class="btn" href="#/product/${product.slug}">Back to product <span class="arrow" aria-hidden="true">↗</span></a>
+            <a class="text-link" href="#/catalog">Keep exploring <span aria-hidden="true">↗</span></a>
+          </div>
+          <p class="p3d-note">Concept 3D model built from the catalogue image. No child, room scene or external GLB is used.</p>
+        </aside>
+      </div>
+    </section>
+  </div>`;
 }
 
 /* ---- buy-box helpers ------------------------------------------------ */
@@ -2054,6 +2129,7 @@ registerRoutes({
   '/circle/checkout': renderCircleCheckout,
   '/circle/success': renderCircleSuccess,
   '/circle': renderCircleLanding,
+  '/3d/': renderProduct3D,
   '/safety': renderSafetyPage,
   '/stage': (r) => (r.path === '/stage' ? renderStagesIndex() : renderStagePage(r.path.slice(7))),
   '/gift-finder': renderGiftFinder,
@@ -2075,8 +2151,32 @@ setNotFound(notFound);
 // ------------------------------------------------------------------
 // Per-route wiring
 // ------------------------------------------------------------------
+async function wireProduct3D() {
+  const path = route().path;
+  if (!path.startsWith('/3d/')) {
+    if (current3dSlug) {
+      current3dSlug = null;
+      import('./product-3d-viewer.js').then((m) => m.disposeProduct3D()).catch(() => {});
+    }
+    return;
+  }
+
+  const slug = path.slice(4);
+  const product = bySlug(slug);
+  const config = product && PRODUCT_3D_CONFIG[product.id];
+  if (!product || !config) return;
+  if (current3dSlug === slug) return;
+
+  current3dSlug = slug;
+  const viewer = await import('./product-3d-viewer.js');
+  if (route().path !== path) return;
+  if (viewer.isProduct3DMounted(slug)) return;
+  viewer.mountProduct3D(slug, config);
+}
+
 function wirePage() {
   if ($('#successPanel') && !reduced) confettiBurst($('#successPanel'));
+  wireProduct3D().catch((error) => console.warn('[3D] viewer could not start', error));
   // Catalog
   $$('.filter-title').forEach((b) => b.addEventListener('click', () => b.parentElement.classList.toggle('expanded')));
   $$('input[name="catFilter"]').forEach((i) => i.addEventListener('change', () => catalogFilter('category', i.value)));

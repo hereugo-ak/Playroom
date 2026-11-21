@@ -1,0 +1,95 @@
+# Playroom 3D product studio
+
+A premium interactive 3D viewer for selected products. Built with Three.js inside the existing Vite app and loaded only when the 3D route is opened.
+
+## Enabled products
+
+The product page shows a **View in 3D** button only when `has3D` is true.
+
+| Product | Route | Scene |
+| --- | --- | --- |
+| Little Architect Wooden Blocks | `#/3d/little-architect-wooden-blocks` | `wooden-blocks` |
+| Orbit Magnetic Building Tiles | `#/3d/orbit-magnetic-building-tiles` | `magnetic-tiles` |
+| The City Bus — Wooden | `#/3d/the-city-bus-wooden` | `wooden-bus` |
+| First Shapes Wooden Sorter | `#/3d/first-shapes-wooden-sorter` | `stacking-rings` |
+| The Tiny Parade Xylophone | `#/3d/the-tiny-parade-drum` | `xylophone` |
+
+Each scene samples its material palette and texture grain from the product's own catalogue image.
+
+## Stack
+
+- `three`
+- `OrbitControls`
+- `RoundedBoxGeometry`
+- `GLTFLoader` for future external GLB models
+- HTML/CSS overlay for hotspots and controls
+
+Three.js is dynamically imported from `js/product-3d-viewer.js`, so the main storefront bundle is not increased by the 3D engine.
+
+## Files
+
+| File | Purpose |
+| --- | --- |
+| `js/product-3d-viewer.js` | Three.js scene, controls, animations, hotspots, cleanup |
+| `css/product-3d.css` | Premium editorial viewer shell |
+| `js/data.js` | `has3D` flag and `PRODUCT_3D_CONFIG` |
+| `js/app.js` | Route, PDP button, lazy mount/dispose |
+
+## Scene design
+
+The first product uses an art-directed procedural scene:
+
+- rounded rainbow arches, stacking rings and wooden pieces modelled from the catalogue photo
+- PBR-style materials, generated grain, RoomEnvironment reflections and soft contact shadow
+- material colours sampled directly from `assets/img/photo-01.jpg`
+- no child, room backdrop, cartoon mascot or external GLB in the default scene
+- no neon grid, no generic model-viewer iframe
+
+A true 1:1 product scan still requires a GLB/3D asset from the supplier. `config.modelUrl` is ready for that.
+
+The human figure/hand rig is reusable. Future products can use the same rig with different product scenes.
+
+## Controls
+
+The viewer is product-only. Controls:
+
+- drag to orbit
+- scroll / pinch to zoom
+- auto-rotate toggle
+- reset view
+- hotspot focus
+
+## Adding another product
+
+1. Add a config entry to `PRODUCT_3D_CONFIG` in `js/data.js`.
+2. Set `has3D: true` on that product.
+3. If using a GLB, set:
+
+```js
+modelType: 'glb'
+modelUrl: 'assets/3d/your-model.glb'
+```
+
+If `modelUrl` is present, the viewer loads the GLB. If loading fails, it falls back to the procedural scene.
+
+## Performance
+
+- lazy-loaded Three.js chunk
+- capped device pixel ratio
+- resize observer
+- render loop stops on route change
+- WebGL failure falls back to the product poster
+- reduced-motion CSS support
+
+## Testing checklist
+
+1. PDP shows **View in 3D** only on the selected product.
+2. 3D route opens with poster/loading state.
+3. Drag and zoom work on desktop and touch.
+4. Hotspots show and focus correctly.
+5. Full view expands to a clean body-level viewport with no footer/header bleed.
+6. Reset and auto-rotate work.
+7. Navigating away disposes the renderer.
+8. WebGL fallback shows the poster.
+9. Mobile layout keeps the canvas and controls readable.
+10. No major bundle regression on non-3D routes.
