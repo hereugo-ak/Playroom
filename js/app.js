@@ -240,11 +240,34 @@ function sponsoredSlide(s, i, n) {
 // ------------------------------------------------------------------
 // Pages
 // ------------------------------------------------------------------
+function home3DCardHTML(product, index, tone) {
+  return `<article class="home-3d-card reveal" style="--card-tone:${tone};--delay:${(index % 5) * 60}ms">
+    <a class="home-3d-card-main" href="#/product/${product.slug}" aria-label="View ${safe(product.name)}">
+      <div class="home-3d-image">
+        <img src="${product.image}" alt="${safe(product.name)}" loading="lazy" decoding="async">
+        <span class="home-3d-chip">INTERACTIVE 3D</span>
+        <span class="home-3d-arrow" aria-hidden="true">↗</span>
+      </div>
+      <div class="home-3d-copy"><div><h3>${safe(product.name)}</h3><p>${safe(product.category)}</p></div><span class="home-3d-price">${formatMoney(product.price)}</span></div>
+    </a>
+    <a class="home-3d-button" href="#/3d/${product.slug}">3D view <span aria-hidden="true">↗</span></a>
+  </article>`;
+}
+
 function renderHome() {
   const featured = products.filter((p) => p.featured).slice(0, 8);
   const picks = sponsoredPicks();
   const tone = ['#e7d7c5', '#dbe6d5', '#ead4cb', '#d5e2e8', '#eadfbd', '#d9d7c9', '#e6d8c8', '#dce5dd', '#e9d9b5', '#dce4e8'];
   const catImage = { 'Building & STEM': 0, 'Games & Puzzles': 8, 'Soft & Plush': 12, 'Vehicles & Adventures': 16, 'Art & Imagination': 20, 'Baby & Early Years': 28, 'Pretend & Role Play': 18, 'Outdoor & Active': 24, 'Science & Discovery': 26, 'Music & Movement': 22 };
+
+  // Five 3D products scattered through the ten play categories.
+  const home3DProducts = products.filter((p) => p.has3D).slice(0, 5);
+  const playCards = categories.map((c, i) => `<button class="home-category-card reveal" data-category="${safe(c[0])}" style="--card-tone:${tone[i]};--delay:${(i % 5) * 60}ms"><span class="home-category-num">${String(i + 1).padStart(2, '0')}</span><div class="home-category-image"><img src="${photos[catImage[c[0]]]}" alt="${safe(c[0])} collection" loading="lazy" decoding="async"><span class="home-category-arrow">↗</span></div><div class="home-category-title"><div><h3>${safe(c[0])}</h3><p>${safe(c[1])}</p></div><span class="home-category-count">${products.filter((p) => p.category === c[0]).length} ideas</span></div></button>`);
+  [1, 4, 7, 10, 13].forEach((position, i) => {
+    const product = home3DProducts[i];
+    if (product) playCards.splice(position, 0, home3DCardHTML(product, i, tone[(i + 2) % tone.length]));
+  });
+
   const ageCards = [
     { age: '0–2 years', label: 'First little discoveries', img: photos[28], note: 'Soft beginnings', href: '#/stage/first-discoveries' },
     { age: '3–5 years', label: 'Big imaginations', img: photos[18], note: 'Make-believe magic', href: '#/stage/big-imaginations' },
@@ -278,7 +301,7 @@ function renderHome() {
   <div class="hero-scene-caption"><span>SCROLL TO EXPLORE</span><i></i></div>
  </div></section>
  <div class="home-main" data-home-main>
- <section class="section wrap home-categories-section"><div class="home-section-top"><div><div class="mono muted">A PLACE TO BEGIN</div><h2>What kind of play<br><em>feels right today?</em></h2></div><div class="home-section-aside"><p>Follow their current obsession, make room for a new one, or find a toy that invites them to make the rules.</p><a class="text-link" href="#/catalog">Shop all 110+ toys <span>↗</span></a></div></div><div class="home-category-grid">${categories.map((c, i) => `<button class="home-category-card reveal" data-category="${safe(c[0])}" style="--card-tone:${tone[i]};--delay:${(i % 5) * 60}ms"><span class="home-category-num">${String(i + 1).padStart(2, '0')}</span><div class="home-category-image"><img src="${photos[catImage[c[0]]]}" alt="${safe(c[0])} collection" loading="lazy" decoding="async"><span class="home-category-arrow">↗</span></div><div class="home-category-title"><div><h3>${safe(c[0])}</h3><p>${safe(c[1])}</p></div><span class="home-category-count">${products.filter((p) => p.category === c[0]).length} ideas</span></div></button>`).join('')}</div></section>
+ <section class="section wrap home-categories-section"><div class="home-section-top"><div><div class="mono muted">A PLACE TO BEGIN</div><h2>What kind of play<br><em>feels right today?</em></h2></div><div class="home-section-aside"><p>Follow their current obsession, make room for a new one, or find a toy that invites them to make the rules.</p><a class="text-link" href="#/catalog">Shop all 110+ toys <span>↗</span></a></div></div><div class="home-category-grid">${playCards.join('')}</div></section>
  <section class="section wrap home-favorites"><div class="home-section-top"><div><div class="mono muted">THE ONES WORTH COMING BACK TO</div><h2>Small things.<br><em>Lasting favourites.</em></h2></div><div class="home-section-aside"><p>For the rainy afternoon that turns into a whole world, the birthday they’ve been counting down to, or a little surprise for no reason at all.</p><a class="text-link" href="#/catalog?sort=popular">Browse the favourites <span>↗</span></a></div></div><div class="product-grid">${featured.map((p, i) => productCard(p, i)).join('')}</div></section>
  <div class="home-trust-strip"><span>SAFETY-TESTED MATERIALS</span><i></i><span>NON-TOXIC FINISHES</span><i></i><span>AGES 0–12</span><i></i><span>SUMMER 2026 EDIT</span></div>
  <section class="section wrap home-sponsored"><div class="home-section-top sponsored-top"><div><div class="mono muted">SPONSORED PLACEMENTS · PAID FOR, CLEARLY LABELLED</div><h2>The partner shelf,<br><em>openly sponsored.</em></h2></div><div class="home-section-aside"><p>Three independent workshops paid for a spot in this band. We chose the pieces and styled them ourselves — and every slide names who it comes from.</p><span class="sponsored-swipe-hint" data-sphint><span class="sponsored-swipe-ico" aria-hidden="true">↔</span> Drag or swipe the shelf — or use the arrows</span></div></div><div class="sponsored-carousel reveal" data-sponsored><div class="sponsored-viewport" data-spviewport tabindex="0" role="region" aria-label="Sponsored picks — swipe or drag sideways, or use the arrows"><div class="sponsored-track" data-sptrack>${picks.map((s, i) => sponsoredSlide(s, i, picks.length)).join('')}</div></div><div class="sponsored-controls"><div class="sponsored-nav"><button class="sponsored-arrow" type="button" data-sparrow="-1" aria-label="Previous sponsored pick">←</button><button class="sponsored-arrow" type="button" data-sparrow="1" aria-label="Next sponsored pick">→</button></div><div class="sponsored-dots" data-spdots>${picks.map((s, i) => `<button class="sponsored-dot${i === 0 ? ' active' : ''}" type="button" data-spdot="${i}" aria-label="Sponsored pick ${i + 1}"></button>`).join('')}</div><span class="sponsored-count mono" data-spcount aria-live="polite">01 / ${String(picks.length).padStart(2, '0')}</span></div></div></section>
