@@ -336,7 +336,33 @@
 .circle-payment .st-field input,
 .circle-payment .st-field select { border-color: var(--line); border-radius: 8px; }
 .circle-autofill { margin: 14px 0 8px; }
-.circle-pay { width: 100%; border-radius: 9px; }
+.circle-pay {
+  width: 100%;
+  height: 54px;
+  min-height: 54px;
+  border: 1px solid var(--cocoa);
+  border-radius: 9px;
+  background: var(--cocoa) !important;
+  color: #fff9ef !important;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: .06em;
+  box-shadow: 0 8px 20px rgba(76, 52, 40, .18), inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+.circle-pay:hover {
+  background: #5f4030 !important;
+  box-shadow: 0 10px 24px rgba(76, 52, 40, .24), inset 0 1px 0 rgba(255, 255, 255, .12);
+}
+.circle-pay:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 4px rgba(181, 111, 123, .18);
+}
+.circle-pay[disabled] {
+  opacity: .72;
+  color: #fff9ef !important;
+  cursor: progress;
+}
 .circle-form-message {
   padding: 10px 12px;
   margin: 8px 0;
