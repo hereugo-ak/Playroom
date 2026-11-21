@@ -501,6 +501,7 @@ function renderProduct3D(r) {
       <div class="p3d-shell">
         <div class="p3d-stage" id="p3dStage">
           <img class="p3d-poster" src="${safe(config.poster)}" alt="${safe(product.name)}" loading="eager" decoding="async">
+          <button class="p3d-exit" type="button" data-p3d-exit>Exit full view</button>
           <div class="p3d-hotspots" aria-label="Product details"></div>
           <div class="p3d-loading" data-p3d-loading><span class="p3d-spinner" aria-hidden="true"></span>Preparing the studio…</div>
           <div class="p3d-fallback" data-p3d-fallback hidden>
@@ -524,6 +525,10 @@ function renderProduct3D(r) {
           <div class="p3d-controls">
             <button type="button" data-p3d-rotate aria-pressed="true" class="active"><span aria-hidden="true">↻</span> Auto-rotate</button>
             <button type="button" data-p3d-reset><span aria-hidden="true">⌖</span> Reset view</button>
+          </div>
+          <div class="p3d-fullscreen-controls">
+            <button type="button" data-p3d-expand><span aria-hidden="true">⤢</span> Full view</button>
+            <button type="button" data-p3d-productonly><span aria-hidden="true">◇</span> Product only</button>
           </div>
 
           <div class="p3d-help">

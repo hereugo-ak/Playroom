@@ -188,9 +188,9 @@ export const PRODUCT_3D_CONFIG = {
     kicker: 'THE 3D STUDIO',
     intro: 'Turn the blocks, see the beechwood finish up close and watch them come alive in a child’s hands.',
     hotspots: [
-      { id: 'finish', label: 'Beechwood finish', detail: 'Smooth, tactile blocks with softly rounded edges.', point: [0.65, 0.62, 0.35] },
-      { id: 'build', label: 'Open-ended build', detail: 'The same pieces become a tower, a bridge or a little city.', point: [-0.55, 0.45, 0.55] },
-      { id: 'scale', label: 'Just-right scale', detail: 'Chunky enough for small hands, simple enough for big ideas.', point: [0.2, -0.35, 0.7] },
+      { id: 'finish', label: 'Beechwood finish', detail: 'Smooth, tactile arches and rings with softly rounded edges.', point: [0.95, 0.75, -0.25] },
+      { id: 'build', label: 'Open-ended build', detail: 'The same pieces become a rainbow, a bridge or a little city.', point: [-0.2, 1.3, 0.05] },
+      { id: 'scale', label: 'Just-right scale', detail: 'Chunky enough for small hands, simple enough for big ideas.', point: [-1.55, 0.35, 0.58] },
     ],
   },
 };

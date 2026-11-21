@@ -58,6 +58,12 @@ function makeMaterials() {
       metalness: 0,
       clearcoat: 0.08,
     }),
+    cream: new THREE.MeshPhysicalMaterial({ color: 0xe8d6b7, roughness: 0.55, clearcoat: 0.08 }),
+    rose: new THREE.MeshPhysicalMaterial({ color: 0xb96862, roughness: 0.5, clearcoat: 0.1 }),
+    rust: new THREE.MeshPhysicalMaterial({ color: 0xc97954, roughness: 0.5, clearcoat: 0.1 }),
+    mustard: new THREE.MeshPhysicalMaterial({ color: 0xd5a94c, roughness: 0.52, clearcoat: 0.1 }),
+    sage: new THREE.MeshPhysicalMaterial({ color: 0x9aab77, roughness: 0.5, clearcoat: 0.1 }),
+    slate: new THREE.MeshPhysicalMaterial({ color: 0x42636b, roughness: 0.48, clearcoat: 0.12 }),
     skin: new THREE.MeshStandardMaterial({ color: 0xc98f72, roughness: 0.72, metalness: 0 }),
     sleeve: new THREE.MeshStandardMaterial({ color: 0x536c55, roughness: 0.88 }),
     trouser: new THREE.MeshStandardMaterial({ color: 0x4c4038, roughness: 0.92 }),
@@ -81,75 +87,158 @@ function createBlocks(product, mats) {
   const group = new THREE.Group();
   group.name = 'product';
 
-  // A small, credible architectural stack — not a random cube pile.
-  group.add(roundedBlock(1.65, 0.24, 0.5, mats.wood, [0, 0.16, 0.2], [0, 0.08, 0]));
-  group.add(roundedBlock(1.35, 0.24, 0.5, mats.woodDark, [0.05, 0.42, -0.05], [0, -0.16, 0]));
-  group.add(roundedBlock(0.42, 0.86, 0.42, mats.wood, [-0.55, 0.82, 0.05], [0, 0, 0.02]));
-  group.add(roundedBlock(0.42, 0.86, 0.42, mats.wood, [0.55, 0.82, 0.05], [0, 0, -0.02]));
-  group.add(roundedBlock(1.34, 0.24, 0.42, mats.wood, [0, 1.34, 0], [0, 0.06, 0]));
-  group.add(roundedBlock(0.3, 0.62, 0.3, mats.woodDark, [-0.36, 1.62, 0.02], [0, 0, 0.06]));
-  group.add(roundedBlock(0.3, 0.62, 0.3, mats.woodDark, [0.36, 1.62, 0.02], [0, 0, -0.06]));
-  group.add(roundedBlock(0.92, 0.2, 0.34, mats.wood, [0, 1.86, 0], [0, 0, 0]));
-  group.add(roundedBlock(0.5, 0.28, 0.5, mats.woodDark, [-1.05, 0.35, 0.65], [0, 0.3, 0]));
-  group.add(roundedBlock(0.5, 0.28, 0.5, mats.wood, [1.02, 0.34, 0.6], [0, -0.3, 0]));
+  const arch = (radius, tube, material, position, rotation = [0, 0, 0]) => {
+    const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, 18, 72, Math.PI), material);
+    mesh.position.set(...position);
+    mesh.rotation.set(...rotation);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    return mesh;
+  };
 
-  // A loose piece on the floor gives the scene a lived-in, playable feeling.
-  group.add(roundedBlock(0.78, 0.18, 0.26, mats.woodDark, [1.15, 0.14, -0.65], [0, 0.55, 0]));
-  group.add(roundedBlock(0.36, 0.36, 0.36, mats.wood, [-1.18, 0.24, -0.55], [0, 0, 0.12]));
+  const ring = (radius, tube, material, position, rotation = [Math.PI / 2, 0, 0]) => {
+    const mesh = new THREE.Mesh(new THREE.TorusGeometry(radius, tube, 18, 64), material);
+    mesh.position.set(...position);
+    mesh.rotation.set(...rotation);
+    mesh.castShadow = true;
+    mesh.receiveShadow = true;
+    return mesh;
+  };
 
-  group.userData.focusBlock = group.children[4];
+  // The photographed set: nested rainbow arches, two foreground arches,
+  // stacking rings, small blocks and a wooden ball.
+  group.add(arch(1.56, 0.16, mats.cream, [-0.2, 0.26, -0.52]));
+  group.add(arch(1.30, 0.13, mats.rust, [-0.2, 0.26, -0.40]));
+  group.add(arch(1.04, 0.12, mats.mustard, [-0.2, 0.26, -0.28]));
+  group.add(arch(0.78, 0.11, mats.cream, [-0.2, 0.26, -0.16]));
+
+  group.add(arch(0.92, 0.16, mats.sage, [-0.05, 0.24, 0.62], [0, -0.12, 0]));
+  group.add(arch(0.62, 0.14, mats.rust, [0.28, 0.24, 0.90], [0, 0.12, 0]));
+  group.add(arch(0.42, 0.12, mats.slate, [1.25, 0.26, -0.22], [0, -0.2, 0]));
+
+  group.add(ring(0.48, 0.11, mats.rose, [1.55, 0.23, 0.35]));
+  group.add(ring(0.38, 0.10, mats.cream, [1.55, 0.40, 0.35]));
+  group.add(ring(0.28, 0.10, mats.slate, [1.55, 0.55, 0.35]));
+  group.add(roundedBlock(0.38, 0.38, 0.38, mats.slate, [1.55, 0.92, 0.35], [0, 0.2, 0]));
+  group.add(roundedBlock(0.26, 0.22, 0.26, mats.wood, [1.55, 1.22, 0.35], [0, 0, 0]));
+
+  group.add(ring(0.30, 0.11, mats.wood, [-1.55, 0.24, 0.58]));
+  group.add(ring(0.30, 0.11, mats.cream, [-1.55, 0.44, 0.58]));
+  group.add(ring(0.24, 0.09, mats.woodDark, [-1.25, 0.20, 0.82], [Math.PI / 2, 0, 0.35]));
+
+  const ball = new THREE.Mesh(new THREE.SphereGeometry(0.24, 32, 24), mats.wood);
+  ball.position.set(2.18, 0.28, 0.45);
+  ball.castShadow = true;
+  ball.receiveShadow = true;
+  group.add(ball);
+
+  group.userData.focusBlock = group.children[1];
   return group;
 }
 
-// Reusable human rig: realistic proportions, no mascot styling. It can be
-// reused for other products by adding a product config entry.
+// Reusable human rig: realistic proportions and hand anatomy without an
+// uncanny face. It can be reused for other products by adding a config entry.
+function createHand(mats, side = 1) {
+  const hand = new THREE.Group();
+
+  const palm = new THREE.Mesh(new THREE.SphereGeometry(0.14, 24, 18), mats.skin);
+  palm.scale.set(0.82, 1.08, 0.58);
+  palm.castShadow = true;
+  hand.add(palm);
+
+  const fingerPositions = [-0.085, -0.028, 0.028, 0.085];
+  fingerPositions.forEach((x, i) => {
+    const length = i === 0 || i === 3 ? 0.13 : 0.17;
+    const finger = new THREE.Mesh(new THREE.CapsuleGeometry(0.022, length, 5, 10), mats.skin);
+    finger.position.set(x * side, 0.2 + (i === 1 || i === 2 ? 0.015 : 0), 0.01);
+    finger.rotation.z = x * side * 0.35;
+    finger.castShadow = true;
+    hand.add(finger);
+  });
+
+  const thumb = new THREE.Mesh(new THREE.CapsuleGeometry(0.026, 0.12, 5, 10), mats.skin);
+  thumb.position.set(-0.14 * side, 0.09, 0.03);
+  thumb.rotation.z = side * -0.85;
+  thumb.castShadow = true;
+  hand.add(thumb);
+
+  return hand;
+}
+
 function createChildFigure(mats) {
   const figure = new THREE.Group();
   figure.name = 'child-figure';
 
-  const head = new THREE.Mesh(new THREE.SphereGeometry(0.3, 32, 24), mats.skin);
-  head.scale.set(0.92, 1.05, 0.9);
-  head.position.set(0, 1.72, 0);
+  const head = new THREE.Mesh(new THREE.SphereGeometry(0.29, 36, 28), mats.skin);
+  head.scale.set(0.94, 1.12, 0.92);
+  head.position.set(0, 1.74, 0);
   head.castShadow = true;
 
-  const hair = new THREE.Mesh(new THREE.SphereGeometry(0.31, 32, 24, 0, Math.PI * 2, 0, Math.PI * 0.52), mats.trouser);
-  hair.position.set(0, 1.76, 0);
-  hair.scale.set(0.94, 1, 0.92);
+  const hair = new THREE.Mesh(
+    new THREE.SphereGeometry(0.30, 36, 28, 0, Math.PI * 2, 0, Math.PI * 0.54),
+    mats.trouser,
+  );
+  hair.position.set(0, 1.79, 0);
+  hair.scale.set(0.96, 1.08, 0.94);
   hair.castShadow = true;
 
-  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.3, 0.52, 8, 20), mats.sleeve);
-  torso.position.set(0, 1.1, 0);
-  torso.scale.set(1, 1, 0.72);
+  const earL = new THREE.Mesh(new THREE.SphereGeometry(0.055, 16, 12), mats.skin);
+  earL.position.set(-0.27, 1.72, 0);
+  const earR = earL.clone();
+  earR.position.x = 0.27;
+
+  const nose = new THREE.Mesh(new THREE.SphereGeometry(0.045, 16, 12), mats.skin);
+  nose.position.set(0, 1.69, 0.27);
+  nose.scale.set(0.8, 0.9, 0.7);
+
+  const neck = new THREE.Mesh(new THREE.CylinderGeometry(0.09, 0.11, 0.18, 20), mats.skin);
+  neck.position.set(0, 1.45, 0);
+
+  const torso = new THREE.Mesh(new THREE.CapsuleGeometry(0.29, 0.54, 10, 24), mats.sleeve);
+  torso.position.set(0, 1.04, 0);
+  torso.scale.set(1.02, 1, 0.74);
   torso.castShadow = true;
 
   const makeArm = (side) => {
     const arm = new THREE.Group();
-    const upper = new THREE.Mesh(new THREE.CapsuleGeometry(0.09, 0.42, 6, 14), mats.sleeve);
-    upper.position.set(side * 0.33, 1.18, 0.05);
-    upper.rotation.z = side * -0.28;
+    const upper = new THREE.Mesh(new THREE.CapsuleGeometry(0.085, 0.36, 8, 18), mats.sleeve);
+    upper.position.set(side * 0.31, 1.2, 0.02);
+    upper.rotation.z = side * -0.22;
     upper.castShadow = true;
-    const hand = new THREE.Mesh(new THREE.SphereGeometry(0.14, 20, 16), mats.skin);
-    hand.scale.set(0.85, 1.05, 0.65);
-    hand.position.set(side * 0.52, 0.82, 0.18);
-    hand.castShadow = true;
-    arm.add(upper, hand);
+    const fore = new THREE.Mesh(new THREE.CapsuleGeometry(0.07, 0.32, 8, 18), mats.skin);
+    fore.position.set(side * 0.42, 0.86, 0.14);
+    fore.rotation.z = side * -0.18;
+    fore.castShadow = true;
+    const hand = createHand(mats, side);
+    hand.position.set(side * 0.5, 0.6, 0.22);
+    hand.rotation.z = side * -0.25;
+    arm.add(upper, fore, hand);
     arm.userData.hand = hand;
     return arm;
   };
 
   const leftArm = makeArm(-1);
   const rightArm = makeArm(1);
-  const legL = new THREE.Mesh(new THREE.CapsuleGeometry(0.12, 0.42, 6, 14), mats.trouser);
-  legL.position.set(-0.17, 0.42, 0.03);
-  legL.castShadow = true;
-  const legR = legL.clone();
-  legR.position.x = 0.17;
 
-  figure.add(head, hair, torso, leftArm, rightArm, legL, legR);
+  const leg = (side) => {
+    const l = new THREE.Mesh(new THREE.CapsuleGeometry(0.115, 0.42, 8, 18), mats.trouser);
+    l.position.set(side * 0.16, 0.42, 0);
+    l.castShadow = true;
+    return l;
+  };
+  const legL = leg(-1);
+  const legR = leg(1);
+  const shoeL = new THREE.Mesh(new THREE.SphereGeometry(0.13, 18, 14), mats.trouser);
+  shoeL.scale.set(0.8, 0.55, 1.15);
+  shoeL.position.set(-0.16, 0.14, 0.08);
+  const shoeR = shoeL.clone();
+  shoeR.position.x = 0.16;
+
+  figure.add(head, hair, earL, earR, nose, neck, torso, leftArm, rightArm, legL, legR, shoeL, shoeR);
   figure.userData.rightHand = rightArm.userData.hand;
   figure.userData.rightArm = rightArm;
   figure.scale.setScalar(0.82);
-  figure.position.set(-1.55, 0, 1.15);
+  figure.position.set(-1.9, 0, 1.25);
   figure.rotation.y = 0.55;
   return figure;
 }
@@ -359,6 +448,10 @@ export async function mountProduct3D(slug, config) {
       event.currentTarget.classList.toggle('active', controls.autoRotate);
       event.currentTarget.setAttribute('aria-pressed', String(controls.autoRotate));
     });
+    const shell = stage.closest('.p3d-shell');
+    document.querySelector('[data-p3d-expand]')?.addEventListener('click', () => shell?.classList.add('is-expanded'));
+    document.querySelector('[data-p3d-exit]')?.addEventListener('click', () => shell?.classList.remove('is-expanded'));
+    document.querySelector('[data-p3d-productonly]')?.addEventListener('click', () => setMode(state, 'product'));
     state.hotspots.forEach((el) => {
       el.addEventListener('click', () => {
         const h = state.config.hotspots.find((x) => x.id === el.dataset.hotspot);
