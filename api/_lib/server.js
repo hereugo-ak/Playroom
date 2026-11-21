@@ -64,3 +64,31 @@ export function bearer(req) {
   const match = /^Bearer\s+(.+)$/i.exec(header);
   return match ? match[1].trim() : '';
 }
+
+export async function authenticate(req) {
+  const token = bearer(req);
+  if (!token) return null;
+  const admin = getAdmin();
+  const { data, error } = await admin.auth.getUser(token);
+  if (error || !data?.user) return null;
+  return data.user;
+}
+
+export async function isAdmin(adminClient, userId) {
+  if (!userId) return false;
+  const { data, error } = await adminClient
+    .from('user_roles')
+    .select('role')
+    .eq('user_id', userId)
+    .eq('role', 'admin')
+    .maybeSingle();
+  if (error) {
+    console.warn('[admin] role lookup failed', error?.message || error);
+    return false;
+  }
+  return Boolean(data);
+}
+
+export function cleanText(value, max = 200) {
+  return String(value ?? '').trim().slice(0, max);
+}

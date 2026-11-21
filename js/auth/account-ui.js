@@ -14,6 +14,7 @@ import {
 import { AUTH_CONFIGURED, AUTH_CONFIG_MESSAGE } from './config.js';
 import { membershipState, onMembershipChange } from './membership.js';
 import { friendlyAuthError } from './errors.js';
+import { trackEvent } from '../analytics.js';
 import {
   renderLogin, renderRegister, renderForgotPassword, renderResetPassword,
   renderDashboard, renderAccountOrders, renderAccountWishlist, renderAddresses, pageGuardCard,
@@ -560,13 +561,21 @@ async function handleLogin(form, event) {
   const passwordOk = password.value ? (setFieldError(password, ''), true) : (setFieldError(password, 'Enter your password.'), false);
   if (!emailOk || !passwordOk) return;
 
-  setBusy(form, true, 'Signing in…');
+  const adminLogin = form.dataset.admin === '1';
+  trackEvent('login_start', { admin: adminLogin });
+  setBusy(form, true, adminLogin ? 'Opening control room…' : 'Signing in…');
   try {
     await signIn({ email: email.value.trim(), password: password.value });
-    const next = takeDestination(sanitizeNext(form.dataset.next) || '/account');
-    toast('Welcome back.', 'You are signed in.');
+    if (adminLogin && authState.role !== 'admin') {
+      await signOut();
+      throw new Error('This account does not have administrator access.');
+    }
+    const next = adminLogin ? '/admin' : takeDestination(sanitizeNext(form.dataset.next) || '/account');
+    trackEvent('login_success', { admin: adminLogin });
+    toast(adminLogin ? 'Control room opened.' : 'Welcome back.', 'You are signed in.');
     go(next);
   } catch (error) {
+    trackEvent('login_failed', { admin: adminLogin });
     formMessage(form, friendlyAuthError(error, 'Sign-in failed. Please try again.'));
     if (/password/i.test(error?.message || '')) setFieldError(password, 'Check your password and try again.');
   } finally {
@@ -593,6 +602,7 @@ async function handleRegister(form, event) {
   if (!terms?.checked) { formMessage(form, 'Please acknowledge the privacy note and terms.'); ok = false; }
   if (!ok) return;
 
+  trackEvent('signup_start');
   setBusy(form, true, 'Creating your account…');
   try {
     const result = await signUp({
@@ -609,6 +619,7 @@ async function handleRegister(form, event) {
 
     if (result.session) {
       const next = takeDestination(sanitizeNext(form.dataset.next) || '/account');
+      trackEvent('signup_complete', { verifiedImmediately: true });
       toast('Your account is ready.', 'Welcome to Playroom.');
       go(next);
       return;
@@ -664,8 +675,10 @@ function showOtpVerification(form, email, next) {
     setBusy(otpForm, true, 'Verifying…');
     try {
       const data = await verifySignupOtp(email, code);
+      trackEvent('otp_verify', { success: true });
       if (data.session) {
         const target = takeDestination(next);
+        trackEvent('signup_complete', { verifiedImmediately: false });
         toast('Your email is verified.', 'Welcome to Playroom.');
         go(target);
         return;

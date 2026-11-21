@@ -2,6 +2,7 @@
 import { safe, toast } from './dom.js';
 import { formatMoney, state, toggleWishlist, addToCart } from './store.js';
 import { byId } from './data.js';
+import { trackEvent } from './analytics.js';
 
 // Compare list lives on the app shell for both card checkboxes and the dock.
 export const isCompare = (id) => (window.__compare || []).includes(id);
@@ -37,13 +38,18 @@ export function bindProductActions(root = document) {
     if (add) {
       e.preventDefault(); e.stopPropagation();
       const p = byId(add.dataset.add);
-      if (p) { addToCart({ productId: p.id, unitPrice: p.price, name: p.name, image: p.image }); toast('Added to your bag.', p.name); }
+      if (p) {
+        addToCart({ productId: p.id, unitPrice: p.price, name: p.name, image: p.image });
+        trackEvent('add_to_cart', { productId: p.id, value: p.price });
+        toast('Added to your bag.', p.name);
+      }
       return;
     }
     const wish = e.target.closest('[data-wish]');
     if (wish) {
       e.preventDefault(); e.stopPropagation();
       const added = toggleWishlist(wish.dataset.wish);
+      trackEvent(added ? 'wishlist_add' : 'wishlist_remove', { productId: wish.dataset.wish });
       toast(added ? 'Saved for later.' : 'Removed from saved things.', added ? '♡' : '');
       refreshHearts(root);
       return;
@@ -51,6 +57,9 @@ export function bindProductActions(root = document) {
   });
   root.addEventListener('change', (e) => {
     const cmp = e.target.closest('[data-compare]');
-    if (cmp) window.__appToggleCompare?.(cmp.dataset.compare, cmp.checked);
+    if (cmp) {
+      window.__appToggleCompare?.(cmp.dataset.compare, cmp.checked);
+      trackEvent('compare_add', { productId: cmp.dataset.compare, enabled: cmp.checked });
+    }
   });
 }

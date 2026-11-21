@@ -6,6 +6,7 @@ import { formatMoney, state, discountAmount, cartSubtotal, clearCart, upsertOrde
 import { effectiveDeliveryFee, chosenDelivery, setChosenDelivery } from './delivery.js';
 import { fling } from './spring.js';
 import { authState, getAccessToken } from './auth/auth-store.js';
+import { trackEvent } from './analytics.js';
 import {
   PAYMENT_METHODS, generatePayer, generatePayment, validatePayment,
   cardBrand, formatCardNumber, formatExpiry,
@@ -350,6 +351,7 @@ export async function completeOrder({ form = null, methodLabel = 'Card · demo g
   sessionStorage.removeItem('pl-code');
   clearGift();
   setChosenDelivery(null);
+  trackEvent('order_completed', { orderId: order.id, value: order.total, paymentMethod: methodLabel });
   return order;
 }
 

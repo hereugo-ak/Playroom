@@ -5,6 +5,7 @@ import { formatMoney, state } from './store.js';
 import { authState, getAccessToken } from './auth/auth-store.js';
 import { membershipState, loadMembership, onMembershipChange } from './auth/membership.js';
 import { go, render, route } from './router.js';
+import { trackEvent } from './analytics.js';
 import {
   PAYMENT_METHODS, generatePayment, validatePayment, gatewayTxnId,
 } from './gateway.js';
@@ -491,6 +492,7 @@ async function wireCheckout() {
 
       try { sessionStorage.removeItem(`pl-circle-key:${plan.code}`); } catch { /* ignore */ }
       await loadMembership(true);
+      trackEvent('membership_activate', { planCode: plan.code, value: plan.price });
       toast('Welcome to Playroom Circle.', 'Your demo benefits are active.');
       go('/circle/success');
     } catch (error) {
@@ -571,6 +573,7 @@ function wireGuide() {
       a.click();
       a.remove();
       URL.revokeObjectURL(url);
+      trackEvent('guide_download');
       toast('Play guide downloaded.', 'A little something for the next play session.');
     } catch (error) {
       toast('Could not open the guide.', String(error?.message || error));

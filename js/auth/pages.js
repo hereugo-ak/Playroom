@@ -163,28 +163,32 @@ function pageGuardCard(message, href = '#/account/login', label = 'Sign in') {
 // Login
 // ---------------------------------------------------------------------------
 export function renderLogin(r) {
-  const next = sanitizeNext(r?.params?.get('next')) || '/account';
+  const adminMode = r?.params?.get('admin') === '1';
+  const next = adminMode ? '/admin' : (sanitizeNext(r?.params?.get('next')) || '/account');
   const registerHref = `#/account/register${next !== '/account' ? `?next=${encodeURIComponent(next)}` : ''}`;
   return authShell({
     page: 'login',
-    kicker: 'WELCOME BACK',
-    title: 'Back to<br><em>the playroom.</em>',
-    intro: 'Sign in to find your saved things, addresses and orders exactly where you left them.',
-    children: `<form class="pl-form" id="authLoginForm" novalidate data-next="${safe(next)}">
+    kicker: adminMode ? 'RESTRICTED ACCESS' : 'WELCOME BACK',
+    title: adminMode ? 'Admin <em>sign in.</em>' : 'Back to<br><em>the playroom.</em>',
+    intro: adminMode
+      ? 'Sign in with an administrator account to open the Playroom analytics control room.'
+      : 'Sign in to find your saved things, addresses and orders exactly where you left them.',
+    children: `<form class="pl-form" id="authLoginForm" novalidate data-next="${safe(next)}"${adminMode ? ' data-admin="1"' : ''}>
       ${textField({ id: 'loginEmail', name: 'email', label: 'Email address', type: 'email', autocomplete: 'email', placeholder: 'you@example.com' })}
       ${passwordField({
         id: 'loginPassword',
         name: 'password',
         label: 'Password',
-        hint: '<a class="pl-label-link" href="#/account/forgot-password">Forgot password?</a>',
+        hint: adminMode ? '' : '<a class="pl-label-link" href="#/account/forgot-password">Forgot password?</a>',
       })}
       <div class="pl-form-message" data-form-message role="alert" hidden></div>
-      <button class="btn full pl-submit" type="submit"><span>Sign in</span> <span class="arrow" aria-hidden="true">↗</span></button>
+      <button class="btn full pl-submit" type="submit"><span>${adminMode ? 'Open analytics' : 'Sign in'}</span> <span class="arrow" aria-hidden="true">↗</span></button>
     </form>
-    <div class="pl-or"><span>or</span></div>
-    ${googleButton('Continue with Google')}
+    ${adminMode ? '' : `<div class="pl-or"><span>or</span></div>${googleButton('Continue with Google')}`}
     <div class="pl-form-message pl-form-message--error" data-auth-inline-error role="alert" hidden></div>`,
-    alt: `<p>New to Playroom? <a href="${registerHref}">Create an account <span aria-hidden="true">↗</span></a></p>`,
+    alt: adminMode
+      ? '<p>Not an administrator? <a href="#/account/login">Return to customer sign in</a></p>'
+      : `<p>New to Playroom? <a href="${registerHref}">Create an account <span aria-hidden="true">↗</span></a></p><p class="pl-admin-link"><a href="#/account/login?admin=1">Admin access <span aria-hidden="true">↗</span></a></p>`,
   });
 }
 
