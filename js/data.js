@@ -184,12 +184,9 @@ export const PRODUCT_3D_CONFIG = {
     modelType: 'procedural',
     modelUrl: '',
     poster: 'assets/img/photo-01.jpg',
-    backdrop: 'assets/img/hero.jpg',
-    childPhoto: 'assets/img/hero.jpg',
-    childCrop: [0.58, 0.16, 0.24, 0.62],
     title: 'Little Architect Wooden Blocks',
     kicker: 'THE 3D STUDIO',
-    intro: 'Turn the blocks, see the beechwood finish up close and watch them come alive in a child’s hands.',
+    intro: 'Turn the pieces, inspect the wood finish and explore the set from every angle.',
     hotspots: [
       { id: 'finish', label: 'Beechwood finish', detail: 'Smooth, tactile arches and rings with softly rounded edges.', point: [0.95, 0.75, -0.25] },
       { id: 'build', label: 'Open-ended build', detail: 'The same pieces become a rainbow, a bridge or a little city.', point: [-0.2, 1.3, 0.05] },

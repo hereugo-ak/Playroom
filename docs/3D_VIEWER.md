@@ -41,23 +41,17 @@ The first product uses an art-directed procedural scene:
 
 - rounded rainbow arches, stacking rings and wooden pieces modelled from the catalogue photo
 - PBR-style materials, generated grain, RoomEnvironment reflections and soft contact shadow
-- the Playroom hero photograph as a warm room backdrop
-- a feathered cut-out of the real child from the hero used in Scale and In play modes
-- no cartoon mascot, no neon grid, no generic model-viewer iframe
+- material colours sampled directly from `assets/img/photo-01.jpg`
+- no child, room backdrop, cartoon mascot or external GLB in the default scene
+- no neon grid, no generic model-viewer iframe
 
 A true 1:1 product scan still requires a GLB/3D asset from the supplier. `config.modelUrl` is ready for that.
 
 The human figure/hand rig is reusable. Future products can use the same rig with different product scenes.
 
-## Modes
+## Controls
 
-| Mode | Behaviour |
-| --- | --- |
-| Product | Orbit, zoom, hotspots, auto-rotate |
-| In play | Reusable child hand animates the product through a short play sequence |
-| Scale | Realistic-proportioned child figure appears beside the product |
-
-Controls:
+The viewer is product-only. Controls:
 
 - drag to orbit
 - scroll / pinch to zoom
@@ -93,7 +87,7 @@ If `modelUrl` is present, the viewer loads the GLB. If loading fails, it falls b
 2. 3D route opens with poster/loading state.
 3. Drag and zoom work on desktop and touch.
 4. Hotspots show and focus correctly.
-5. Product / In play / Scale modes switch cleanly.
+5. Full view expands to a clean body-level viewport with no footer/header bleed.
 6. Reset and auto-rotate work.
 7. Navigating away disposes the renderer.
 8. WebGL fallback shows the poster.

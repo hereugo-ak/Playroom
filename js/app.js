@@ -515,11 +515,6 @@ function renderProduct3D(r) {
           <h2>${safe(config.title)}</h2>
           <p class="p3d-lede">${safe(product.benefit)} · ${safe(product.detail)}</p>
 
-          <div class="p3d-modes" role="group" aria-label="3D view mode">
-            <button type="button" data-p3d-mode="product" class="active" aria-pressed="true">Product</button>
-            <button type="button" data-p3d-mode="play" aria-pressed="false">In play</button>
-            <button type="button" data-p3d-mode="scale" aria-pressed="false">Scale</button>
-          </div>
           <p class="p3d-caption" data-p3d-caption>Drag to turn the piece. Open a marker for the small details.</p>
 
           <div class="p3d-controls">
@@ -528,19 +523,18 @@ function renderProduct3D(r) {
           </div>
           <div class="p3d-fullscreen-controls">
             <button type="button" data-p3d-expand><span aria-hidden="true">⤢</span> Full view</button>
-            <button type="button" data-p3d-productonly><span aria-hidden="true">◇</span> Product only</button>
           </div>
 
           <div class="p3d-help">
             <span class="mono">HOW TO EXPLORE</span>
-            <p>Drag to orbit · scroll or pinch to zoom · tap a marker for details. Scale and play modes use the real child from the Playroom hero image.</p>
+            <p>Drag to orbit · scroll or pinch to zoom · tap a marker for details. Full view gives the product the whole screen.</p>
           </div>
 
           <div class="p3d-actions">
             <a class="btn" href="#/product/${product.slug}">Back to product <span class="arrow" aria-hidden="true">↗</span></a>
             <a class="text-link" href="#/catalog">Keep exploring <span aria-hidden="true">↗</span></a>
           </div>
-          <p class="p3d-note">Demo 3D studio. Scale and play use the Playroom hero photograph; product geometry is art-directed from the catalogue image.</p>
+          <p class="p3d-note">Concept 3D model built from the catalogue image. No child, room scene or external GLB is used.</p>
         </aside>
       </div>
     </section>
