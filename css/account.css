@@ -321,6 +321,8 @@ body:has(.pl-account) #plCallOverlay { display: none !important; }
 .pl-auth-alt { margin-top: 22px; padding-top: 18px; border-top: 1px solid #eceee7; text-align: center; }
 .pl-auth-alt p { margin: 0; font-size: 11px; color: #847264; }
 .pl-auth-alt a { color: var(--green, #4c3428); border-bottom: 1px solid currentColor; padding-bottom: 1px; }
+.pl-admin-link { margin-top: 14px !important; font-size: 9px !important; color: #a08e7f !important; }
+.pl-admin-link a { color: #9a8672; border-bottom: 1px solid #d8c5ad; padding-bottom: 1px; }
 .pl-auth-fineprint { margin: 18px 0 0; font-size: 9px; line-height: 1.65; color: #a08e7f; text-align: center; }
 .pl-auth-fineprint a { border-bottom: 1px solid currentColor; }
 

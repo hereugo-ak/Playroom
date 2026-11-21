@@ -10,6 +10,7 @@ import { state, formatMoney } from './store.js';
 import { authState, onAuthChange, getAccessToken } from './auth/auth-store.js';
 import { membershipState, onMembershipChange } from './auth/membership.js';
 import { fedexStatus } from './gateway.js';
+import { trackEvent } from './analytics.js';
 
 export function initSupport() {
   const $ = (s) => document.querySelector(s);
@@ -92,7 +93,10 @@ export function initSupport() {
   }
 
   function setChat(open) {
-    if (open) setFab(false);
+    if (open) {
+      setFab(false);
+      trackEvent('chat_open');
+    }
     chatPanel.classList.toggle('is-open', open);
     chatPanel.setAttribute('aria-hidden', String(!open));
     openChat.setAttribute('aria-expanded', String(open));
@@ -197,6 +201,7 @@ export function initSupport() {
         const result = await response.json().catch(() => ({}));
         if (!response.ok) throw new Error(result.error || 'Could not save your request.');
         window.__closeModal?.();
+        trackEvent('support_request', { priority: true, kind: 'support' });
         addMessage('Your priority care request is saved. You can see it under Membership in your account.', 'bot', 'Playroom Care · Priority desk');
         toast('Priority request saved.', 'It is marked Priority in your Circle desk.');
       } catch (error) {
@@ -485,6 +490,7 @@ export function initSupport() {
   // orbiting rings around the care icons.
   function openCallFromLauncher() {
     if (callOpen) return;
+    trackEvent('audio_call_open');
     openCallFlow();
   }
 

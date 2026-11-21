@@ -13,6 +13,8 @@ prefixes.
 | `#/checkout` | Signed-in customers | Guests see a branded sign-in gate with `?next=/checkout`; their bag stays intact. All order creation goes through `POST /api/orders`. |
 | `#/circle` | Public | Playroom Circle benefits and pricing. |
 | `#/3d/:slug` | Public | Premium interactive 3D product studio. First enabled product: Little Architect Wooden Blocks. |
+| `#/admin` | Admin only | Secure analytics control room with revenue, funnels, breakdowns, tables and low-level event ledger. |
+| `#/account/login?admin=1` | Public | Admin sign-in mode; hides customer signup and opens analytics after an admin role check. |
 | `#/circle/checkout` | Signed-in customers | Demo payment checkout using the existing Stripe-style UI; guests see a sign-in gate. |
 | `#/circle/success` | Signed-in customers | Post-activation Circle welcome state. |
 | `#/account/membership` | Protected | Active membership, benefits, demo payment history, play guide download and service requests. |

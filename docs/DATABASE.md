@@ -6,6 +6,7 @@ Migrations:
 2. [`20261119110000_playroom_orders.sql`](../supabase/migrations/20261119110000_playroom_orders.sql)
 3. [`20261120120000_order_email_outbox.sql`](../supabase/migrations/20261120120000_order_email_outbox.sql)
 4. [`20261120130000_playroom_circle.sql`](../supabase/migrations/20261120130000_playroom_circle.sql)
+5. [`20261122140000_admin_analytics.sql`](../supabase/migrations/20261122140000_admin_analytics.sql)
 
 Checkout still creates a clearly-labelled **demo** order — no payment, courier
 or email is involved — but the receipt snapshot is stored against the signed-in
@@ -125,6 +126,15 @@ idempotency key. `member_requests` stores Build with us, repair and priority
 support requests. Customers can read their own rows; only the server writes.
 
 See [`CIRCLE.md`](./CIRCLE.md) for the full benefit-to-code mapping.
+
+### Admin analytics tables
+
+`analytics_events` stores low-level behavioural events with session/user ids,
+page paths, product and order references, values, device/browser metadata and
+sanitised properties. `admin_audit_logs` records admin actions. Browser roles
+have no access; only the server service role writes these tables.
+
+See [`ADMIN_ANALYTICS.md`](./ADMIN_ANALYTICS.md).
 
 ## Triggers
 

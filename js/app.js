@@ -34,6 +34,8 @@ import { initAccountUI, renderAuthRoute, wireAuthPage, registerAccountOrdersRend
 import { accountShell } from './auth/pages.js';
 import { startWishlistSync } from './auth/wishlist-sync.js';
 import { startOrderSync, hydrateOrders, syncNewReturn } from './auth/order-sync.js';
+import { initAnalytics, trackEvent } from './analytics.js';
+import { renderAdminDashboard, wireAdminPage } from './admin.js';
 import { membershipState, startMembershipSync, hydrateMembership } from './auth/membership.js';
 import {
   renderCircleLanding, renderCircleCheckout, renderCircleSuccess,
@@ -44,6 +46,8 @@ const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
 let mobileMenu = false;
 let appReady = false;
 let current3dSlug = null;
+let trackedCheckoutPath = '';
+let trackedProductPath = '';
 window.__appReady = false;
 
 // ------------------------------------------------------------------
@@ -2126,6 +2130,7 @@ registerRoutes({
   '/account/wishlist': (r) => renderAuthRoute(r),
   '/account/membership': renderCircleMembership,
   '/account': (r) => renderAuthRoute(r),
+  '/admin': renderAdminDashboard,
   '/circle/checkout': renderCircleCheckout,
   '/circle/success': renderCircleSuccess,
   '/circle': renderCircleLanding,
@@ -2200,16 +2205,30 @@ function wirePage() {
     $$('[data-view]').forEach((x) => x.classList.toggle('active', x === b));
     $('#catalogGrid')?.classList.toggle('list-view', b.dataset.view === 'list');
   }));
-  $$('[data-category]').forEach((b) => b.addEventListener('click', () => go('/catalog?category=' + encodeURIComponent(b.dataset.category))));
+  $$('[data-category]').forEach((b) => b.addEventListener('click', () => {
+    trackEvent('category_click', { category: b.dataset.category });
+    go('/catalog?category=' + encodeURIComponent(b.dataset.category));
+  }));
 
   // PDP — all depth wiring lives in wirePdp()
   const pdpProduct = route().path.startsWith('/product/') ? bySlug(route().path.slice(9)) : null;
-  if (pdpProduct) wirePdp(pdpProduct);
+  if (pdpProduct) {
+    if (trackedProductPath !== route().path) {
+      trackedProductPath = route().path;
+      trackEvent('product_view', { productId: pdpProduct.id, value: pdpProduct.price });
+    }
+    wirePdp(pdpProduct);
+  }
+  if ($('#checkoutPage') && trackedCheckoutPath !== route().path) {
+    trackedCheckoutPath = route().path;
+    trackEvent('checkout_start');
+  }
   startPromiseTicker();
   $$('[data-compare-add]').forEach((b) => b.addEventListener('click', () => {
     const id = b.dataset.compareAdd;
     const on = !window.__compare.includes(id);
     toggleCompare(id, on);
+    trackEvent('compare_add', { productId: id, enabled: on });
     b.innerHTML = (on ? 'Remove from comparison' : 'Compare this toy') + ' <span>↗</span>';
   }));
 
@@ -2246,6 +2265,7 @@ function wirePage() {
   wireAccount();
   wireAuthPage();
   wireCirclePage();
+  wireAdminPage();
   wireSponsored(); // home — swipeable sponsored picks
 
   // Community — the playroom (posts, replies, likes, filters, sorting)
@@ -2349,6 +2369,7 @@ function wirePage() {
 }
 
 function catalogFilter(k, v) {
+  trackEvent('filter_change', { type: k, value: v || 'all' });
   holdScrollOnce(); // keep the visitor where they are while the grid re-filters
   const p = new URLSearchParams(route().params);
   if (v) p.set(k, v); else p.delete(k);
@@ -2366,6 +2387,7 @@ async function init() {
   // must not flash its contents to a signed-out visitor.
   // Both sync modules subscribe before initAuth() restores the session, so
   // their first onAuthChange event hydrates the account data.
+  initAnalytics();
   startWishlistSync();
   startOrderSync();
   startMembershipSync();
@@ -2440,6 +2462,7 @@ async function init() {
     e.preventDefault();
     const q = $('#bigSearchInput').value.trim();
     rememberSearch(q);
+    trackEvent('search', { queryLength: q.length, hasResults: q.length > 0 });
     closeSearch();
     go('/catalog?q=' + encodeURIComponent(q));
   });
@@ -2535,7 +2558,12 @@ async function init() {
   // Any product card's "Quick look" opens the modal — wired once, delegated.
   document.addEventListener('click', (e) => {
     const qv = e.target.closest('[data-quickview]');
-    if (qv) { e.preventDefault(); e.stopPropagation(); openQuickView(qv.dataset.quickview); }
+    if (qv) {
+      e.preventDefault();
+      e.stopPropagation();
+      trackEvent('quick_view', { productId: qv.dataset.quickview });
+      openQuickView(qv.dataset.quickview);
+    }
   });
   window.__closeModal = closeModal;
   window.__openQuickView = openQuickView;
@@ -2547,11 +2575,18 @@ async function init() {
   initScrollExperience();
   initWelcome();
   render();
+  trackEvent('page_view', { pagePath: window.location.hash.slice(1) || '/' });
   appReady = true;
   window.__appReady = true;
   motionRefresh();
   refreshHeroScene();
-  window.addEventListener('hashchange', () => { render(); window.__wirePage(); motionRefresh(); refreshHeroScene(); });
+  window.addEventListener('hashchange', () => {
+    render();
+    window.__wirePage();
+    trackEvent('page_view', { pagePath: window.location.hash.slice(1) || '/' });
+    motionRefresh();
+    refreshHeroScene();
+  });
   window.__wirePage();
 }
 
