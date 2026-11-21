@@ -4,7 +4,7 @@ import { $, $$, safe, toast } from './dom.js';
 import {
   formatMoney, state, addToCart, changeQty, removeFromCart, clearCart,
   cartSubtotal, cartCount, deliveryFee, discountAmount, persist,
-  createDemoOrder, getOrder, toggleWishlist, listeners,
+  getOrder, toggleWishlist, listeners,
   read as storageRead, write as storageWrite,
   PERSONALISE_FEE, GIFT_WRAP_ID, GIFT_WRAP_PRICE, addGiftWrap, hasGiftWrap, removeGiftWrap,
   pointsBalance, pointsEarnedFor, redeemLeaves, ensureReferral,
@@ -921,6 +921,43 @@ function notFound() {
 // ------------------------------------------------------------------
 // Checkout (Stripe-style payment page + demo order snapshot, handoff §8.3–8.5)
 // ------------------------------------------------------------------
+// Guests can build a bag, but placing an order is account-only. The bag stays
+// in localStorage while the customer signs in and returns to checkout.
+function renderCheckoutSignIn() {
+  const count = cartCount();
+  const subtotal = cartSubtotal();
+  return `<div class="route-enter checkout-gate">
+  <div class="wrap page-head checkout-gate-head">
+    <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Checkout</span></div>
+    <div class="mono muted">YOUR PLAYROOM ACCOUNT</div>
+    <h1 class="page-title">One step before <em>checkout.</em></h1>
+    <p class="page-intro">Sign in to place your order, keep the receipt and follow its demo tracking from your account.</p>
+  </div>
+  <section class="section wrap checkout-gate-section">
+    <div class="checkout-gate-card">
+      <div class="checkout-gate-copy">
+        <span class="checkout-gate-kicker">CUSTOMER ACCOUNT REQUIRED</span>
+        <h2>Sign in to finish <em>your order.</em></h2>
+        <p>Your bag is saved right here. Once you sign in, we’ll bring you straight back to checkout — with your items, delivery choice and discount still waiting.</p>
+        <div class="checkout-gate-actions">
+          <a class="btn" href="#/account/login?next=%2Fcheckout">Sign in to continue <span class="arrow" aria-hidden="true">↗</span></a>
+          <a class="text-link" href="#/catalog">Continue exploring <span aria-hidden="true">↗</span></a>
+        </div>
+        <div class="checkout-gate-note"><i aria-hidden="true">✳</i><span>New here? Create an account from the sign-in page. Your bag will still be here when you return.</span></div>
+      </div>
+      <aside class="checkout-gate-bag">
+        <span>YOUR BAG</span>
+        <dl>
+          <div><dt>Items</dt><dd>${count} ${count === 1 ? 'toy' : 'toys'}</dd></div>
+          <div><dt>Subtotal</dt><dd>${formatMoney(subtotal)}</dd></div>
+          <div class="checkout-gate-total"><dt>Ready for checkout</dt><dd>${formatMoney(subtotal)}</dd></div>
+        </dl>
+        <p>Nothing is charged in this demo storefront. Signing in only connects the order to your Playroom account.</p>
+      </aside>
+    </div>
+  </section>
+</div>`;
+}
 // --- Stripe-Checkout-style payment page -----------------------------
 const ST_STATES = ['Andaman & Nicobar', 'Andhra Pradesh', 'Arunachal Pradesh', 'Assam', 'Bihar', 'Chandigarh', 'Chhattisgarh', 'Dadra & Nagar Haveli & Daman & Diu', 'Delhi', 'Goa', 'Gujarat', 'Haryana', 'Himachal Pradesh', 'Jammu & Kashmir', 'Jharkhand', 'Karnataka', 'Kerala', 'Ladakh', 'Lakshadweep', 'Madhya Pradesh', 'Maharashtra', 'Manipur', 'Meghalaya', 'Mizoram', 'Nagaland', 'Odisha', 'Puducherry', 'Punjab', 'Rajasthan', 'Sikkim', 'Tamil Nadu', 'Telangana', 'Tripura', 'Uttar Pradesh', 'Uttarakhand', 'West Bengal'];
 const GW_ICONS = {
@@ -1009,6 +1046,7 @@ function openExpressSheet(kind) {
 }
 
 function renderCheckout() {
+  if (!authState.session || !authState.user) return renderCheckoutSignIn();
   if (!state.cart.length) return `<div class="st-page"><div class="st-wrap"><div class="st-topbar"><a class="st-back" href="#/catalog">${ST_BACK}Back to the toy box</a></div><div class="st-empty"><div class="st-empty-card"><div class="st-brandrow" style="justify-content:center;margin-bottom:16px"><i class="mark st-mark" aria-hidden="true"></i><span>Pay Playroom</span></div><h2 class="st-h2" style="margin-bottom:8px">Your bag is taking a breather.</h2><p style="font-size:13px;color:var(--st-400);line-height:1.7;margin:0 0 22px">Add something lovely before you check out. This is a demo checkout — no real payment is ever collected.</p><a class="st-btn st-btn--primary" href="#/catalog">Explore the collection</a></div></div></div></div>`;
   const sub = cartSubtotal();
   const fee = effectiveDeliveryFee(sub);

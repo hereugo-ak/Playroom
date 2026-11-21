@@ -2,15 +2,12 @@
 // Owns: the payment-method accordion, per-method payment forms, autofill,
 // validation, the pay-button state machine and the order hand-off.
 import { $, $$, safe, toast } from './dom.js';
-import { formatMoney, state, discountAmount, cartSubtotal, clearCart, createDemoOrder, persist, upsertOrder } from './store.js';
-import { byId } from './data.js';
+import { formatMoney, state, discountAmount, cartSubtotal, clearCart, upsertOrder } from './store.js';
 import { effectiveDeliveryFee, chosenDelivery, setChosenDelivery } from './delivery.js';
 import { fling } from './spring.js';
-import { syncNewOrder } from './auth/order-sync.js';
-import { getAccessToken } from './auth/auth-store.js';
+import { authState, getAccessToken } from './auth/auth-store.js';
 import {
   PAYMENT_METHODS, generatePayer, generatePayment, validatePayment,
-  gatewayTxnId, CARRIER, fedexTrackingNumber, packageMeta,
   cardBrand, formatCardNumber, formatExpiry,
 } from './gateway.js';
 
@@ -283,7 +280,7 @@ function checkoutKey() {
 /** Server-owned checkout for signed-in customers. Prices come from the API. */
 async function createServerOrder({ form, customer, methodLabel }) {
   const token = await getAccessToken();
-  if (!token) return null;
+  if (!token) throw new Error('Your session has expired. Please sign in again.');
   const fd = form ? new FormData(form) : new FormData();
   const payload = {
     idempotencyKey: checkoutKey(),
@@ -324,11 +321,11 @@ async function createServerOrder({ form, customer, methodLabel }) {
 }
 
 export async function completeOrder({ form = null, methodLabel = 'Card · demo gateway', extra = {} } = {}) {
-  const sub = cartSubtotal();
-  const code = sessionStorage.getItem('pl-code') || '';
-  const disc = discountAmount(sub, code);
-  const fee = effectiveDeliveryFee(sub);
-  const total = sub - disc + fee;
+  // Account-only checkout. This guard protects every payment path, including
+  // express wallets and direct calls, not just the visible checkout page.
+  if (!authState.session || !authState.user) {
+    throw new Error('Please sign in before placing an order.');
+  }
 
   const fd = form ? new FormData(form) : new FormData();
   const fb = generatePayer();
@@ -345,47 +342,10 @@ export async function completeOrder({ form = null, methodLabel = 'Card · demo g
     pincode: String(fd.get('pincode') || fb.pincode).trim(),
     deliveryNote: String(fd.get('note') || '').trim(),
   };
-  const lines = state.cart.map((x) => {
-    const p = byId(x.productId) || x;
-    return {
-      productId: x.productId, name: x.name || p.name, image: x.image || p.image,
-      unitPrice: x.unitPrice, qty: x.qty, lineTotal: x.unitPrice * x.qty,
-      personalisation: x.personalisation || null,
-      persKind: p.persKind || null,
-      special: x.special || null,
-    };
-  });
-  const gift = readGift();
-  const delivery = chosenDelivery();
-
-  // Signed-in checkouts go through the server so pricing is trusted, the order
+  // Every real order goes through the server so pricing is trusted, the order
   // is committed before the email, and retries cannot create duplicates.
-  const serverOrder = await createServerOrder({ form, customer, methodLabel });
-  if (serverOrder) {
-    clearCart();
-    sessionStorage.removeItem('pl-code');
-    clearGift();
-    setChosenDelivery(null);
-    return serverOrder;
-  }
-
-  const order = createDemoOrder({ customer, lines, subtotal: sub, discount: disc, deliveryFee: fee, total, paymentMethod: methodLabel, gift, delivery });
-  order.gatewayTxn = gatewayTxnId();
-  order.trackingNumber = fedexTrackingNumber();
-  order.carrier = CARRIER.name;
-  order.carrierService = CARRIER.product;
-  order.package = packageMeta(lines, order.total);
-  if (code) order.promoCode = code;
-  Object.assign(order, extra);
-  // Signed in? Attach the receipt to the account before the visitor is routed
-  // to the confirmation page. A backend hiccup must never break the demo.
-  try {
-    order.syncedToAccount = await syncNewOrder(order);
-  } catch (error) {
-    order.syncedToAccount = false;
-    console.warn('[Playroom orders] could not save the order to the account', error?.message || error);
-  }
-  persist();
+  const order = await createServerOrder({ form, customer, methodLabel });
+  if (extra && typeof extra === 'object') Object.assign(order, extra);
   clearCart();
   sessionStorage.removeItem('pl-code');
   clearGift();
