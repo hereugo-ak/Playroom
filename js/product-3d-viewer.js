@@ -383,8 +383,8 @@ function createStackingRings(mats) {
   snout.position.set(0, 1.34, 0.24);
   group.add(snout);
 
-  group.add(createRing(0.34, 0.12, mats.wood, [-1.35, 0.22, 0.45]));
-  group.add(createRing(0.27, 0.1, mats.rust, [1.3, 0.2, 0.5], [Math.PI / 2, 0, 0.3]));
+  group.add(createRing(0.34, 0.12, 0.2, mats.wood, [-1.35, 0.22, 0.45]));
+  group.add(createRing(0.27, 0.1, 0.18, mats.rust, [1.3, 0.2, 0.5], [Math.PI / 2, 0, 0.3]));
   group.add(roundedBlock(0.34, 0.34, 0.34, mats.sage, [1.45, 0.25, -0.4], [0, 0.2, 0]));
 
   group.userData.focusBlock = group.children[2];
@@ -629,7 +629,10 @@ export async function mountProduct3D(slug, config) {
     console.error('[3D] viewer unavailable', error);
     stage.classList.add('is-fallback');
     document.querySelector('[data-p3d-loading]')?.setAttribute('hidden', '');
-    document.querySelector('[data-p3d-fallback]')?.removeAttribute('hidden');
+    const fallback = document.querySelector('[data-p3d-fallback]');
+    fallback?.removeAttribute('hidden');
+    const detail = fallback?.querySelector('p');
+    if (detail) detail.textContent = String(error?.message || error || 'Explore the product photos or return to the product page.').slice(0, 180);
   }
 }
 
