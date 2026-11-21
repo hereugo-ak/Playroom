@@ -155,6 +155,7 @@ export const products = seedData.map((s, i) => {
     featured: [0, 2, 8, 16, 24, 30, 37, 48, 54].includes(i) || (i >= 60 && i % 9 === 0),
     fresh: [4, 10, 20, 31, 43, 50].includes(i) || (i >= 60 && i % 7 === 0),
     circleEarly: i >= 100,
+    has3D: i === 1, // Little Architect Wooden Blocks — first 3D showcase
     image: images[0],
     images,
     seller,
@@ -171,6 +172,28 @@ export const products = seedData.map((s, i) => {
       : (/(^| )wood|wooden|architect|beech/i.test(s[0]) || s[6] === 'wood' ? 'engraving' : null),
   };
 });
+
+// Reusable 3D product configuration. Add an entry here and set has3D on a
+// product to bring more pieces into the viewer. GLB is optional; when omitted
+// the viewer builds the art-directed procedural scene for the configured type.
+export const PRODUCT_3D_CONFIG = {
+  pl2: {
+    productId: 'pl2',
+    slug: 'little-architect-wooden-blocks',
+    scene: 'wooden-blocks',
+    modelType: 'procedural',
+    modelUrl: '',
+    poster: 'assets/img/photo-01.jpg',
+    title: 'Little Architect Wooden Blocks',
+    kicker: 'THE 3D STUDIO',
+    intro: 'Turn the blocks, see the beechwood finish up close and watch them come alive in a child’s hands.',
+    hotspots: [
+      { id: 'finish', label: 'Beechwood finish', detail: 'Smooth, tactile blocks with softly rounded edges.', point: [0.65, 0.62, 0.35] },
+      { id: 'build', label: 'Open-ended build', detail: 'The same pieces become a tower, a bridge or a little city.', point: [-0.55, 0.45, 0.55] },
+      { id: 'scale', label: 'Just-right scale', detail: 'Chunky enough for small hands, simple enough for big ideas.', point: [0.2, -0.35, 0.7] },
+    ],
+  },
+};
 
 export const categoryPhoto = {
   'Building & STEM': photos[0],  'Games & Puzzles': photos[8],

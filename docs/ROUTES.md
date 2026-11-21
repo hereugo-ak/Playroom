@@ -12,6 +12,7 @@ prefixes.
 | `#/orders` | Public | Demo-order page: local orders for guests, the signed-in customer's saved orders when signed in. |
 | `#/checkout` | Signed-in customers | Guests see a branded sign-in gate with `?next=/checkout`; their bag stays intact. All order creation goes through `POST /api/orders`. |
 | `#/circle` | Public | Playroom Circle benefits and pricing. |
+| `#/3d/:slug` | Public | Premium interactive 3D product studio. First enabled product: Little Architect Wooden Blocks. |
 | `#/circle/checkout` | Signed-in customers | Demo payment checkout using the existing Stripe-style UI; guests see a sign-in gate. |
 | `#/circle/success` | Signed-in customers | Post-activation Circle welcome state. |
 | `#/account/membership` | Protected | Active membership, benefits, demo payment history, play guide download and service requests. |

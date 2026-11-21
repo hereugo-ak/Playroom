@@ -12,6 +12,7 @@ shipped.
 **Routes:** [`docs/ROUTES.md`](./docs/ROUTES.md)
 **Order email setup:** [`docs/EMAIL_SETUP.md`](./docs/EMAIL_SETUP.md)
 **Playroom Circle:** [`docs/CIRCLE.md`](./docs/CIRCLE.md)
+**3D product studio:** [`docs/3D_VIEWER.md`](./docs/3D_VIEWER.md)
 **Testing & manual steps:** [`docs/TESTING.md`](./docs/TESTING.md)
 
 ## Quick start
