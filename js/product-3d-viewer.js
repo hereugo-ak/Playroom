@@ -5,6 +5,7 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { RoundedBoxGeometry } from 'three/examples/jsm/geometries/RoundedBoxGeometry.js';
 import { GLTFLoader } from 'three/examples/jsm/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/examples/jsm/environments/RoomEnvironment.js';
 
 let current = null;
 
@@ -37,6 +38,43 @@ function woodTexture() {
   texture.wrapT = THREE.RepeatWrapping;
   texture.anisotropy = 8;
   return texture;
+}
+
+async function photoCutout(url, crop = [0, 0, 1, 1]) {
+  const texture = await new THREE.TextureLoader().loadAsync(url);
+  const image = texture.image;
+  const sx = Math.floor(crop[0] * image.naturalWidth);
+  const sy = Math.floor(crop[1] * image.naturalHeight);
+  const sw = Math.floor(crop[2] * image.naturalWidth);
+  const sh = Math.floor(crop[3] * image.naturalHeight);
+
+  const canvas = document.createElement('canvas');
+  canvas.width = sw;
+  canvas.height = sh;
+  const ctx = canvas.getContext('2d');
+  ctx.drawImage(image, sx, sy, sw, sh, 0, 0, sw, sh);
+
+  // Soft elliptical feather keeps the photographic child reference from
+  // looking like a hard rectangular cut-out.
+  ctx.globalCompositeOperation = 'destination-in';
+  ctx.save();
+  ctx.translate(sw / 2, sh / 2);
+  ctx.scale(1, sh / sw);
+  const grad = ctx.createRadialGradient(0, 0, sw * 0.16, 0, 0, sw * 0.52);
+  grad.addColorStop(0, 'rgba(0,0,0,1)');
+  grad.addColorStop(0.72, 'rgba(0,0,0,0.92)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = grad;
+  ctx.beginPath();
+  ctx.arc(0, 0, sw * 0.52, 0, Math.PI * 2);
+  ctx.fill();
+  ctx.restore();
+
+  const cut = new THREE.CanvasTexture(canvas);
+  cut.colorSpace = THREE.SRGBColorSpace;
+  cut.transparent = true;
+  texture.dispose();
+  return cut;
 }
 
 function makeMaterials() {
@@ -134,6 +172,27 @@ function createBlocks(product, mats) {
 
   group.userData.focusBlock = group.children[1];
   return group;
+}
+
+function createPhotoBackdrop(texture) {
+  const mesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(9.6, 5.4),
+    new THREE.MeshBasicMaterial({ map: texture, transparent: true, opacity: 0.9, depthWrite: false, toneMapped: false }),
+  );
+  mesh.position.set(0, 2.15, -3.3);
+  mesh.renderOrder = -2;
+  return mesh;
+}
+
+function createPhotoChild(texture) {
+  const mesh = new THREE.Mesh(
+    new THREE.PlaneGeometry(1.85, 2.65),
+    new THREE.MeshBasicMaterial({ map: texture, transparent: true, depthWrite: false, toneMapped: false }),
+  );
+  mesh.position.set(-1.95, 1.2, 0.9);
+  mesh.renderOrder = 3;
+  mesh.visible = false;
+  return mesh;
 }
 
 // Reusable human rig: realistic proportions and hand anatomy without an
@@ -309,9 +368,8 @@ function projectHotspots(state) {
 
 function setMode(state, mode) {
   state.mode = mode;
-  state.figure.visible = mode !== 'product';
-  state.figure.scale.setScalar(mode === 'scale' ? 0.82 : 0.72);
-  state.figure.position.set(mode === 'scale' ? -1.55 : -1.9, 0, 1.05);
+  state.figure.visible = false;
+  if (state.photoChild) state.photoChild.visible = mode !== 'product';
   state.playT = 0;
   document.querySelectorAll('[data-p3d-mode]').forEach((b) => {
     const on = b.dataset.p3dMode === mode;
@@ -323,23 +381,26 @@ function setMode(state, mode) {
     caption.textContent = mode === 'product'
       ? 'Drag to turn the piece. Open a marker for the small details.'
       : mode === 'play'
-        ? 'Watch the blocks move through a child’s hands. Drag to explore while it plays.'
-        : 'A child-scale reference sits beside the build.';
+        ? 'A real child from the Playroom hero is placed in scene while the pieces move. Drag to explore.'
+        : 'A real child from the Playroom hero sits beside the build as a scale reference.';
   }
 }
 
 function animateFigure(state, elapsed) {
+  if (!state.photoChild) return;
+  const live = state.mode !== 'product';
+  state.photoChild.position.y = 1.2 + (live ? Math.sin(elapsed * 0.9) * 0.025 : 0);
+  state.photoChild.quaternion.copy(state.camera.quaternion);
   if (state.mode !== 'play') return;
-  const cycle = (elapsed * 0.16) % 1;
-  const t = easeInOut(clamp01(cycle * 1.5));
-  const hand = state.figure.userData.rightHand;
-  if (!hand) return;
-  const start = new THREE.Vector3(0.55, 0.86, 0.25);
-  const pick = new THREE.Vector3(0.12, 1.52, 0.2);
-  const drop = new THREE.Vector3(-0.1, 2.08, 0.1);
-  hand.position.lerpVectors(start, pick, Math.min(1, t * 1.4));
-  if (t > 0.55) hand.position.lerpVectors(pick, drop, (t - 0.55) / 0.45);
-  hand.rotation.z = -0.2 + Math.sin(elapsed * 1.2) * 0.12;
+
+  const cycle = (elapsed * 0.13) % 1;
+  const lift = Math.sin(cycle * Math.PI);
+  const block = state.product.userData.focusBlock;
+  if (block) {
+    block.position.y = block.userData.baseY ?? (block.userData.baseY = block.position.y);
+    block.position.y += lift * 0.22;
+    block.rotation.z = lift * 0.16;
+  }
 }
 
 export async function mountProduct3D(slug, config) {
@@ -375,6 +436,27 @@ export async function mountProduct3D(slug, config) {
 
     const mats = makeMaterials();
     const { scene, product, figure } = buildScene(config, mats);
+
+    const pmrem = new THREE.PMREMGenerator(renderer);
+    scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.04).texture;
+
+    let backdrop = null;
+    let photoChild = null;
+    try {
+      const backdropTexture = await new THREE.TextureLoader().loadAsync(config.backdrop);
+      backdropTexture.colorSpace = THREE.SRGBColorSpace;
+      backdrop = createPhotoBackdrop(backdropTexture);
+      scene.add(backdrop);
+    } catch (error) {
+      console.warn('[3D] hero backdrop unavailable', error);
+    }
+    try {
+      const childTexture = await photoCutout(config.childPhoto, config.childCrop);
+      photoChild = createPhotoChild(childTexture);
+      scene.add(photoChild);
+    } catch (error) {
+      console.warn('[3D] photographic child unavailable', error);
+    }
 
     scene.add(new THREE.HemisphereLight(0xfff4df, 0x7d6a55, 1.45));
     const key = new THREE.DirectionalLight(0xfff0d0, 3.2);
@@ -415,6 +497,9 @@ export async function mountProduct3D(slug, config) {
       scene,
       product,
       figure,
+      backdrop,
+      photoChild,
+      pmrem,
       config,
       hotspots: makeHotspots(stage, config),
       mode: 'product',
@@ -449,8 +534,14 @@ export async function mountProduct3D(slug, config) {
       event.currentTarget.setAttribute('aria-pressed', String(controls.autoRotate));
     });
     const shell = stage.closest('.p3d-shell');
-    document.querySelector('[data-p3d-expand]')?.addEventListener('click', () => shell?.classList.add('is-expanded'));
-    document.querySelector('[data-p3d-exit]')?.addEventListener('click', () => shell?.classList.remove('is-expanded'));
+    document.querySelector('[data-p3d-expand]')?.addEventListener('click', () => {
+      shell?.classList.add('is-expanded');
+      document.body.classList.add('p3d-fullscreen');
+    });
+    document.querySelector('[data-p3d-exit]')?.addEventListener('click', () => {
+      shell?.classList.remove('is-expanded');
+      document.body.classList.remove('p3d-fullscreen');
+    });
     document.querySelector('[data-p3d-productonly]')?.addEventListener('click', () => setMode(state, 'product'));
     state.hotspots.forEach((el) => {
       el.addEventListener('click', () => {
@@ -468,6 +559,7 @@ export async function mountProduct3D(slug, config) {
       if (!current) return;
       const elapsed = clock.getElapsedTime();
       controls.update();
+      if (state.backdrop) state.backdrop.quaternion.copy(camera.quaternion);
       animateFigure(state, elapsed);
       projectHotspots(state);
       renderer.render(scene, camera);
@@ -500,9 +592,12 @@ export function disposeProduct3D() {
       });
     }
   });
+  current.pmrem?.dispose?.();
   current.renderer?.dispose();
   current.renderer?.domElement?.remove();
   current.hotspots = [];
+  document.body.classList.remove('p3d-fullscreen');
+  document.querySelector('.p3d-shell')?.classList.remove('is-expanded');
   current = null;
 }
 

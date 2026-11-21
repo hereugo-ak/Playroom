@@ -283,10 +283,12 @@
   font-weight: 600;
   cursor: pointer;
 }
+body.p3d-fullscreen { overflow: hidden !important; }
+
 .p3d-shell.is-expanded {
   position: fixed;
   inset: 0;
-  z-index: 220;
+  z-index: 1000;
   display: block;
   max-width: none;
   margin: 0;

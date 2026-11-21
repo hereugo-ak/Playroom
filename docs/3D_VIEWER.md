@@ -39,12 +39,13 @@ Three.js is dynamically imported from `js/product-3d-viewer.js`, so the main sto
 
 The first product uses an art-directed procedural scene:
 
-- rounded beechwood blocks with generated wood grain
-- warm studio lighting and soft contact shadow
-- close-up product mode
-- child-scale reusable human figure
-- stylized-realistic child hand used in the play animation
+- rounded rainbow arches, stacking rings and wooden pieces modelled from the catalogue photo
+- PBR-style materials, generated grain, RoomEnvironment reflections and soft contact shadow
+- the Playroom hero photograph as a warm room backdrop
+- a feathered cut-out of the real child from the hero used in Scale and In play modes
 - no cartoon mascot, no neon grid, no generic model-viewer iframe
+
+A true 1:1 product scan still requires a GLB/3D asset from the supplier. `config.modelUrl` is ready for that.
 
 The human figure/hand rig is reusable. Future products can use the same rig with different product scenes.
 
