@@ -117,6 +117,30 @@ export function renderCircleLanding() {
       <h1 class="page-title">A little more room for <em>play.</em></h1>
       <p class="page-intro">A membership for the small things that make everyday play feel considered — better delivery, thoughtful extras and a closer connection to the studio.</p>
     </div>
+
+    <section class="wrap circle-hero">
+      <div class="circle-hero-copy">
+        <span class="circle-kicker">A QUIETER KIND OF MEMBERSHIP</span>
+        <h2>Everyday play,<br><em>thoughtfully looked after.</em></h2>
+        <p>Circle is built around the useful extras — faster delivery, a wrapped gift, longer custom notes and a desk that remembers what you asked for.</p>
+        <div class="circle-hero-meta">
+          <span><b>08</b> included benefits</span>
+          <span><b>₹499</b> monthly</span>
+          <span><b>₹4,499</b> yearly</span>
+        </div>
+      </div>
+      <div class="circle-hero-art">
+        <figure class="circle-hero-main">
+          <img src="assets/img/photo-06.jpg" alt="Wooden toys arranged as a thoughtful gift" loading="eager" decoding="async">
+          <figcaption>THE EVERYDAY EDIT</figcaption>
+        </figure>
+        <figure class="circle-hero-inset">
+          <img src="assets/img/photo-31.jpg" alt="A quiet playroom shelf with toys and books" loading="lazy" decoding="async">
+        </figure>
+        <div class="circle-hero-stamp"><span>PLAYROOM</span><b>Circle</b><small>LITTLE HANDS · BIG WORLDS</small></div>
+      </div>
+    </section>
+
     <section class="section wrap circle-section">
       <div class="circle-intro">
         <div>
@@ -127,20 +151,36 @@ export function renderCircleLanding() {
       </div>
       <div class="circle-benefits">${benefitRows()}</div>
 
+      <div class="circle-editorial">
+        <div class="circle-editorial-art"><img src="assets/img/photo-13.jpg" alt="Soft toys and a warm playroom setting" loading="lazy" decoding="async"></div>
+        <div class="circle-editorial-copy">
+          <span class="circle-kicker">THE SMALL EXTRAS</span>
+          <h2>Less checkout.<br><em>More play.</em></h2>
+          <p>The best membership perks are the ones you stop noticing because they simply happen. Circle takes care of delivery, wrapping and the little notes before you have to think about them.</p>
+          <span class="circle-editorial-foot">MADE FOR LITTLE BIG IMAGINATIONS.</span>
+        </div>
+      </div>
+
       <div class="circle-pricing" id="circlePlans">
         <article class="circle-plan">
+          <div class="circle-plan-art"><img src="assets/img/photo-21.jpg" alt="A small collection of wooden play pieces" loading="lazy" decoding="async"></div>
           <span class="circle-plan-label">MONTHLY</span>
           <h3>Monthly Circle</h3>
           <div class="circle-price">${formatMoney(499)}<small>/ month</small></div>
           <p>Flexible, simple, and ready to use immediately.</p>
-          <a class="btn outline" href="${active ? '#/account/membership' : '#/circle/checkout?plan=monthly'}">${active ? 'Manage membership' : 'Choose monthly'} <span class="arrow" aria-hidden="true">↗</span></a>
+          ${active
+            ? '<a class="btn outline" href="#/account/membership">Manage membership <span class="arrow" aria-hidden="true">↗</span></a>'
+            : '<button class="btn outline" type="button" data-circle-plan="monthly">Choose monthly <span class="arrow" aria-hidden="true">↗</span></button>'}
         </article>
         <article class="circle-plan is-featured">
+          <div class="circle-plan-art"><img src="assets/img/photo-39.jpg" alt="A warmly lit edit of children's toys" loading="lazy" decoding="async"></div>
           <span class="circle-plan-label">BEST VALUE · YEARLY</span>
           <h3>Yearly Circle</h3>
           <div class="circle-price">${formatMoney(4499)}<small>/ year</small></div>
           <p>Two months included. One thoughtful membership for the year.</p>
-          <a class="btn" href="${active ? '#/account/membership' : '#/circle/checkout?plan=yearly'}">${active ? 'Manage membership' : 'Choose yearly'} <span class="arrow" aria-hidden="true">↗</span></a>
+          ${active
+            ? '<a class="btn" href="#/account/membership">Manage membership <span class="arrow" aria-hidden="true">↗</span></a>'
+            : '<button class="btn" type="button" data-circle-plan="yearly">Choose yearly <span class="arrow" aria-hidden="true">↗</span></button>'}
         </article>
       </div>
       <p class="circle-fine">Demo membership: payment is handled by the existing Playroom demo gateway. No real money is collected and no physical service is scheduled.</p>
@@ -534,8 +574,18 @@ function wireGuide() {
   });
 }
 
+function wireLanding() {
+  $$('[data-circle-plan]').forEach((button) => {
+    button.addEventListener('click', () => {
+      const plan = button.dataset.circlePlan === 'monthly' ? 'monthly' : 'yearly';
+      go(`/circle/checkout?plan=${plan}`);
+    });
+  });
+}
+
 export function wireCirclePage() {
   const path = route().path;
+  if (path === '/circle') wireLanding();
   if (path === '/circle/checkout') wireCheckout();
   if (path === '/account/membership') { wireRequestForms(); wireGuide(); }
 }
