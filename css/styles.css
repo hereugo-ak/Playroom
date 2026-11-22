@@ -2975,3 +2975,217 @@ body.pl-call-active .pl-support-launchers{opacity:0;pointer-events:none}
 @keyframes heroArtSettle{from{opacity:0}to{opacity:1}}
 /* the shelf card rides over the receding picture */
 .home-main{transform:translateZ(0)}
+
+/* ==================================================================
+   MASTHEAD · navigation legibility pass
+   One voice for every header state: a deeper ink, a little more weight
+   and size, and a rose accent that only appears on intent. The rest
+   state stays editorial (hairline underline); the 57px compact band
+   swaps to a quiet pill so the links read at a glance while scrolling.
+   Scoped to the masthead items — the mega menu keeps its own rhythm.
+   ================================================================== */
+.site-chrome-shell .nav > a,
+.site-chrome-shell .nav > button,
+.site-chrome-shell .nav .nav-mega > a{
+  font-family:var(--sans)!important;
+  font-weight:600!important;
+  font-size:12.5px!important;
+  line-height:1!important;
+  letter-spacing:.002em!important;
+  color:#31505f!important;
+  padding:9px 0 10px!important;
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+.site-chrome-shell .nav > a:after,
+.site-chrome-shell .nav > button:after,
+.site-chrome-shell .nav .nav-mega > a:after{
+  left:0;right:0;bottom:3px;height:1.5px;border-radius:2px;
+  background:#b0666c!important;
+}
+.site-chrome-shell .nav > a:hover,
+.site-chrome-shell .nav > button:hover,
+.site-chrome-shell .nav > a.active,
+.site-chrome-shell .nav .nav-mega > a:hover{color:#a0505a!important}
+.site-chrome-shell .nav > .nav-sale{color:#a0505a!important;font-weight:600!important;letter-spacing:.008em!important}
+.site-chrome-shell .nav > .nav-sale:before{width:5px;height:5px;margin:0 8px 1px 0;background:#c07d80!important}
+.site-chrome-shell .nav > a:focus-visible,
+.site-chrome-shell .nav > button:focus-visible,
+.site-chrome-shell .nav .nav-mega > a:focus-visible{outline:2px solid #b0666c;outline-offset:4px;border-radius:2px}
+.site-chrome-shell .nav .nav-caret{width:10px;height:6px;stroke-width:1.8}
+
+/* Compact band (≥1101px): tighter measure, pill on hover, no underline. */
+.site-chrome-shell.is-compact .nav > a,
+.site-chrome-shell.is-compact .nav > button,
+.site-chrome-shell.is-compact .nav .nav-mega > a{
+  font-size:clamp(10px,.72vw,11px)!important;
+  letter-spacing:-.002em!important;
+  padding:7px 0!important;
+}
+.site-chrome-shell.is-compact .nav > a:after,
+.site-chrome-shell.is-compact .nav > button:after,
+.site-chrome-shell.is-compact .nav .nav-mega > a:after{display:none!important}
+.site-chrome-shell.is-compact .nav > a:before,
+.site-chrome-shell.is-compact .nav > button:before,
+.site-chrome-shell.is-compact .nav .nav-mega > a:before{
+  content:"";position:absolute;inset:-6px -7px;border-radius:999px;
+  background:transparent;transition:background .28s ease;pointer-events:none;
+}
+.site-chrome-shell.is-compact .nav > a:hover:before,
+.site-chrome-shell.is-compact .nav > button:hover:before,
+.site-chrome-shell.is-compact .nav > a.active:before,
+.site-chrome-shell.is-compact .nav .nav-mega > a:hover:before{background:rgba(61,100,130,.07)}
+.site-chrome-shell.is-compact .nav > .nav-sale{color:#a0505a!important}
+.site-chrome-shell.is-compact .nav > .nav-sale:before{
+  content:"";position:static!important;inset:auto;display:inline-block!important;
+  width:5px;height:5px;margin:0 7px 1px 0;border-radius:50%;background:#c07d80!important;
+}
+@media(min-width:1101px) and (max-width:1199px){
+  .site-chrome-shell.is-compact .nav{
+    gap:clamp(4px,calc((100vw - 1069px)/8),15px)!important;
+    transform:translateX(calc(-50% - 8px))!important;
+  }
+}
+
+/* Stepped sizes so the row never crowds the wordmark at narrow widths. */
+@media(min-width:1200px){
+  .site-chrome-shell:not(.is-compact) .nav > a,
+  .site-chrome-shell:not(.is-compact) .nav > button,
+  .site-chrome-shell:not(.is-compact) .nav .nav-mega > a{font-size:12.5px!important}
+}
+@media(min-width:701px) and (max-width:1199px){
+  .site-chrome-shell:not(.is-compact) .nav > a,
+  .site-chrome-shell:not(.is-compact) .nav > button,
+  .site-chrome-shell:not(.is-compact) .nav .nav-mega > a{font-size:11.5px!important;letter-spacing:.004em!important}
+  .site-chrome-shell:not(.is-compact) .nav{gap:clamp(12px,1.6vw,22px)!important}
+}
+@media(min-width:801px) and (max-width:1000px){
+  .site-chrome-shell:not(.is-compact) .nav > a,
+  .site-chrome-shell:not(.is-compact) .nav > button,
+  .site-chrome-shell:not(.is-compact) .nav .nav-mega > a{font-size:10.5px!important}
+  .site-chrome-shell:not(.is-compact) .nav{gap:clamp(7px,.9vw,12px)!important}
+}
+@media(min-width:761px) and (max-width:800px){
+  .site-chrome-shell:not(.is-compact) .nav > a,
+  .site-chrome-shell:not(.is-compact) .nav > button,
+  .site-chrome-shell:not(.is-compact) .nav .nav-mega > a{font-size:10.25px!important;letter-spacing:-.01em!important}
+  .site-chrome-shell:not(.is-compact) .nav{gap:6px!important}
+}
+@media(min-width:701px) and (max-width:760px){
+  .site-chrome-shell:not(.is-compact) .nav > a,
+  .site-chrome-shell:not(.is-compact) .nav > button,
+  .site-chrome-shell:not(.is-compact) .nav .nav-mega > a{font-size:10px!important;letter-spacing:-.02em!important}
+  .site-chrome-shell:not(.is-compact) .nav{gap:4px!important}
+}
+
+/* Tablet / small desktop compact menu: same type, roomier rows. */
+@media(max-width:1100px){
+  .site-chrome-shell.is-compact .nav > a,
+  .site-chrome-shell.is-compact .nav > button,
+  .site-chrome-shell.is-compact .nav .nav-mega > a{font-size:14px!important;letter-spacing:-.004em!important;padding:12px 0!important}
+  .site-chrome-shell.is-compact .nav > a:before,
+  .site-chrome-shell.is-compact .nav > button:before,
+  .site-chrome-shell.is-compact .nav .nav-mega > a:before{display:none!important}
+}
+
+/* Phones: the menu becomes full-width rows with hairline separators. */
+@media(max-width:700px){
+  .site-chrome-shell .nav{padding:8px 0 12px!important;gap:0!important}
+  .site-chrome-shell .nav > a,
+  .site-chrome-shell .nav > button,
+  .site-chrome-shell .nav .nav-mega > a{
+    display:flex!important;align-items:center;width:100%;
+    padding:14px 24px!important;
+    font-size:14.5px!important;font-weight:600!important;
+    letter-spacing:-.006em!important;color:#31505f!important;
+    border-bottom:1px solid rgba(61,80,95,.10);
+  }
+  .site-chrome-shell .nav > a:last-child,
+  .site-chrome-shell .nav > button:last-child{border-bottom:0}
+  .site-chrome-shell .nav > a:after,
+  .site-chrome-shell .nav > button:after,
+  .site-chrome-shell .nav .nav-mega > a:after{display:none!important}
+  .site-chrome-shell .nav .nav-mega{width:100%}
+  .site-chrome-shell .nav .nav-mega > a{width:100%}
+  .site-chrome-shell .nav > a:hover,
+  .site-chrome-shell .nav > button:hover{color:#a0505a!important;background:rgba(61,100,130,.045)}
+}
+
+/* ==================================================================
+   VERTICAL RHYTHM · the space between sections
+   ------------------------------------------------------------------
+   The page had drifted into 130-190px of dead air between stacked
+   sections (two big paddings meeting, plus one-off values of 100-105).
+   Here the rhythm is re-stated once, as tokens, so it can be audited:
+
+     same paper surface ....  80px between blocks  (40 + 40)
+     colour band edge ......  96-120px inside the band
+     hairline ledger .......  56-64px around a rule
+     product detail ........  88px between sections
+
+   Section heads keep their own 24-30px, cards keep their grid gaps.
+   ================================================================== */
+:root{--pl-rhythm:56px}
+
+/* --- shared page sections (catalog intro, journal, community, stage,
+       gift finder, policy pages ...) ---------------------------------- */
+#app .section{padding-top:var(--pl-rhythm);padding-bottom:var(--pl-rhythm)}
+#app .catalog-layout{padding-bottom:56px}
+#app .page-simple{padding-top:36px;padding-bottom:64px}
+#app .circle-section{padding-bottom:64px}
+#app .stage-index-foot{margin-top:32px}
+#app .circle-editorial,.circle-pricing{margin-top:36px}
+#app .sv-section{padding-top:32px;padding-bottom:56px}
+#app .sv-band{padding-top:48px;padding-bottom:48px}
+#app .sv-faq{margin-top:36px}
+
+/* --- home · play shelf -> favourites -> ledger -> sponsored -> bands --- */
+#app .home-premium .home-main > .home-play-section{padding-top:48px;padding-bottom:32px}
+#app .home-premium .home-favorites{padding-top:48px;padding-bottom:48px}
+#app .home-premium .home-trust-strip{padding-top:22px;padding-bottom:16px}
+#app .home-premium .home-sponsored{padding-top:56px;padding-bottom:56px}
+#app .home-premium .home-by-age{padding-top:64px;padding-bottom:64px}
+#app .home-premium .home-story-section{padding-top:64px;padding-bottom:64px}
+#app .home-premium .home-gifting{padding-bottom:56px}
+#app .home-premium .press-strip{padding-top:56px;padding-bottom:32px;margin-top:0}
+#app .home-premium .home-journal{padding-top:12px;padding-bottom:72px}
+
+/* --- product detail · one rhythm for every section -------------------- */
+#app .product-page{padding-bottom:48px}
+#app .pdp-section{padding-top:44px;padding-bottom:44px}
+#app .pdp-sec-head{margin-bottom:24px}
+/* A section already draws its own top hairline; the grid's border-bottom
+   was putting a second rule 68px above it, with nothing in between. */
+#app .pdp-safety .safety-grid{border-bottom:0;padding-bottom:8px}
+
+/* --- tablet ----------------------------------------------------------- */
+@media(max-width:900px){
+  :root{--pl-rhythm:44px}
+  #app .home-premium .home-main > .home-play-section{padding-top:40px;padding-bottom:26px}
+  #app .home-premium .home-favorites{padding-top:40px;padding-bottom:40px}
+  #app .home-premium .home-sponsored{padding-top:44px;padding-bottom:44px}
+  #app .home-premium .home-by-age{padding-top:52px;padding-bottom:52px}
+  #app .home-premium .home-story-section{padding-top:52px;padding-bottom:52px}
+  #app .home-premium .home-gifting{padding-bottom:44px}
+  #app .home-premium .press-strip{padding-top:44px;padding-bottom:26px}
+  #app .home-premium .home-journal{padding-top:8px;padding-bottom:56px}
+  #app .pdp-section{padding-top:36px;padding-bottom:36px}
+  #app .pdp-sec-head{margin-bottom:22px}
+}
+
+/* --- phones ----------------------------------------------------------- */
+@media(max-width:600px){
+  :root{--pl-rhythm:40px}
+  #app .home-premium .home-main > .home-play-section{padding-top:36px;padding-bottom:22px}
+  #app .home-premium .home-favorites{padding-top:36px;padding-bottom:36px}
+  #app .home-premium .home-trust-strip{padding-top:16px;padding-bottom:12px}
+  #app .home-premium .home-sponsored{padding-top:40px;padding-bottom:40px}
+  #app .home-premium .home-by-age{padding-top:44px;padding-bottom:44px}
+  #app .home-premium .home-story-section{padding-top:44px;padding-bottom:44px}
+  #app .home-premium .home-gifting{padding-bottom:40px}
+  #app .home-premium .press-strip{padding-top:40px;padding-bottom:22px}
+  #app .home-premium .home-journal{padding-top:6px;padding-bottom:48px}
+  #app .product-page{padding-bottom:36px}
+  #app .pdp-section{padding-top:30px;padding-bottom:30px}
+  #app .pdp-sec-head{margin-bottom:18px}
+}
