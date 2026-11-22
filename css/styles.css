@@ -12,7 +12,7 @@ html.lenis { scroll-behavior: auto !important; }
 @keyframes stampIn{from{opacity:0;transform:scale(.7) rotate(-8deg)}to{opacity:1;transform:scale(1) rotate(10deg)}}@keyframes cardIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes routeIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}@keyframes toastIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}@keyframes modalIn{from{opacity:0;transform:translateY(15px) scale(.985)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 @media(min-width:1500px){.hero-grid{min-height:640px}}@media(max-width:1000px){.wrap{width:calc(100% - 40px)}.head-main{grid-template-columns:auto 1fr auto}.head-search{display:none}.mobile-search{display:flex}.nav{gap:22px}.hero-grid{min-height:500px}.hero-copy{padding:38px}.category-grid{grid-template-columns:repeat(3,1fr);row-gap:25px}.product-grid{grid-template-columns:repeat(3,minmax(0,1fr))}.story-grid{gap:35px}.catalog-layout{grid-template-columns:190px 1fr;gap:25px}.footer-grid{gap:25px}.pdp-grid{gap:30px}.gallery{grid-template-columns:58px 1fr}.thumbs{gap:7px}}@media(max-width:700px){#checkoutLayout{grid-template-columns:1fr!important}#checkoutLayout aside{position:static!important}html{scroll-padding-top:80px}.wrap{width:calc(100% - 32px)}.announcement{font-size:9px;padding:9px 10px}.head-main{height:64px;grid-template-columns:1fr auto}.wordmark{font-size:23px}.head-actions{gap:8px}.head-actions .account-btn{display:none}.menu-toggle{display:inline-flex}.nav{display:none;position:absolute;left:0;right:0;top:64px;background:var(--paper);height:auto;padding:18px 20px 22px;flex-direction:column;align-items:flex-start;gap:18px;border-bottom:1px solid var(--line)}.nav.open{display:flex}.nav a,.nav button{font-size:13px}.hero{padding:18px 0 40px}.hero-grid{grid-template-columns:1fr;min-height:0}.hero-copy{padding:34px 26px 39px}.hero h1{font-size:clamp(56px,16vw,82px);margin:22px 0 18px}.hero-copy p{font-size:12px}.hero-visual{min-height:320px;aspect-ratio:1.1}.hero-stamp{width:78px;height:78px;font-size:9px;right:15px;top:15px}.hero-foot{flex-wrap:wrap;font-size:9px}.section{padding:48px 0}.section-head{align-items:flex-start;flex-direction:column;margin-bottom:22px}.section-head p{max-width:100%}.category-grid{grid-template-columns:repeat(2,1fr);gap:20px 11px}.category-art{aspect-ratio:1/1.1}.category-card h3{font-size:12px}.feature-grid{grid-template-columns:1fr}.feature-image{min-height:290px;aspect-ratio:1.4}.feature-copy{padding:32px 24px 38px}.product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:26px 10px}.product-image .quick{opacity:1;transform:none;left:7px;right:7px;bottom:7px}.quick .btn{min-height:34px;padding:7px;font-size:10px}.product-info{padding-top:10px}.product-info h3{font-size:12px}.product-meta{font-size:8px}.product-badge{top:7px;left:7px;font-size:8px;padding:5px}.heart{right:7px;top:7px;width:31px;height:31px}.products-controls{align-items:flex-start;flex-direction:column}.trust-grid{grid-template-columns:1fr 1fr;gap:18px}.trust-item{border:0}.story-grid{grid-template-columns:1fr;gap:27px}.story-art{aspect-ratio:1.15}.story-copy h2{font-size:47px}.journal-grid{grid-template-columns:1fr;gap:28px}.journal-image{aspect-ratio:1.5}.newsletter{padding:40px 0}.newsletter-inner{align-items:flex-start;flex-direction:column;gap:22px}.newsletter-form{width:100%}.footer-grid{grid-template-columns:1fr 1fr;gap:28px 20px}.footer-brand{grid-column:1/-1}.footer-bottom{flex-direction:column;gap:12px}.catalog-layout{display:block;padding-top:12px}.filters{border:1px solid var(--line);padding:0 14px;margin-bottom:22px}.filter-block{padding:13px 0}.filter-block:not(.expanded) .filter-options{display:none}.filter-title:after{content:'+'}.filter-block.expanded .filter-title:after{content:'−'}.catalog-layout .product-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.pdp-grid{grid-template-columns:1fr;gap:25px}.gallery{position:static;grid-template-columns:1fr;grid-template-areas:'main' 'thumb';gap:9px}.main-photo{grid-area:main;aspect-ratio:1/1.05}.thumbs{grid-area:thumb;flex-direction:row;overflow:auto}.thumb{flex:0 0 65px}.pdp-copy h1{font-size:47px}.pdp-copy{padding:0}.review-layout{grid-template-columns:1fr;gap:20px}.gift-quiz{grid-template-columns:1fr;gap:20px}.quiz-art,.quiz-art img{min-height:230px;max-height:300px}.quiz-copy h2{font-size:37px}.search-panel-inner{padding:20px 16px}.search-results{grid-template-columns:repeat(2,1fr);gap:20px 10px}.search-results .product-image{aspect-ratio:1}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.modal-content{padding:18px}.compare-table{min-width:600px}.compare-scroll{overflow:auto}.compare-dock{width:calc(100% - 25px);justify-content:center;gap:8px}.compare-dock .compare-thumb{width:28px;height:28px}.compare-dock button{padding:9px;font-size:9px}.cookie-note{left:10px;right:10px;bottom:10px;max-width:none}.back-top{right:12px;bottom:12px}.product-grid.list-view{grid-template-columns:1fr}.product-grid.list-view .product-card{grid-template-columns:115px 1fr;gap:10px}.product-grid.list-view .product-image{aspect-ratio:1}.track-form{flex-direction:column}.track-form input{width:100%}}@media(prefers-reduced-motion:reduce){*,*:before,*:after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}.reveal{opacity:1;transform:none}}
 
-/* PLAYROOM ATELIER — editorial homepage refinement */
+/* PLAYROOOM ATELIER — editorial homepage refinement */
 .home-premium{background:var(--paper)}
 .home-hero{padding-top:20px;padding-bottom:0}
 .hero-cinema{height:clamp(560px,58vw,745px);min-height:560px;position:relative;overflow:hidden;background:#253139;color:#d3e1ee;isolation:isolate}
@@ -79,7 +79,7 @@ html.lenis { scroll-behavior: auto !important; }
 @media(prefers-reduced-motion:reduce){.hero-cinema-image,.hero-editorial,.hero-corner-note{animation:none!important}.home-premium .reveal{opacity:1;transform:none;transition:none}}
 
 
-/* PLAYROOM MOTION SYSTEM — editorial, tactile, restrained */
+/* PLAYROOOM MOTION SYSTEM — editorial, tactile, restrained */
 :root{--motion-spring:cubic-bezier(.16,1,.3,1);--motion-smooth:cubic-bezier(.22,1,.36,1);--motion-fast:180ms;--motion-mid:520ms;--motion-slow:900ms}
 html{scroll-behavior:smooth;scroll-padding-top:90px}
 body{overflow-x:clip}
@@ -160,7 +160,7 @@ button:active,.button:active,.btn:active{transform:scale(.975)}
 @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}*,*:before,*:after{animation-duration:.01ms!important;animation-iteration-count:1!important;scroll-behavior:auto!important;transition-duration:.01ms!important}#atelier-cursor,#atelier-transition{display:none}}
 
 
-/* PLAYROOM ATELIER — refined motion and editorial chrome */
+/* PLAYROOOM ATELIER — refined motion and editorial chrome */
 :root{--motion-luxe:cubic-bezier(.22,1,.36,1);--motion-inout:cubic-bezier(.76,0,.24,1);--motion-soft:cubic-bezier(.16,1,.3,1)}
 html{scroll-behavior:smooth;scroll-padding-top:132px}
 body{overflow-x:hidden}
@@ -220,7 +220,7 @@ button:focus-visible,a:focus-visible,input:focus-visible,select:focus-visible,te
 #app.route-arrive{animation:routeArrive .85s var(--motion-luxe) both}
 @keyframes routeArrive{0%{opacity:.45;transform:translate3d(0,13px,0);filter:blur(1.2px)}65%{opacity:1;filter:blur(0)}100%{opacity:1;transform:translate3d(0,0,0);filter:blur(0)}}
 #atelier-transition{background:linear-gradient(135deg,#21303a 0%,#30424f 60%,#456f8e 100%);transition:clip-path .78s var(--motion-inout)}
-#atelier-transition:after{content:"playroom.";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#d7e1ea;font:500 clamp(30px,5vw,58px) var(--serif);letter-spacing:-.06em;opacity:0;animation:curtainWord .72s .04s var(--motion-luxe) both}
+#atelier-transition:after{content:"playrooom.";position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:#d7e1ea;font:500 clamp(30px,5vw,58px) var(--serif);letter-spacing:-.06em;opacity:0;animation:curtainWord .72s .04s var(--motion-luxe) both}
 @keyframes curtainWord{0%{opacity:0;transform:translate(-50%,-35%);letter-spacing:-.1em}45%{opacity:1}100%{opacity:0;transform:translate(-50%,-65%);letter-spacing:-.04em}}
 .overlay,.modal-backdrop,.search-panel{transition:opacity .48s var(--motion-luxe),visibility .48s ease,background .4s ease}
 .overlay{backdrop-filter:blur(0);transition:opacity .5s var(--motion-luxe),visibility .5s ease,backdrop-filter .5s ease}
@@ -292,7 +292,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 5px 0 -4px #7a9ab1}
 @media(prefers-reduced-motion:reduce){.footer-orbit .orbit,.footer-orbit .orbit-spark{animation:none!important}.footer [data-footer-reveal]{opacity:1;transform:none;filter:none;transition:none}.btn:before,.product-image:after,.category-art:after{display:none}}
 
 
-/* ================= PLAYROOM — rosewood palette, chrome header, warm hero, support, welcome =================
+/* ================= PLAYROOOM — rosewood palette, chrome header, warm hero, support, welcome =================
 /* Ported 1:1 from the approved prototype; layers applied in the same order as the prototype. */
 /* Warm, tactile colour system scoped to the storefront content. The existing header markup and styling are intentionally untouched. */
 #app{--paper:#fdf8f5;--white:#ffffff;--ink:#3b2a22;--muted:#807068;--line:#d0dde9;--green:#4c7a99;--lime:#b6d6ec;--coral:#e59aa2;--blue:#d4c3ba;--yellow:#a5c2dd;--shadow:0 24px 70px rgba(67,44,32,.13);background:var(--paper);color:var(--ink)}
@@ -469,7 +469,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 5px 0 -4px #7a9ab1}
 @media(max-width:600px){.pl-support-launchers{right:12px;bottom:12px;gap:8px}.pl-support-launcher{min-width:0;padding:8px;border-radius:50%;box-shadow:0 7px 23px rgba(68,44,32,.18)}.pl-support-icon{width:42px;height:42px}.pl-support-copy{display:none}.pl-chat-panel{right:8px;bottom:112px;width:calc(100vw - 16px);height:min(580px,calc(100dvh - 135px))}.pl-call-overlay{padding:8px}.pl-call-window{border-radius:18px}.pl-call-top{padding:13px 14px}.pl-call-brand{width:32px;height:32px;border-radius:10px;font-size:13px}.pl-call-title strong{font-size:11px}.pl-call-title > span{font-size:8px}.pl-audio-stage{padding:26px 14px 16px}.pl-audio-avatar{width:88px;height:88px}.pl-audio-mono{font-size:31px}.pl-audio-id b{font-size:20px}.pl-audio-id > span{font-size:9px}.pl-audio-wave{min-width:0;width:100%;height:28px;margin-top:12px;gap:2.5px}.pl-audio-wave i{width:2.5px}.pl-call-caption{min-height:52px;padding:10px 12px;margin-top:10px}.pl-caption-line{font-size:11.5px;line-height:1.6}.pl-call-controls{gap:6px;padding:12px 8px 8px;flex-wrap:wrap}.pl-call-control{width:56px;height:52px;border-radius:13px;font-size:7.5px;gap:4px}.pl-call-control svg{width:17px;height:17px}.pl-call-control--end{min-width:104px;padding:0 16px}.pl-call-disclaimer{margin:0 14px 12px;font-size:8px}}
 @media(prefers-reduced-motion:reduce){#app .hero-cinema--warm .hero-cinema-image{transform:none!important}#app .hero-cinema--warm .hero-editorial{animation:none;opacity:1;transform:translateY(-42%)}.pl-chat-typing i{animation:none}.pl-chat-panel,.pl-call-overlay,.pl-call-window{transition:none}}
 
-/* PLAYROOM FINISHING PASS — one coherent art direction, no competing hero transforms */
+/* PLAYROOOM FINISHING PASS — one coherent art direction, no competing hero transforms */
 #app{--paper:#fdf8f5;--white:#ffffff;--ink:#2f211b;--muted:#7d6d65;--line:#ccdae7;--green:#456f8e;--lime:#b6d6ec;--coral:#e59aa2;--blue:#beccd9;--yellow:#a8c4de;--shadow:0 22px 58px rgba(58,38,28,.10);background:var(--paper);color:var(--ink)}
 #app .route-enter,#app .home-premium{background:var(--paper);color:var(--ink)}
 #app .btn{--green:#456f8e;--lime:#b6d6ec;--coral:#e59aa2;border-radius:2px;letter-spacing:.01em}
@@ -487,7 +487,7 @@ input:focus,select:focus,textarea:focus{box-shadow:0 5px 0 -4px #7a9ab1}
 #app .hero-cinema--warm .hero-brand-line{display:flex;align-items:center;gap:10px;font:9px var(--mono);letter-spacing:.16em;color:#6d5041}
 #app .hero-cinema--warm .hero-brand-line i{width:6px;height:6px;display:inline-block;border-radius:50%;background:#e59aa2;box-shadow:0 0 0 4px #e59aa217}
 #app .hero-cinema--warm .hero-edition{font:9px var(--mono);letter-spacing:.12em;color:#7a6155}
-#app .hero-cinema--warm .hero-editorial{position:absolute;z-index:3;left:clamp(24px,6.2vw,96px);top:47%;width:min(790px,58%);transform:translateY(-42%);animation:playroomEditorialFade .78s .08s ease-out both}
+#app .hero-cinema--warm .hero-editorial{position:absolute;z-index:3;left:clamp(24px,6.2vw,96px);top:47%;width:min(790px,58%);transform:translateY(-42%);animation:playrooomEditorialFade .78s .08s ease-out both}
 #app .hero-cinema--warm .hero-overline{display:flex;align-items:center;gap:10px;color:#b36570;font:9px var(--mono);letter-spacing:.17em;text-transform:uppercase}
 #app .hero-cinema--warm .hero-overline:before{content:'';width:24px;height:1px;background:#e59aa2}
 #app .hero-cinema--warm .hero-editorial h1{font:500 clamp(58px,6.4vw,94px)/.91 var(--serif);letter-spacing:-.071em;color:#2f211b;max-width:780px;margin:24px 0 21px;text-wrap:balance}
@@ -586,12 +586,12 @@ body.motion-ready #app .home-premium .hero-cinema [data-reveal],body.motion-read
 /* Final motion guardrails: each visual property has one owner. */
 body{background-image:none}
 #app{animation:none!important}
-#app.route-arrive{animation:playroomPageFade .32s ease both!important}
-#app .route-enter{animation:playroomPageFade .42s ease both}
-#app .hero-cinema--warm .hero-editorial{animation:playroomEditorialFade .78s .08s ease-out both;opacity:1;translate:none;will-change:auto}
+#app.route-arrive{animation:playrooomPageFade .32s ease both!important}
+#app .route-enter{animation:playrooomPageFade .42s ease both}
+#app .hero-cinema--warm .hero-editorial{animation:playrooomEditorialFade .78s .08s ease-out both;opacity:1;translate:none;will-change:auto}
 #app .hero-cinema--warm .hero-editorial h1,#app .hero-cinema--warm .hero-editorial p,#app .hero-cinema--warm .hero-editorial .hero-overline,#app .hero-cinema--warm .hero-editorial .hero-actions,#app .hero-cinema--warm .hero-editorial .hero-proof{opacity:1;filter:none;transform:none}
-@keyframes playroomPageFade{from{opacity:.78}to{opacity:1}}
-@keyframes playroomEditorialFade{from{opacity:0}to{opacity:1}}
+@keyframes playrooomPageFade{from{opacity:.78}to{opacity:1}}
+@keyframes playrooomEditorialFade{from{opacity:0}to{opacity:1}}
 
 /* FINAL STABILITY PASS — warm unified header + non-overlapping hero type. */
 .site-chrome-placeholder{height:153px;position:relative;z-index:90;flex:none}
@@ -636,7 +636,7 @@ body{background-image:none}
 #app .hero-cinema--warm .hero-cinema-image{object-position:center 53%;transform:translate3d(var(--scene-x,0px),var(--scene-y,0px),0) scale(1.045);will-change:transform;transition:none!important}
 #app .hero-cinema--warm .hero-cinema-shade{background:linear-gradient(90deg,rgba(253,248,245,.99) 0%,rgba(253,248,245,.97) 18%,rgba(253,248,245,.88) 30%,rgba(253,248,245,.64) 40%,rgba(253,248,245,.24) 51%,rgba(253,248,245,0) 66%),linear-gradient(0deg,#fdf8f5 0%,rgba(253,248,245,.56) 6%,rgba(253,248,245,.10) 17%,transparent 29%)}
 #app .hero-cinema--warm .hero-cinema-top,#app .hero-cinema--warm .hero-proof{display:none!important}
-#app .hero-cinema--warm .hero-editorial{position:absolute;z-index:4;left:clamp(28px,6.2vw,98px);top:50%;width:min(535px,calc(48% - 18px));max-width:535px;transform:translateY(-50%);animation:playroomHeroTextIn .9s cubic-bezier(.2,.8,.2,1) both;}
+#app .hero-cinema--warm .hero-editorial{position:absolute;z-index:4;left:clamp(28px,6.2vw,98px);top:50%;width:min(535px,calc(48% - 18px));max-width:535px;transform:translateY(-50%);animation:playrooomHeroTextIn .9s cubic-bezier(.2,.8,.2,1) both;}
 #app .hero-cinema--warm .hero-overline{font-size:9px;letter-spacing:.15em;color:#b36570}
 #app .hero-cinema--warm .hero-editorial h1{font:500 clamp(54px,5.4vw,82px)/.88 var(--serif);letter-spacing:-.072em;color:#2f211b;max-width:520px;width:100%;margin:22px 0 21px;text-wrap:initial;overflow-wrap:normal;word-break:normal;}
 #app .hero-cinema--warm .hero-editorial h1 span,#app .hero-cinema--warm .hero-editorial h1 em{display:inline;}
@@ -647,13 +647,13 @@ body{background-image:none}
 #app .hero-cinema--warm .hero-cinema-shade{z-index:1}
 #app .hero-cinema--warm .hero-scene-caption{z-index:4;bottom:25px;right:clamp(20px,4.3vw,62px);width:min(285px,31%);color:#d3e1ee;font-size:8px;text-shadow:0 1px 9px rgba(43,28,20,.45)}
 #app .hero-cinema--warm .hero-scene-caption i{background:linear-gradient(90deg,#d3e1eeb5,#d3e1ee14)}
-@keyframes playroomHeroTextIn{from{opacity:0;transform:translate3d(0,14px,0) translateY(-50%)}to{opacity:1;transform:translate3d(0,0,0) translateY(-50%)}}
+@keyframes playrooomHeroTextIn{from{opacity:0;transform:translate3d(0,14px,0) translateY(-50%)}to{opacity:1;transform:translate3d(0,0,0) translateY(-50%)}}
 @media(max-width:1050px){#app .hero-cinema--warm{height:clamp(630px,78svh,760px);min-height:630px}#app .hero-cinema--warm .hero-editorial{left:clamp(28px,5vw,58px);width:min(480px,48%);top:50%;transform:translateY(-50%)}#app .hero-cinema--warm .hero-editorial h1{font-size:clamp(54px,6.2vw,68px);line-height:.91;max-width:460px}#app .hero-cinema--warm .hero-editorial p{max-width:340px}}
 @media(max-width:760px){#app .hero-cinema--warm{height:710px;min-height:690px;max-height:none}#app .hero-cinema--warm .hero-cinema-image{object-position:63% center}#app .hero-cinema--warm .hero-cinema-shade{background:linear-gradient(90deg,rgba(253,248,245,.99) 0%,rgba(253,248,245,.96) 28%,rgba(253,248,245,.82) 46%,rgba(253,248,245,.40) 68%,rgba(253,248,245,.08) 100%),linear-gradient(0deg,#fdf8f5 0%,rgba(253,248,245,.60) 7%,transparent 26%)}#app .hero-cinema--warm .hero-editorial{left:27px;right:24px;width:min(470px,calc(100% - 51px));top:47%;transform:translateY(-48%)}#app .hero-cinema--warm .hero-editorial h1{font-size:clamp(55px,8.5vw,68px);line-height:.91;max-width:445px;margin:19px 0 17px}#app .hero-cinema--warm .hero-editorial p{font-size:12px;line-height:1.75;max-width:320px;margin-bottom:20px}#app .hero-cinema--warm .hero-actions{gap:14px}#app .hero-cinema--warm .hero-scene-caption{right:17px;bottom:19px;width:190px;font-size:7px}#app .hero-index-strip{grid-template-columns:auto 1fr;gap:10px}}
 @media(max-width:520px){#app .hero-cinema--warm{height:720px;min-height:700px}#app .hero-cinema--warm .hero-cinema-image{object-position:66% center}#app .hero-cinema--warm .hero-cinema-shade{background:linear-gradient(90deg,rgba(253,248,245,.99) 0%,rgba(253,248,245,.96) 36%,rgba(253,248,245,.82) 57%,rgba(253,248,245,.34) 82%,rgba(253,248,245,.12) 100%),linear-gradient(0deg,#fdf8f5 0%,rgba(253,248,245,.60) 8%,transparent 25%)}#app .hero-cinema--warm .hero-editorial{left:21px;right:18px;top:46%;width:auto;transform:translateY(-45%)}#app .hero-cinema--warm .hero-editorial h1{font-size:clamp(50px,12.6vw,61px);line-height:.94;margin:19px 0 16px;max-width:340px}#app .hero-cinema--warm .hero-editorial p{max-width:300px;font-size:12px;margin-bottom:19px}#app .hero-cinema--warm .hero-actions{align-items:flex-start;flex-direction:column;gap:14px}#app .hero-cinema--warm .hero-scene-caption{width:165px;bottom:17px;right:12px;font-size:6px}}
 @media(prefers-reduced-motion:reduce){.site-chrome-shell,.site-chrome-shell *{scroll-behavior:auto!important;transition:none!important;animation:none!important}#app .hero-cinema--warm .hero-cinema-image{transform:scale(1.015)!important}#app .hero-cinema--warm .hero-editorial{animation:none!important;transform:translateY(-50%)}}
 
-/* Header colour is selected from the established Playroom palette: oat, cocoa, gold and terracotta. */
+/* Header colour is selected from the established Playrooom palette: oat, cocoa, gold and terracotta. */
 .site-chrome-placeholder{z-index:90}
 .site-chrome-shell{background:#f6ece3!important;box-shadow:0 1px 0 rgba(67,44,32,.12);}
 .site-chrome-shell.is-compact{background:#f6ece3!important;border-radius:0!important;}
@@ -805,7 +805,7 @@ body{background-image:none}
   left:clamp(28px,6.2vw,96px)!important;
   top:48%!important;width:min(790px,59%)!important;
   transform:translateY(-42%)!important;
-  animation:playroomEditorialFade .8s .08s ease-out both!important;
+  animation:playrooomEditorialFade .8s .08s ease-out both!important;
 }
 #app .home-premium .hero-cinema--warm .hero-overline{
   color:#b36570!important;font:9px var(--mono)!important;letter-spacing:.17em!important;
@@ -1417,7 +1417,7 @@ body{background-image:none}
 }
 
 /* ==================================================================
-   SUPPORT FAB — one floating character built from the Playroom mark;
+   SUPPORT FAB — one floating character built from the Playrooom mark;
    tapping it reveals the chat + video-call actions.
    ================================================================== */
 .pl-support-launchers{position:fixed;right:22px;bottom:22px;z-index:160;display:flex;flex-direction:column;align-items:flex-end;gap:0;font-family:var(--sans)}
@@ -1557,7 +1557,7 @@ body{background-image:none}
 }
 
 /* ====================================================================
-   THE COMMUNITY — the playroom.
+   THE COMMUNITY — the playrooom.
    Feed of member posts with mod replies, weekly prompt, stats,
    filters and a composer. Warm paper surfaces, rosewood accents.
    ==================================================================== */
@@ -2645,7 +2645,7 @@ body.pl-call-active{overflow:hidden}
   #app .home-premium .hero-cinema--warm .hero-editorial{left:20px;right:18px;bottom:20px}
 }
 
-/* ============ PLAYROOM CARE — the warm room, in the site's own palette ============ */
+/* ============ PLAYROOOM CARE — the warm room, in the site's own palette ============ */
 .pl-call-overlay{background:radial-gradient(110% 100% at 50% 0%,rgba(59,42,33,.42),rgba(36,25,20,.64));backdrop-filter:blur(12px) saturate(.97)}
 .pl-call-window{background:linear-gradient(180deg,#d3e1ee 0%,#d3e1ee 58%,#d3e1ee 100%);border:1px solid #cad9e8;box-shadow:0 42px 120px rgba(49,32,23,.34),inset 0 1px 0 rgba(255,255,255,.9);color:#2f211b}
 .pl-call-top{background:linear-gradient(180deg,#ffffff,#d3e1ee);border-bottom:1px solid #d3e0ed}
@@ -2681,7 +2681,7 @@ body.pl-call-active{overflow:hidden}
 .pl-call-control--end:hover{background:#ad5f6c;border-color:#ad5f6c}
 .pl-call-disclaimer{color:#8a99a8}
 
-/* ============ HERO V3 — the original playroom photograph, alive ============
+/* ============ HERO V3 — the original playrooom photograph, alive ============
    The art-directed room (not stock footage) is the hero. A slow, uniform camera
    move keeps it breathing; ScrollTrigger pins it under the compact header while
    the cream page peels over it. No skew, no non-uniform scale, no crop jump. */
@@ -2782,7 +2782,7 @@ html.lenis,html.lenis body{height:auto}
 }
 
 /* ==========================================================================
-   PLAYROOM CARE — a quiet audio welcome.
+   PLAYROOOM CARE — a quiet audio welcome.
    One small card, one calm face, one clear way out. Nothing rings, pulses
    or performs. The recording is the only thing that moves.
    ========================================================================== */
@@ -2951,7 +2951,7 @@ body.pl-call-active .pl-support-launchers{opacity:0;pointer-events:none}
 .home-trust-strip i{width:3px;height:3px;border-radius:50%;background:#bfc7ce}
 
 /* ==================================================================
-   HOME HERO · campaign artwork ("Playroom Adventures Under Rainbow")
+   HOME HERO · campaign artwork ("Playrooom Adventures Under Rainbow")
    The artwork carries its own wordmark, so the copy moves into an
    editorial bar under the frame instead of over it: the picture stays
    whole, the headline reads at full size, and no text sits on a face.

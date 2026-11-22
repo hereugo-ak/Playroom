@@ -1,4 +1,4 @@
-// Playroom Atelier — premium motion orchestration.
+// Playrooom Atelier — premium motion orchestration.
 // Ported 1:1 from the reference's three motion blocks:
 //   1) reveal-on-scroll system (motion-ready + data-reveal)
 //   2) atelier motion plus (progress bar, cursor glow, magnetic buttons,
@@ -138,7 +138,7 @@ function bindInteractions(root = document) {
 }
 
 // ------------------------------------------------------------------
-// 5. Route curtain (green wipe with "playroom." on hash change)
+// 5. Route curtain (green wipe with "playrooom." on hash change)
 // ------------------------------------------------------------------
 let curtain = null;
 function initCurtain() {

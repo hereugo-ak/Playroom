@@ -97,12 +97,12 @@ function productRows(order, site) {
       ? `${item.persKind === 'embroidery' ? 'Embroidered' : 'Engraved'} “${item.personalisation}”`
       : item.special === 'gift-wrap' ? 'Gift wrapping' : '';
     const image = src
-      ? `<img src="${escapeHtml(src)}" width="64" height="72" alt="${escapeHtml(item.name || 'Playroom item')}" style="display:block;width:64px;height:72px;object-fit:cover;border-radius:4px;background:${C.beige};">`
+      ? `<img src="${escapeHtml(src)}" width="64" height="72" alt="${escapeHtml(item.name || 'Playrooom item')}" style="display:block;width:64px;height:72px;object-fit:cover;border-radius:4px;background:${C.beige};">`
       : `<table role="presentation" cellpadding="0" cellspacing="0" width="64" height="72" style="width:64px;height:72px;background:${C.beige};border-radius:4px;"><tr><td align="center" valign="middle" style="color:${C.cocoa};font:18px Georgia,serif;">✳</td></tr></table>`;
     return `<tr>
       <td width="76" valign="top" style="padding:18px 12px 18px 0;">${image}</td>
       <td valign="top" style="padding:18px 0;border-bottom:1px solid ${C.line};">
-        <div style="color:${C.ink};font:600 15px/1.35 Arial,sans-serif;">${escapeHtml(item.name || 'Playroom item')}</div>
+        <div style="color:${C.ink};font:600 15px/1.35 Arial,sans-serif;">${escapeHtml(item.name || 'Playrooom item')}</div>
         ${variant ? `<div style="margin-top:5px;color:${C.muted};font:12px/1.5 Arial,sans-serif;">${escapeHtml(variant)}</div>` : ''}
         <div style="margin-top:5px;color:${C.muted};font:12px/1.5 Arial,sans-serif;">Qty ${escapeHtml(item.qty || 1)} · ${escapeHtml(money(item.unitPrice))} each</div>
       </td>
@@ -130,7 +130,7 @@ export function renderOrderConfirmation(order = {}, options = {}) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light only">
-<title>Your Playroom order</title>
+<title>Your Playrooom order</title>
 <style>
   @media only screen and (max-width:620px) {
     .px { padding-left:20px !important; padding-right:20px !important; }
@@ -142,17 +142,17 @@ export function renderOrderConfirmation(order = {}, options = {}) {
 </style>
 </head>
 <body style="margin:0;padding:0;background:${C.beige};color:${C.ink};font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;">
-<div style="display:none;max-height:0;overflow:hidden;opacity:0;">Your Playroom order ${escapeHtml(order.id || '')} — ${escapeHtml(pay.display)}.</div>
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;">Your Playrooom order ${escapeHtml(order.id || '')} — ${escapeHtml(pay.display)}.</div>
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="${C.beige}" style="background:${C.beige};">
   <tr><td align="center" style="padding:0;">
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="620" style="width:100%;max-width:620px;background:${C.ivory};">
-      <tr><td align="center" bgcolor="${C.cocoa}" style="background:${C.cocoa};padding:11px 20px;color:#d3e1ee;font:9px Arial,sans-serif;letter-spacing:.12em;">THE PLAYROOM EDIT · THOUGHTFULLY CHOSEN · MADE FOR LITTLE BIG IMAGINATIONS</td></tr>
+      <tr><td align="center" bgcolor="${C.cocoa}" style="background:${C.cocoa};padding:11px 20px;color:#d3e1ee;font:9px Arial,sans-serif;letter-spacing:.12em;">THE PLAYROOOM EDIT · THOUGHTFULLY CHOSEN · MADE FOR LITTLE BIG IMAGINATIONS</td></tr>
       <tr><td align="center" bgcolor="${C.beige}" class="px" style="background:${C.beige};padding:32px 44px 28px;border-bottom:1px solid ${C.line};">
-        <img src="${LOGO}" width="190" alt="Playroom" style="display:block;width:190px;max-width:70%;height:auto;">
+        <img src="${LOGO}" width="190" alt="Playrooom" style="display:block;width:190px;max-width:70%;height:auto;">
         <div style="margin-top:14px;color:${C.rose};font:700 12px Arial,sans-serif;letter-spacing:.14em;">LITTLE HANDS. BIG WORLDS.</div>
       </td></tr>
       <tr><td class="px" style="padding:38px 44px 10px;">
-        <div style="color:${C.rose};font:700 9px Arial,sans-serif;letter-spacing:.16em;">YOUR PLAYROOM ORDER / CONFIRMATION</div>
+        <div style="color:${C.rose};font:700 9px Arial,sans-serif;letter-spacing:.16em;">YOUR PLAYROOOM ORDER / CONFIRMATION</div>
         <h1 class="hero-title" style="margin:16px 0 12px;color:${C.ink};font:400 44px/1.05 Georgia,'Times New Roman',serif;letter-spacing:-.03em;">Something wonderful is <em style="color:${C.rose};font-style:italic;">on its way.</em></h1>
         <p style="margin:0 0 8px;color:${C.ink};font:16px/1.7 Georgia,serif;">${greeting}</p>
         <p style="margin:0;color:${C.muted};font:14px/1.75 Arial,sans-serif;">${escapeHtml(pay.body)} We’ve received your order and are getting everything ready for its next little adventure.</p>
@@ -202,7 +202,7 @@ export function renderOrderConfirmation(order = {}, options = {}) {
         <table role="presentation" cellpadding="0" cellspacing="0" border="0"><tr><td align="center" bgcolor="${C.cocoa}" style="background:${C.cocoa};border-radius:4px;">
           <a class="btn" href="${escapeHtml(orderUrl)}" style="display:inline-block;padding:15px 30px;color:${C.ivory};font:700 12px Arial,sans-serif;letter-spacing:.08em;text-decoration:none;">VIEW YOUR ORDER</a>
         </td></tr></table>
-        <div style="margin-top:18px;"><a href="${escapeHtml(site)}" style="color:${C.muted};font:13px Arial,sans-serif;text-decoration:underline;">Continue exploring Playroom</a></div>
+        <div style="margin-top:18px;"><a href="${escapeHtml(site)}" style="color:${C.muted};font:13px Arial,sans-serif;text-decoration:underline;">Continue exploring Playrooom</a></div>
       </td></tr>
       <tr><td class="px" align="center" style="padding:30px 44px 36px;border-top:1px solid ${C.line};">
         <div style="color:${C.ink};font:400 21px/1.5 Georgia,serif;">Thoughtfully chosen toys for curious minds, big imaginations and everyday little adventures.</div>
@@ -223,7 +223,7 @@ export function renderOrderConfirmation(order = {}, options = {}) {
 </html>`;
 
   const text = [
-    'PLAYROOM — LITTLE HANDS. BIG WORLDS.',
+    'PLAYROOOM — LITTLE HANDS. BIG WORLDS.',
     '',
     pay.label,
     '',
@@ -239,7 +239,7 @@ export function renderOrderConfirmation(order = {}, options = {}) {
     '',
     'THE LITTLE THINGS YOU CHOSE',
     ...(Array.isArray(order.items) ? order.items : []).map((item) => (
-      `${item.name || 'Playroom item'} — Qty ${item.qty || 1}, ${money(item.unitPrice)} each, ${money(item.lineTotal ?? (Number(item.unitPrice || 0) * Number(item.qty || 1)))}`
+      `${item.name || 'Playrooom item'} — Qty ${item.qty || 1}, ${money(item.unitPrice)} each, ${money(item.lineTotal ?? (Number(item.unitPrice || 0) * Number(item.qty || 1)))}`
     )),
     '',
     `Subtotal: ${money(order.subtotal)}`,
@@ -257,15 +257,15 @@ export function renderOrderConfirmation(order = {}, options = {}) {
     [address.pincode, address.country].filter(Boolean).join(' · '),
     '',
     `View your order: ${orderUrl}`,
-    `Continue exploring Playroom: ${site}`,
+    `Continue exploring Playrooom: ${site}`,
     '',
     'Thoughtfully chosen toys for curious minds, big imaginations and everyday little adventures.',
     'MADE FOR LITTLE BIG IMAGINATIONS.',
   ].filter((line) => line !== '').join('\n');
 
   const subject = pay.kind === 'paid'
-    ? `Your Playroom order is on its way to becoming something wonderful — #${order.id || ''}`
-    : `Your Playroom order is confirmed — #${order.id || ''}`;
+    ? `Your Playrooom order is on its way to becoming something wonderful — #${order.id || ''}`
+    : `Your Playrooom order is confirmed — #${order.id || ''}`;
 
   return { subject, html, text };
 }

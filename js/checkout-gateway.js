@@ -1,4 +1,4 @@
-// Playroom Atelier — checkout gateway wiring (Stripe-Checkout-style).
+// Playrooom Atelier — checkout gateway wiring (Stripe-Checkout-style).
 // Owns: the payment-method accordion, per-method payment forms, autofill,
 // validation, the pay-button state machine and the order hand-off.
 import { $, $$, safe, toast } from './dom.js';

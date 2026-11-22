@@ -1,4 +1,4 @@
-// Playroom Atelier — application shell. Wires global chrome (header, drawer, search,
+// Playrooom Atelier — application shell. Wires global chrome (header, drawer, search,
 // modal, toasts, compare dock) and defines every route page, faithful to the reference.
 import { $, $$, safe, toast } from './dom.js';
 import {
@@ -215,8 +215,8 @@ window.__refreshHearts = store_refreshHearts;
 // Cookie note + back-to-top
 // ------------------------------------------------------------------
 function initChrome() {
-  if (!localStorage.getItem('playroom-cookie')) setTimeout(() => $('#cookieNote').classList.add('show'), 1800);
-  $('#cookieOkay').addEventListener('click', () => { localStorage.setItem('playroom-cookie', '1'); $('#cookieNote').classList.remove('show'); });
+  if (!localStorage.getItem('playrooom-cookie')) setTimeout(() => $('#cookieNote').classList.add('show'), 1800);
+  $('#cookieOkay').addEventListener('click', () => { localStorage.setItem('playrooom-cookie', '1'); $('#cookieNote').classList.remove('show'); });
   $('#cookieDismiss').addEventListener('click', () => $('#cookieNote').classList.remove('show'));
   $('#backTop').addEventListener('click', () => window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' }));
   window.addEventListener('scroll', () => $('#backTop').classList.toggle('show', window.scrollY > 700), { passive: true });
@@ -238,7 +238,7 @@ function sponsoredPicks() {
   return SPONSORED_PICKS.map((s) => ({ ...s, p: bySlug(s.slug) })).filter((s) => s.p);
 }
 function sponsoredSlide(s, i, n) {
-  return `<article class="sponsored-slide" data-spslide="${i}" aria-hidden="${i !== 0}"><a class="sponsored-media" href="#/product/${s.p.slug}" aria-label="View ${safe(s.p.name)}" tabindex="${i === 0 ? 0 : -1}"><img src="${s.p.image}" alt="${safe(s.p.name)}" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async" draggable="false"></a><div class="sponsored-copy"><div class="sponsored-flag"><span class="sponsored-chip">Sponsored</span><span class="mono">In partnership with ${safe(s.partner)}</span></div><div class="sponsored-name">${safe(s.p.name)} — with ${safe(s.partner)}</div><h2>${s.headline}</h2><p class="sponsored-blurb">${s.blurb}</p><div class="sponsored-meta"><span class="sponsored-price">${formatMoney(s.p.price)}</span><span class="sponsored-note"><span class="sponsored-stars" aria-hidden="true">★★★★★</span><b>${s.p.rating}</b> · ${s.p.reviews} notes</span></div><a class="btn" href="#/product/${s.p.slug}" tabindex="${i === 0 ? 0 : -1}">Shop the featured pick <span class="arrow">↗</span></a><p class="sponsored-fineprint">Sponsored placement — paid for by ${safe(s.partner)}, chosen and styled by Playroom. Our edit stays ours.</p></div></article>`;
+  return `<article class="sponsored-slide" data-spslide="${i}" aria-hidden="${i !== 0}"><a class="sponsored-media" href="#/product/${s.p.slug}" aria-label="View ${safe(s.p.name)}" tabindex="${i === 0 ? 0 : -1}"><img src="${s.p.image}" alt="${safe(s.p.name)}" loading="${i === 0 ? 'eager' : 'lazy'}" decoding="async" draggable="false"></a><div class="sponsored-copy"><div class="sponsored-flag"><span class="sponsored-chip">Sponsored</span><span class="mono">In partnership with ${safe(s.partner)}</span></div><div class="sponsored-name">${safe(s.p.name)} — with ${safe(s.partner)}</div><h2>${s.headline}</h2><p class="sponsored-blurb">${s.blurb}</p><div class="sponsored-meta"><span class="sponsored-price">${formatMoney(s.p.price)}</span><span class="sponsored-note"><span class="sponsored-stars" aria-hidden="true">★★★★★</span><b>${s.p.rating}</b> · ${s.p.reviews} notes</span></div><a class="btn" href="#/product/${s.p.slug}" tabindex="${i === 0 ? 0 : -1}">Shop the featured pick <span class="arrow">↗</span></a><p class="sponsored-fineprint">Sponsored placement — paid for by ${safe(s.partner)}, chosen and styled by Playrooom. Our edit stays ours.</p></div></article>`;
 }
 
 // ------------------------------------------------------------------
@@ -278,7 +278,7 @@ function renderHome() {
   return `<div class="route-enter home-premium">
  <section class="home-hero home-hero--campaign" aria-labelledby="heroTitle">
   <figure class="hero-campaign-art">
-   <img src="assets/img/hero-rainbow.jpg" alt="Two children playing with a wooden dollhouse, stacking blocks, a toy train and a digger in a pastel playroom under a pink arch" width="1670" height="941" fetchpriority="high" decoding="async">
+   <img src="assets/img/hero-rainbow.jpg" alt="Two children playing with a wooden dollhouse, stacking blocks, a toy train and a digger in a pastel playrooom under a pink arch" width="1670" height="941" fetchpriority="high" decoding="async">
   </figure>
   <div class="wrap hero-campaign-bar">
    <div class="hero-campaign-lead">
@@ -300,7 +300,7 @@ function renderHome() {
  <section class="section wrap home-story-section"><div class="home-section-top"><div><div class="mono muted">A FEW WAYS INTO THE WONDER</div><h2>Follow the<br><em>what-if.</em></h2></div><div class="home-section-aside"><p>Some days call for building something tall. Some call for inventing a tiny café. Sometimes the whole afternoon disappears into one very good question.</p></div></div><div class="home-story-grid">${storyTiles.map((t, i) => `<a href="${t.href}" class="home-story-tile story-tile-${i + 1} reveal"><img src="${t.img}" alt="${t.title}" loading="lazy" decoding="async"><div class="story-tile-overlay"><span class="mono">${t.n} / THE PLAY EDIT</span><h3>${t.title}</h3><p>${t.sub}</p><span class="story-tile-arrow">↗</span></div></a>`).join('')}</div></section>
  <section class="home-gifting"><div class="wrap home-gifting-panel"><div class="gifting-copy"><span class="mono">THE GIFT, SORTED</span><h2>Know a little person<br>worth <em>surprising?</em></h2><p>Tell us their age, the kind of things they love, and a comfortable budget. We’ll help you find a thoughtful place to start.</p><a class="btn light" href="#/gift-finder">Find their kind of magic <span class="arrow">↗</span></a><span class="gifting-footnote">No guesswork. Just a better starting point.</span></div><div class="gifting-art"><img src="${photos[47]}" alt="A thoughtful assortment of wooden toys ready to be gifted" loading="lazy" decoding="async"><div class="gifting-sticker">WRAPPED<br>IN WONDER ✳</div><div class="gifting-note"><span>THE GOOD GIFT GUIDE</span><b>Something they'll<br>come back to.</b></div></div></div></section>
  ${pressStripHTML()}
- <section class="section wrap home-journal"><div class="home-journal-intro"><span class="mono muted">NOTES FROM THE PLAYROOM</span><h2>Good ideas for<br><em>growing minds.</em></h2><p>A little guidance for choosing well, gifting thoughtfully and making more room for play in ordinary days.</p><a class="text-link" href="#/journal">Read the play notes <span>↗</span></a></div><a href="#/journal/choosing-a-toy" class="home-journal-feature"><div class="journal-feature-art"><img src="${photos[6]}" alt="Wooden construction pieces arranged on a natural surface" loading="lazy" decoding="async"><span class="journal-feature-arrow">↗</span></div><div class="journal-feature-meta"><span class="mono">THE THOUGHTFUL TOY GUIDE</span><span>5 MIN READ</span></div><h3>Choosing a toy that leaves room for imagination</h3></a><a href="#/journal/gifting-by-age" class="home-journal-feature"><div class="journal-feature-art"><img src="${photos[31]}" alt="A gift assortment of wooden toys" loading="lazy" decoding="async"><span class="journal-feature-arrow">↗</span></div><div class="journal-feature-meta"><span class="mono">THE GIFTING NOTE</span><span>4 MIN READ</span></div><h3>A more thoughtful way to choose a gift</h3></a></section>
+ <section class="section wrap home-journal"><div class="home-journal-intro"><span class="mono muted">NOTES FROM THE PLAYROOOM</span><h2>Good ideas for<br><em>growing minds.</em></h2><p>A little guidance for choosing well, gifting thoughtfully and making more room for play in ordinary days.</p><a class="text-link" href="#/journal">Read the play notes <span>↗</span></a></div><a href="#/journal/choosing-a-toy" class="home-journal-feature"><div class="journal-feature-art"><img src="${photos[6]}" alt="Wooden construction pieces arranged on a natural surface" loading="lazy" decoding="async"><span class="journal-feature-arrow">↗</span></div><div class="journal-feature-meta"><span class="mono">THE THOUGHTFUL TOY GUIDE</span><span>5 MIN READ</span></div><h3>Choosing a toy that leaves room for imagination</h3></a><a href="#/journal/gifting-by-age" class="home-journal-feature"><div class="journal-feature-art"><img src="${photos[31]}" alt="A gift assortment of wooden toys" loading="lazy" decoding="async"><span class="journal-feature-arrow">↗</span></div><div class="journal-feature-meta"><span class="mono">THE GIFTING NOTE</span><span>4 MIN READ</span></div><h3>A more thoughtful way to choose a gift</h3></a></section>
  </div>
  </div>`;
 }
@@ -442,7 +442,7 @@ function sellerProfileHTML(s, currentId) {
     <div class="seller-msg" data-seller-msg-panel hidden><textarea placeholder="Ask about a piece, a delivery, or a custom order…" aria-label="Message the maker"></textarea><button class="btn small" type="button" data-seller-msg-send>Send note <span class="arrow">↗</span></button></div>
     <div class="seller-tabs"><button class="filter-chip active" type="button" data-stab="about">About</button><button class="filter-chip" type="button" data-stab="ratings">Ratings</button><button class="filter-chip" type="button" data-stab="shop">More from this maker</button></div>
     <div data-spanel="about"><p class="seller-about">${safe(s.about)}</p><div class="seller-stats"><div><b>${s.sold}</b><span>items sold</span></div><div><b>${s.response}</b><span>response rate</span></div><div><b>${safe(s.dispatch)}</b><span>dispatch time</span></div><div><b>${s.onTime}%</b><span>on-time delivery</span></div></div><div class="seller-tags">${s.specialties.map((t) => `<span>${safe(t)}</span>`).join('')}</div><div class="seller-policy"><span>Returns · 30 days, no questions</span><span>Ships from ${safe(s.location)}</span><span>Replies in under a day</span></div></div>
-    <div data-spanel="ratings" hidden><div class="seller-rating-head"><b>${s.rating}</b><div><span class="seller-stars" aria-hidden="true">★★★★★</span><p>${s.ratings.toLocaleString('en-IN')} ratings from Playroom families</p></div></div><div class="seller-bars">${s.distribution.map((pct, i) => `<div class="bar-row"><span>${5 - i}★</span><div class="bar"><i style="width:${pct}%"></i></div><span>${pct}%</span></div>`).join('')}</div><div class="seller-reviews">${s.reviews.map((r) => `<div class="seller-review"><div class="seller-review-head"><span class="seller-avatar small" style="--av:${r.tone}">${r.initials}</span><b>${safe(r.name)}</b><span class="seller-review-tag">Verified buyer</span><time>${r.when}</time></div><p>${safe(r.text)}</p></div>`).join('')}</div></div>
+    <div data-spanel="ratings" hidden><div class="seller-rating-head"><b>${s.rating}</b><div><span class="seller-stars" aria-hidden="true">★★★★★</span><p>${s.ratings.toLocaleString('en-IN')} ratings from Playrooom families</p></div></div><div class="seller-bars">${s.distribution.map((pct, i) => `<div class="bar-row"><span>${5 - i}★</span><div class="bar"><i style="width:${pct}%"></i></div><span>${pct}%</span></div>`).join('')}</div><div class="seller-reviews">${s.reviews.map((r) => `<div class="seller-review"><div class="seller-review-head"><span class="seller-avatar small" style="--av:${r.tone}">${r.initials}</span><b>${safe(r.name)}</b><span class="seller-review-tag">Verified buyer</span><time>${r.when}</time></div><p>${safe(r.text)}</p></div>`).join('')}</div></div>
     <div data-spanel="shop" hidden>${others.length ? `<div class="seller-mini-grid">${others.map((x) => `<a class="seller-mini" href="#/product/${x.slug}"><img src="${x.image}" alt="${safe(x.name)}" loading="lazy" decoding="async"><b>${safe(x.name)}</b><span>${formatMoney(x.price)} · ★ ${x.rating}</span></a>`).join('')}</div>` : '<p class="seller-empty">This maker has one piece in the shop right now — the one in your hands.</p>'}<p class="seller-mini-note">Every piece from ${safe(s.name)} is made in small batches. When a batch sells out, the next one takes about three weeks.</p></div>
   </div>`;
 }
@@ -455,7 +455,7 @@ function openSellerProfile(id, currentId) {
     $$('[data-stab]', root).forEach((x) => x.classList.toggle('active', x === b));
     $$('[data-spanel]', root).forEach((p) => { p.hidden = p.dataset.spanel !== b.dataset.stab; });
   }));
-  const follows = (() => { try { return JSON.parse(localStorage.getItem('playroom-follows')) || []; } catch (e) { return []; } })();
+  const follows = (() => { try { return JSON.parse(localStorage.getItem('playrooom-follows')) || []; } catch (e) { return []; } })();
   const fbtn = $('[data-seller-follow]', root);
   if (fbtn) {
     const setLabel = () => { const on = follows.includes(s.id); fbtn.classList.toggle('active', on); fbtn.innerHTML = on ? 'Following ✓' : 'Follow this maker'; };
@@ -464,7 +464,7 @@ function openSellerProfile(id, currentId) {
       const i = follows.indexOf(s.id);
       if (i === -1) { follows.push(s.id); toast(`You are following ${s.name}.`, 'Their new batches will show up first.'); }
       else { follows.splice(i, 1); }
-      try { localStorage.setItem('playroom-follows', JSON.stringify(follows)); } catch (e) {}
+      try { localStorage.setItem('playrooom-follows', JSON.stringify(follows)); } catch (e) {}
       setLabel();
     });
   }
@@ -495,7 +495,7 @@ function renderProduct(p) {
   const related = products.filter((x) => x.category === p.category && x.id !== p.id).slice(0, 4);
   const seller = p.seller;
   const sellerPanel = seller ? sellerCardHTML(seller, p.id) : '';
-  return `<div class="route-enter"><div class="wrap product-page"><div class="breadcrumbs"><a href="#/">Home</a><span>/</span><a href="#/catalog">Shop</a><span>/</span><a href="#/catalog?category=${encodeURIComponent(p.category)}">${safe(p.category)}</a><span>/</span><span>${safe(p.name)}</span></div><div class="pdp-grid"><div class="gallery"><div class="thumbs">${p.images.map((im, i) => `<button class="thumb ${i === 0 ? 'active' : ''}" data-gallery="${i}" aria-label="Product photo ${i + 1}"><img src="${im}" alt="${safe(p.name)} view ${i + 1}" loading="eager" decoding="async"></button>`).join('')}</div><div class="main-photo"><img id="mainProductImage" src="${p.images[0]}" alt="${safe(p.name)}" fetchpriority="high" decoding="async"><span class="product-badge ${p.old > p.price ? 'sale' : ''}" style="top:15px;left:15px">${p.fresh ? 'Just landed' : p.old > p.price ? 'A little less' : 'Playroom pick'}</span><button class="zoom-hint" type="button" data-zoom aria-label="Open the photos full screen"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6"/><path d="m12.8 12.8 4 4M8.6 6v5.2M6 8.6h5.2"/></svg>Full screen</button></div></div><div class="pdp-copy"><div class="mono muted">${safe(p.category)} · ${safe(p.age)}</div>${p.circleEarly ? '<div class="pdp-circle-note">Circle members get first access to this piece. <a href="#/circle">Join the Circle</a> to add it to your order.</div>' : ''}<h1>${safe(p.name)}</h1><div class="pdp-rating">★★★★★ <span>${p.rating} / 5 · ${p.reviews} customer notes</span></div><div class="price-row" style="margin-top:17px"><span class="pdp-price">${formatMoney(p.price)}</span>${p.old > p.price ? `<span class="old-price">${formatMoney(p.old)}</span><span class="pill">Save ${Math.round((1 - p.price / p.old) * 100)}%</span>` : ''}</div><p class="pdp-description">${safe(p.desc)} Designed for open-ended play, this is the kind of find that gets brought back out again and again.</p>${pdpPromiseHTML(p)}<div class="pdp-divider"></div><div class="mono muted">Why it earns a place</div><p style="font-size:12px;line-height:1.8">${safe(p.benefit)} · ${safe(p.detail)} · A thoughtful choice for ${safe(p.age.toLowerCase())}.</p>${pdpSkillsHTML(p)}${pdpPersonaliseHTML(p)}<div class="qty-row"><div><span class="pdp-label">Quantity</span><div class="qty"><button id="pdpQtyMinus" aria-label="Decrease quantity">−</button><span id="pdpQty">1</span><button id="pdpQtyPlus" aria-label="Increase quantity">+</button></div></div><div style="padding-top:20px;font-size:10px;color:var(--muted)">Dispatches from the studio in 1–2 business days${p.stock <= 4 ? ` · ${p.stock} left of this run` : ''}</div></div><div class="pdp-actions"><button class="btn" id="pdpAdd">Add to bag — ${formatMoney(p.price)} <span class="arrow">↗</span></button><button class="btn outline" data-wish="${p.id}" aria-label="Save to wishlist">${state.wishlist.includes(p.id) ? '♥' : '♡'}</button></div>${p.has3D ? `<a class="btn outline pdp-3d-btn" href="#/3d/${p.slug}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>View in 3D <span class="arrow" aria-hidden="true">↗</span></a>` : ''}<div class="delivery-check"><input id="pincode" inputmode="numeric" maxlength="6" placeholder="6-digit PIN code" aria-label="Delivery PIN code"><button id="checkDelivery">Check delivery</button></div><div class="delivery-result" id="deliveryResult">Enter your PIN code for a date-accurate estimate — standard lands ${fmtDay(standardDate())}, express ${fmtDay(expressDate())}.</div>${sellerPanel}<div class="pdp-divider"></div><div class="details-accordion"><details class="acc" open><summary>The little details</summary><div class="acc-content"><table class="spec-table"><tr><td>Recommended age</td><td>${safe(p.age)}</td></tr><tr><td>Category</td><td>${safe(p.category)}</td></tr><tr><td>What's included</td><td>${safe(p.detail)}</td></tr><tr><td>Play value</td><td>${safe(p.benefit)}</td></tr><tr><td>Made from</td><td>${safe(p.materials.made)}</td></tr><tr><td>Finish</td><td>${safe(p.materials.finish)}</td></tr><tr><td>Availability</td><td>${p.stock} in the studio (demo inventory)</td></tr></table></div></details><details class="acc"><summary>Delivery &amp; returns</summary><div class="acc-content">Complimentary standard delivery on orders above ₹1,499; express and pick-a-day options live at checkout. Thirty-day returns with free pickup — start one any time from your orders page. This prototype does not dispatch products; dates shown are demo estimates.</div></details><details class="acc"><summary>Gifting this piece</summary><div class="acc-content">Add gift wrapping (₹149), a handwritten note and hidden prices at checkout. The recipient sees the note, never the invoice — and the parcel arrives with the delivery promise you chose.</div></details></div><button class="text-link" style="margin-top:22px" data-compare-add="${p.id}">${window.__compare?.includes(p.id) ? 'Remove from comparison' : 'Compare this toy'} <span>↗</span></button></div></div></div>${p.video ? clipBandHTML(p) : ''}${howToPlayHTML(p)}${pdpSafetyHTML(p)}${fbtHTML(p)}<section class="section wrap">${sectionHead('Keep exploring', 'More from this corner', 'A few other ideas from the same kind of play.', '#/catalog?category=' + encodeURIComponent(p.category), 'Shop this category')}<div class="product-grid">${related.map((item, i) => productCard(item, i, true)).join('')}</div></section>${reviewsSectionHTML(p)}${qnaHTML(p)}${ugcHTML(p)}${lightboxHTML(p)}</div>`;
+  return `<div class="route-enter"><div class="wrap product-page"><div class="breadcrumbs"><a href="#/">Home</a><span>/</span><a href="#/catalog">Shop</a><span>/</span><a href="#/catalog?category=${encodeURIComponent(p.category)}">${safe(p.category)}</a><span>/</span><span>${safe(p.name)}</span></div><div class="pdp-grid"><div class="gallery"><div class="thumbs">${p.images.map((im, i) => `<button class="thumb ${i === 0 ? 'active' : ''}" data-gallery="${i}" aria-label="Product photo ${i + 1}"><img src="${im}" alt="${safe(p.name)} view ${i + 1}" loading="eager" decoding="async"></button>`).join('')}</div><div class="main-photo"><img id="mainProductImage" src="${p.images[0]}" alt="${safe(p.name)}" fetchpriority="high" decoding="async"><span class="product-badge ${p.old > p.price ? 'sale' : ''}" style="top:15px;left:15px">${p.fresh ? 'Just landed' : p.old > p.price ? 'A little less' : 'Playrooom pick'}</span><button class="zoom-hint" type="button" data-zoom aria-label="Open the photos full screen"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="8.6" cy="8.6" r="5.6"/><path d="m12.8 12.8 4 4M8.6 6v5.2M6 8.6h5.2"/></svg>Full screen</button></div></div><div class="pdp-copy"><div class="mono muted">${safe(p.category)} · ${safe(p.age)}</div>${p.circleEarly ? '<div class="pdp-circle-note">Circle members get first access to this piece. <a href="#/circle">Join the Circle</a> to add it to your order.</div>' : ''}<h1>${safe(p.name)}</h1><div class="pdp-rating">★★★★★ <span>${p.rating} / 5 · ${p.reviews} customer notes</span></div><div class="price-row" style="margin-top:17px"><span class="pdp-price">${formatMoney(p.price)}</span>${p.old > p.price ? `<span class="old-price">${formatMoney(p.old)}</span><span class="pill">Save ${Math.round((1 - p.price / p.old) * 100)}%</span>` : ''}</div><p class="pdp-description">${safe(p.desc)} Designed for open-ended play, this is the kind of find that gets brought back out again and again.</p>${pdpPromiseHTML(p)}<div class="pdp-divider"></div><div class="mono muted">Why it earns a place</div><p style="font-size:12px;line-height:1.8">${safe(p.benefit)} · ${safe(p.detail)} · A thoughtful choice for ${safe(p.age.toLowerCase())}.</p>${pdpSkillsHTML(p)}${pdpPersonaliseHTML(p)}<div class="qty-row"><div><span class="pdp-label">Quantity</span><div class="qty"><button id="pdpQtyMinus" aria-label="Decrease quantity">−</button><span id="pdpQty">1</span><button id="pdpQtyPlus" aria-label="Increase quantity">+</button></div></div><div style="padding-top:20px;font-size:10px;color:var(--muted)">Dispatches from the studio in 1–2 business days${p.stock <= 4 ? ` · ${p.stock} left of this run` : ''}</div></div><div class="pdp-actions"><button class="btn" id="pdpAdd">Add to bag — ${formatMoney(p.price)} <span class="arrow">↗</span></button><button class="btn outline" data-wish="${p.id}" aria-label="Save to wishlist">${state.wishlist.includes(p.id) ? '♥' : '♡'}</button></div>${p.has3D ? `<a class="btn outline pdp-3d-btn" href="#/3d/${p.slug}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 3 8 4.5v9L12 21l-8-4.5v-9L12 3Z"/><path d="m4 7.5 8 4.5 8-4.5M12 12v9"/></svg>View in 3D <span class="arrow" aria-hidden="true">↗</span></a>` : ''}<div class="delivery-check"><input id="pincode" inputmode="numeric" maxlength="6" placeholder="6-digit PIN code" aria-label="Delivery PIN code"><button id="checkDelivery">Check delivery</button></div><div class="delivery-result" id="deliveryResult">Enter your PIN code for a date-accurate estimate — standard lands ${fmtDay(standardDate())}, express ${fmtDay(expressDate())}.</div>${sellerPanel}<div class="pdp-divider"></div><div class="details-accordion"><details class="acc" open><summary>The little details</summary><div class="acc-content"><table class="spec-table"><tr><td>Recommended age</td><td>${safe(p.age)}</td></tr><tr><td>Category</td><td>${safe(p.category)}</td></tr><tr><td>What's included</td><td>${safe(p.detail)}</td></tr><tr><td>Play value</td><td>${safe(p.benefit)}</td></tr><tr><td>Made from</td><td>${safe(p.materials.made)}</td></tr><tr><td>Finish</td><td>${safe(p.materials.finish)}</td></tr><tr><td>Availability</td><td>${p.stock} in the studio (demo inventory)</td></tr></table></div></details><details class="acc"><summary>Delivery &amp; returns</summary><div class="acc-content">Complimentary standard delivery on orders above ₹1,499; express and pick-a-day options live at checkout. Thirty-day returns with free pickup — start one any time from your orders page. This prototype does not dispatch products; dates shown are demo estimates.</div></details><details class="acc"><summary>Gifting this piece</summary><div class="acc-content">Add gift wrapping (₹149), a handwritten note and hidden prices at checkout. The recipient sees the note, never the invoice — and the parcel arrives with the delivery promise you chose.</div></details></div><button class="text-link" style="margin-top:22px" data-compare-add="${p.id}">${window.__compare?.includes(p.id) ? 'Remove from comparison' : 'Compare this toy'} <span>↗</span></button></div></div></div>${p.video ? clipBandHTML(p) : ''}${howToPlayHTML(p)}${pdpSafetyHTML(p)}${fbtHTML(p)}<section class="section wrap">${sectionHead('Keep exploring', 'More from this corner', 'A few other ideas from the same kind of play.', '#/catalog?category=' + encodeURIComponent(p.category), 'Shop this category')}<div class="product-grid">${related.map((item, i) => productCard(item, i, true)).join('')}</div></section>${reviewsSectionHTML(p)}${qnaHTML(p)}${ugcHTML(p)}${lightboxHTML(p)}</div>`;
 }
 
 function renderProduct3D(r) {
@@ -525,7 +525,7 @@ function renderProduct3D(r) {
           </div>
         </div>
         <aside class="p3d-panel">
-          <span class="p3d-kicker">PLAYROOM 3D STUDIO</span>
+          <span class="p3d-kicker">PLAYROOOM 3D STUDIO</span>
           <h2>${safe(config.title)}</h2>
           <p class="p3d-lede">${safe(product.benefit)} · ${safe(product.detail)}</p>
 
@@ -594,7 +594,7 @@ function howToPlayHTML(p) {
   const st = p.playStages;
   if (!st) return '';
   const cards = [['01', 'First play', st.first], ['02', 'A little harder', st.next], ['03', 'Play together', st.together]];
-  return `<section class="section wrap pdp-section pdp-how"><div class="pdp-sec-head"><div><div class="mono muted">HOW IT GETS PLAYED</div><h2>Three ways in,<br><em>one toy.</em></h2></div><p class="pdp-sec-aside">Staged ideas from the Playroom play desk. Follow the child, not the script — and stop while it is still fun.</p></div><div class="play-stage-grid">${cards.map(([n, k, c]) => `<article class="play-stage-card reveal"><span class="play-stage-num mono">${n} · ${k.toUpperCase()}</span><h3>${safe(c.t)}</h3><p>${safe(c.b.split('{name}').join(p.name))}</p></article>`).join('')}</div></section>`;
+  return `<section class="section wrap pdp-section pdp-how"><div class="pdp-sec-head"><div><div class="mono muted">HOW IT GETS PLAYED</div><h2>Three ways in,<br><em>one toy.</em></h2></div><p class="pdp-sec-aside">Staged ideas from the Playrooom play desk. Follow the child, not the script — and stop while it is still fun.</p></div><div class="play-stage-grid">${cards.map(([n, k, c]) => `<article class="play-stage-card reveal"><span class="play-stage-num mono">${n} · ${k.toUpperCase()}</span><h3>${safe(c.t)}</h3><p>${safe(c.b.split('{name}').join(p.name))}</p></article>`).join('')}</div></section>`;
 }
 
 /* ---- safety, materials, spare parts --------------------------------- */
@@ -646,11 +646,11 @@ function reviewsSectionHTML(p) {
   const dist = reviewDistribution(p, seeded);
   const withPhotos = list.filter((r) => r.photo).length;
   const count = (n) => list.filter((r) => r.stars === n).length;
-  return `<section class="section wrap pdp-section pdp-reviews" id="pdpReviews"><div class="pdp-sec-head"><div><div class="mono muted">CUSTOMER NOTES · DEMO REVIEWS</div><h2>A few words from<br><em>the playroom.</em></h2></div><div class="rev-summary"><div class="rev-score-wrap"><b>${p.rating}</b><div><span class="stars" aria-hidden="true">★★★★★</span><small>${p.reviews} notes · ${list.length} shown</small></div></div><div class="review-bars">${[5, 4, 3, 2, 1].map((n) => `<div class="bar-row" data-revbar="${n}" role="button" tabindex="0" aria-label="Filter ${n} star reviews"><span>${n}</span><div class="bar"><i style="width:${dist[n]}%"></i></div><span>${dist[n]}%</span></div>`).join('')}</div></div></div><div class="rev-toolbar"><div class="rev-filters"><button class="filter-chip active" type="button" data-revfilter="all">All (${list.length})</button><button class="filter-chip" type="button" data-revfilter="photos">With photos (${withPhotos})</button><button class="filter-chip" type="button" data-revfilter="5">5 ★ (${count(5)})</button><button class="filter-chip" type="button" data-revfilter="4">4 ★ (${count(4)})</button></div><button class="btn outline small" type="button" data-review="${p.id}">Write a note</button></div><div class="rev-grid" id="pdpReviewsList">${list.map(reviewCardHTML).join('')}</div><p class="pdp-fine">Reviews on this concept store are illustrative demo copy, stored in this browser. Photos are studio stills standing in for customer photos — nothing here is a real testimonial.</p></section>`;
+  return `<section class="section wrap pdp-section pdp-reviews" id="pdpReviews"><div class="pdp-sec-head"><div><div class="mono muted">CUSTOMER NOTES · DEMO REVIEWS</div><h2>A few words from<br><em>the playrooom.</em></h2></div><div class="rev-summary"><div class="rev-score-wrap"><b>${p.rating}</b><div><span class="stars" aria-hidden="true">★★★★★</span><small>${p.reviews} notes · ${list.length} shown</small></div></div><div class="review-bars">${[5, 4, 3, 2, 1].map((n) => `<div class="bar-row" data-revbar="${n}" role="button" tabindex="0" aria-label="Filter ${n} star reviews"><span>${n}</span><div class="bar"><i style="width:${dist[n]}%"></i></div><span>${dist[n]}%</span></div>`).join('')}</div></div></div><div class="rev-toolbar"><div class="rev-filters"><button class="filter-chip active" type="button" data-revfilter="all">All (${list.length})</button><button class="filter-chip" type="button" data-revfilter="photos">With photos (${withPhotos})</button><button class="filter-chip" type="button" data-revfilter="5">5 ★ (${count(5)})</button><button class="filter-chip" type="button" data-revfilter="4">4 ★ (${count(4)})</button></div><button class="btn outline small" type="button" data-review="${p.id}">Write a note</button></div><div class="rev-grid" id="pdpReviewsList">${list.map(reviewCardHTML).join('')}</div><p class="pdp-fine">Reviews on this concept store are illustrative demo copy, stored in this browser. Photos are studio stills standing in for customer photos — nothing here is a real testimonial.</p></section>`;
 }
 
 function openReviewModal(p) {
-  openModal('Leave a customer note', `<form id="pdpReviewForm"><p class="modal-lede">A note from the playroom — saved in this browser only and shown first, labelled as yours.</p><div class="field"><label>Your rating</label><div class="rev-starpick" id="revStarPick">${[5, 4, 3, 2, 1].map((n) => `<button type="button" class="${n === 5 ? 'active' : ''}" data-star="${n}" aria-label="${n} stars">★</button>`).join('')}</div></div><div class="field" style="margin-top:14px"><label>Headline</label><input name="headline" maxlength="60" required placeholder="Sum it up in a few words"></div><div class="field" style="margin-top:14px"><label>Your note</label><textarea name="body" maxlength="420" required placeholder="What did the child do with it? What surprised you?"></textarea></div><button class="btn" style="margin-top:18px" type="submit">Submit demo review ↗</button><p class="muted" style="font-size:10px;margin-top:10px">Demo review — not published anywhere but this browser. No photo upload in the prototype.</p></form>`);
+  openModal('Leave a customer note', `<form id="pdpReviewForm"><p class="modal-lede">A note from the playrooom — saved in this browser only and shown first, labelled as yours.</p><div class="field"><label>Your rating</label><div class="rev-starpick" id="revStarPick">${[5, 4, 3, 2, 1].map((n) => `<button type="button" class="${n === 5 ? 'active' : ''}" data-star="${n}" aria-label="${n} stars">★</button>`).join('')}</div></div><div class="field" style="margin-top:14px"><label>Headline</label><input name="headline" maxlength="60" required placeholder="Sum it up in a few words"></div><div class="field" style="margin-top:14px"><label>Your note</label><textarea name="body" maxlength="420" required placeholder="What did the child do with it? What surprised you?"></textarea></div><button class="btn" style="margin-top:18px" type="submit">Submit demo review ↗</button><p class="muted" style="font-size:10px;margin-top:10px">Demo review — not published anywhere but this browser. No photo upload in the prototype.</p></form>`);
   let stars = 5;
   $('#revStarPick')?.addEventListener('click', (e) => {
     const b = e.target.closest('[data-star]');
@@ -685,13 +685,13 @@ function refreshReviewsList(p) {
 /* ---- Q&A ------------------------------------------------------------- */
 
 function qnaItemHTML(x, seeded = false) {
-  return `<details class="qna"><summary><span class="qna-q">${safe(x.q)}</span>${x.pending ? '<span class="qna-chip">Awaiting answer · demo</span>' : ''}</summary><div class="qna-a"><p>${safe(x.a || 'Thanks — a moderator would answer this within a day in a live store. In this prototype the question just sits here, comfortable and unanswered.')}</p><div class="qna-foot"><span class="mono muted">${x.pending ? 'Saved just now' : safe(x.by || 'Playroom team')}${seeded ? '' : ' · demo'}</span><button class="rev-help" type="button" data-helpful>Helpful · <span>${x.helpful || 0}</span></button></div></div></details>`;
+  return `<details class="qna"><summary><span class="qna-q">${safe(x.q)}</span>${x.pending ? '<span class="qna-chip">Awaiting answer · demo</span>' : ''}</summary><div class="qna-a"><p>${safe(x.a || 'Thanks — a moderator would answer this within a day in a live store. In this prototype the question just sits here, comfortable and unanswered.')}</p><div class="qna-foot"><span class="mono muted">${x.pending ? 'Saved just now' : safe(x.by || 'Playrooom team')}${seeded ? '' : ' · demo'}</span><button class="rev-help" type="button" data-helpful>Helpful · <span>${x.helpful || 0}</span></button></div></div></details>`;
 }
 
 function qnaHTML(p) {
   const user = (storageRead('pdp-qna', {})[p.id] || []);
   const seeded = [...(QNA_BY_CATEGORY[p.category] || []), ...QNA_GENERAL];
-  return `<section class="section wrap pdp-section pdp-qna" id="pdpQna"><div class="pdp-sec-head"><div><div class="mono muted">QUESTIONS PARENTS ASK</div><h2>The things you<br><em>wanted to know.</em></h2></div><p class="pdp-sec-aside">Answered by the makers and the Playroom desk. Everything here is demo copy — honestly labelled as such.</p></div><div class="qna-list" id="qnaList">${user.map((x) => qnaItemHTML(x)).join('')}${seeded.map((x) => qnaItemHTML(x, true)).join('')}</div><form class="qna-form" id="qnaForm"><input name="q" maxlength="160" placeholder="Ask about delivery, safety, play…" aria-label="Ask a question" autocomplete="off"><button class="btn small" type="submit">Ask the desk ↗</button></form></section>`;
+  return `<section class="section wrap pdp-section pdp-qna" id="pdpQna"><div class="pdp-sec-head"><div><div class="mono muted">QUESTIONS PARENTS ASK</div><h2>The things you<br><em>wanted to know.</em></h2></div><p class="pdp-sec-aside">Answered by the makers and the Playrooom desk. Everything here is demo copy — honestly labelled as such.</p></div><div class="qna-list" id="qnaList">${user.map((x) => qnaItemHTML(x)).join('')}${seeded.map((x) => qnaItemHTML(x, true)).join('')}</div><form class="qna-form" id="qnaForm"><input name="q" maxlength="160" placeholder="Ask about delivery, safety, play…" aria-label="Ask a question" autocomplete="off"><button class="btn small" type="submit">Ask the desk ↗</button></form></section>`;
 }
 
 /* ---- community strip ------------------------------------------------- */
@@ -702,7 +702,7 @@ function ugcHTML(p) {
     [photos[10], 'Aisha N.', 'Apparently the box WAS the toy all along.'],
     [photos[30], 'Kenji M.', 'Three generations around the same puzzle this weekend.'],
   ];
-  return `<section class="section wrap pdp-section pdp-ugc"><div class="pdp-sec-head"><div><div class="mono muted">FROM THE PLAYROOM · COMMUNITY PHOTOS (DEMO)</div><h2>Real play, shared<br><em>by the community.</em></h2></div><a class="text-link" href="#/community">Visit the community <span>↗</span></a></div><div class="ugc-row">${tiles.map((t) => `<a class="ugc-tile" href="#/community"><img src="${t[0]}" alt="Community photo" loading="lazy" decoding="async"><span><b>${t[1]}</b>${t[2]}<i>↗</i></span></a>`).join('')}</div></section>`;
+  return `<section class="section wrap pdp-section pdp-ugc"><div class="pdp-sec-head"><div><div class="mono muted">FROM THE PLAYROOOM · COMMUNITY PHOTOS (DEMO)</div><h2>Real play, shared<br><em>by the community.</em></h2></div><a class="text-link" href="#/community">Visit the community <span>↗</span></a></div><div class="ugc-row">${tiles.map((t) => `<a class="ugc-tile" href="#/community"><img src="${t[0]}" alt="Community photo" loading="lazy" decoding="async"><span><b>${t[1]}</b>${t[2]}<i>↗</i></span></a>`).join('')}</div></section>`;
 }
 
 /* ---- lightbox -------------------------------------------------------- */
@@ -1010,7 +1010,7 @@ function renderCheckoutSignIn() {
   return `<div class="route-enter checkout-gate">
   <div class="wrap page-head checkout-gate-head">
     <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Checkout</span></div>
-    <div class="mono muted">YOUR PLAYROOM ACCOUNT</div>
+    <div class="mono muted">YOUR PLAYROOOM ACCOUNT</div>
     <h1 class="page-title">One step before <em>checkout.</em></h1>
     <p class="page-intro">Sign in to place your order, keep the receipt and follow its demo tracking from your account.</p>
   </div>
@@ -1033,7 +1033,7 @@ function renderCheckoutSignIn() {
           <div><dt>Subtotal</dt><dd>${formatMoney(subtotal)}</dd></div>
           <div class="checkout-gate-total"><dt>Ready for checkout</dt><dd>${formatMoney(subtotal)}</dd></div>
         </dl>
-        <p>Nothing is charged in this demo storefront. Signing in only connects the order to your Playroom account.</p>
+        <p>Nothing is charged in this demo storefront. Signing in only connects the order to your Playrooom account.</p>
       </aside>
     </div>
   </section>
@@ -1102,7 +1102,7 @@ function openExpressSheet(kind) {
   const fee = effectiveDeliveryFee(sub);
   const total = sub - disc + fee;
   const del = chosenDelivery() || deliveryOptions(sub)[0];
-  openModal(`${conf.label} — express checkout`, `<div class="express-sheet" data-kind="${kind}"><div class="express-face"><span class="express-brand">${conf.glyph}</span><div class="express-amount">${formatMoney(total)}</div><div class="express-line"><span>Pay Playroom Atelier</span><b>Demo — test mode</b></div><div class="express-line"><span>Delivery</span><b>${safe(del.label)}${del.dateLabel ? ' · ' + safe(del.dateLabel) : ''}</b></div><div class="express-line"><span>Card</span><b>•••• 4242 · demo</b></div><div class="express-line"><span>Sheet</span><b>${conf.hint}</b></div></div><button class="st-paybtn express-confirm" id="expressConfirm" type="button">Double-click to pay · ${formatMoney(total)}</button><p class="express-note">${conf.label} is simulated — no wallet, card or payment is real. Shipping uses the details on this checkout, or a demo identity if left blank.</p></div>`);
+  openModal(`${conf.label} — express checkout`, `<div class="express-sheet" data-kind="${kind}"><div class="express-face"><span class="express-brand">${conf.glyph}</span><div class="express-amount">${formatMoney(total)}</div><div class="express-line"><span>Pay Playrooom Atelier</span><b>Demo — test mode</b></div><div class="express-line"><span>Delivery</span><b>${safe(del.label)}${del.dateLabel ? ' · ' + safe(del.dateLabel) : ''}</b></div><div class="express-line"><span>Card</span><b>•••• 4242 · demo</b></div><div class="express-line"><span>Sheet</span><b>${conf.hint}</b></div></div><button class="st-paybtn express-confirm" id="expressConfirm" type="button">Double-click to pay · ${formatMoney(total)}</button><p class="express-note">${conf.label} is simulated — no wallet, card or payment is real. Shipping uses the details on this checkout, or a demo identity if left blank.</p></div>`);
   const btn = $('#expressConfirm');
   btn?.addEventListener('click', async () => {
     if (btn.dataset.busy) return;
@@ -1128,7 +1128,7 @@ function openExpressSheet(kind) {
 
 function renderCheckout() {
   if (!authState.session || !authState.user) return renderCheckoutSignIn();
-  if (!state.cart.length) return `<div class="st-page"><div class="st-wrap"><div class="st-topbar"><a class="st-back" href="#/catalog">${ST_BACK}Back to the toy box</a></div><div class="st-empty"><div class="st-empty-card"><div class="st-brandrow" style="justify-content:center;margin-bottom:16px"><i class="mark st-mark" aria-hidden="true"></i><span>Pay Playroom</span></div><h2 class="st-h2" style="margin-bottom:8px">Your bag is taking a breather.</h2><p style="font-size:13px;color:var(--st-400);line-height:1.7;margin:0 0 22px">Add something lovely before you check out. This is a demo checkout — no real payment is ever collected.</p><a class="st-btn st-btn--primary" href="#/catalog">Explore the collection</a></div></div></div></div>`;
+  if (!state.cart.length) return `<div class="st-page"><div class="st-wrap"><div class="st-topbar"><a class="st-back" href="#/catalog">${ST_BACK}Back to the toy box</a></div><div class="st-empty"><div class="st-empty-card"><div class="st-brandrow" style="justify-content:center;margin-bottom:16px"><i class="mark st-mark" aria-hidden="true"></i><span>Pay Playrooom</span></div><h2 class="st-h2" style="margin-bottom:8px">Your bag is taking a breather.</h2><p style="font-size:13px;color:var(--st-400);line-height:1.7;margin:0 0 22px">Add something lovely before you check out. This is a demo checkout — no real payment is ever collected.</p><a class="st-btn st-btn--primary" href="#/catalog">Explore the collection</a></div></div></div></div>`;
   const sub = cartSubtotal();
   const fee = effectiveDeliveryFee(sub);
   const code = sessionStorage.getItem('pl-code') || '';
@@ -1145,7 +1145,7 @@ function renderCheckout() {
         <aside class="st-summary" id="checkoutSummary">
           <button class="st-sumtoggle" id="stSummaryToggle" type="button" aria-expanded="false"><span>Show order summary</span><b id="stMobileTotal">${formatMoney(sub - disc + fee)}</b><svg viewBox="0 0 16 16"><path d="M3.5 6 8 10.5 12.5 6"/></svg></button>
           <div class="st-summary-inner" id="stSummaryInner">
-            <div class="st-brandrow"><i class="mark st-mark" aria-hidden="true"></i><span>Pay Playroom</span></div>
+            <div class="st-brandrow"><i class="mark st-mark" aria-hidden="true"></i><span>Pay Playrooom</span></div>
             <ul class="st-items" id="stItemsList">${items}</ul>
             <div class="st-lines">
               <div class="st-line"><span>Subtotal</span><b id="stSubtotal">${formatMoney(sub)}</b></div>
@@ -1348,7 +1348,7 @@ function invoiceHTML(order) {
   const gift = order.gift || null;
   const hide = !!(gift && gift.hidePrices);
   const money = (n) => (hide ? '<span class="inv-hidden">•••</span>' : formatMoney(n));
-  return `<div class="invoice-head"><div><div class="mono">${hide ? 'GIFT RECEIPT (DEMO)' : 'TAX INVOICE (DEMO)'} · ${safe(order.id)}</div><h2>Thank you, ${safe(order.customer.firstName)}!</h2><div style="font-size:11px;opacity:.8;margin-top:6px">Placed ${safe(order.createdAtLabel)} · ${safe(order.email)} · ${safe(order.paymentMethod)}${order.gatewayTxn ? ` · ${safe(order.gatewayTxn)}` : ''}</div></div><div style="text-align:right"><div class="mono">PLAYROOM ATELIER</div><div style="font-size:10px;opacity:.75;margin-top:6px">Concept storefront<br>demo receipt · not a tax document</div></div></div>
+  return `<div class="invoice-head"><div><div class="mono">${hide ? 'GIFT RECEIPT (DEMO)' : 'TAX INVOICE (DEMO)'} · ${safe(order.id)}</div><h2>Thank you, ${safe(order.customer.firstName)}!</h2><div style="font-size:11px;opacity:.8;margin-top:6px">Placed ${safe(order.createdAtLabel)} · ${safe(order.email)} · ${safe(order.paymentMethod)}${order.gatewayTxn ? ` · ${safe(order.gatewayTxn)}` : ''}</div></div><div style="text-align:right"><div class="mono">PLAYROOOM ATELIER</div><div style="font-size:10px;opacity:.75;margin-top:6px">Concept storefront<br>demo receipt · not a tax document</div></div></div>
         <div class="invoice-meta"><div><h5>${gift ? 'SHIP TO (GIFT)' : 'BILL / SHIP TO'}</h5>${safe(order.customer.firstName)} ${safe(order.customer.lastName)}<br>${safe(order.customer.addressLine1)}<br>${safe(order.customer.city)}${order.customer.state ? ', ' + safe(order.customer.state) : ''} ${safe(order.customer.pincode)}<br>${safe(order.customer.phone)}${order.customer.deliveryNote ? `<br><span style="color:var(--muted)">Note: ${safe(order.customer.deliveryNote)}</span>` : ''}</div><div><h5>SHIPMENT (FEDEX DEMO)</h5>${safe(order.carrier || 'FedEx')} · ${safe(order.carrierService || 'Priority Overnight')}<br>Tracking: <b class="mono">${safe(order.trackingNumber || '—')}</b><br>Weight: ${safe(pkg.weight)} · ${safe(pkg.dims)}<br>Ref: <span class="mono">${safe(pkg.reference)}</span>${order.delivery ? `<br>Service: ${safe(order.delivery.label)}${order.delivery.dateLabel ? ' · ' + safe(order.delivery.dateLabel) : ''}` : ''}</div></div>
         ${gift && gift.message ? `<div class="invoice-giftnote"><span class="mono">GIFT NOTE ENCLOSED</span><p>“${safe(gift.message)}”</p>${gift.from ? `<span class="invoice-giftnote-from">— ${safe(gift.from)}</span>` : ''}${hide ? '<span class="invoice-giftnote-hide">Prices are hidden on this receipt.</span>' : ''}</div>` : ''}
         <table><thead><tr><th>Item</th><th class="num">Qty</th><th class="num">Rate</th><th class="num">Amount</th></tr></thead><tbody>
@@ -1498,12 +1498,12 @@ function fxOrderHTML(order, st) {
     <div><dt>Weight</dt><dd>${safe(pkg.weight)}</dd></div>
     <div><dt>Dimensions</dt><dd>${safe(pkg.dims)}</dd></div>
     <div><dt>Total pieces</dt><dd>${pkg.pieces || 1}</dd></div>
-    <div><dt>Packaging</dt><dd>${safe(pkg.packaging || 'Playroom secure box')}</dd></div>
+    <div><dt>Packaging</dt><dd>${safe(pkg.packaging || 'Playrooom secure box')}</dd></div>
     <div><dt>Reference</dt><dd class="mono">${safe(pkg.reference || order.id)}</dd></div>
     <div><dt>Contents</dt><dd>${qty} item${qty > 1 ? 's' : ''} · ${safe(order.customer.city)}</dd></div>
   </dl></div>
   <div class="fx-route">
-    <div class="fx-route-card"><span class="fx-route-k">FROM</span><b>Playroom Atelier</b><p>Mumbai hub, IN</p></div>
+    <div class="fx-route-card"><span class="fx-route-k">FROM</span><b>Playrooom Atelier</b><p>Mumbai hub, IN</p></div>
     <span class="fx-route-line" aria-hidden="true">${FX_ICONS.truck}</span>
     <div class="fx-route-card"><span class="fx-route-k">TO</span><b>${safe(order.customer.firstName)} ${safe(order.customer.lastName)}</b><p>${safe(dest)}</p></div>
   </div>
@@ -1564,7 +1564,7 @@ function fxProofHTML(order) {
       <div><span>SERVICE</span><b>${safe(order.carrierService || CARRIER.product)}</b></div>
     </div>
     <div class="fx-proof-sign"><svg viewBox="0 0 240 60" aria-hidden="true"><path d="M8 44c18-30 30-32 34-16 3 12-4 20-10 20-5 0-7-5-4-10 6-11 20-13 32-8 10 4 14 10 24 9 12-1 12-13 22-16 9-3 16 3 24 2 10-1 16-8 26-7" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><path d="M196 45c14 0 26-1 38-4" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/></svg><span>Recipient signature (simulated)</span></div>
-    <p class="fx-proof-note">Demo document — part of the Playroom prototype. No real delivery took place and no signature was collected.</p>
+    <p class="fx-proof-note">Demo document — part of the Playrooom prototype. No real delivery took place and no signature was collected.</p>
   </div>`;
 }
 
@@ -1580,7 +1580,7 @@ const JOURNAL = {
 function renderJournal(path) {
   const key = path.split('/').pop();
   const a = JOURNAL[key];
-  if (!a) return `<div class="route-enter"><div class="wrap page-head"><div class="breadcrumbs"><a href="#/">Home</a> / The play journal</div><div class="mono muted">The Playroom journal</div><h1 class="page-title">Notes on play.</h1><p class="page-intro">Thoughtful guides for choosing toys and making room for play.</p></div><div class="wrap" style="padding-bottom:70px"><div class="journal-grid" style="margin-top:40px">${Object.entries(JOURNAL).map(([k, j]) => `<a class="journal-card" href="#/journal/${k}"><div class="journal-image"><img src="${j.img}" alt="" loading="lazy"></div><h3>${j.title}</h3><p>${j.kicker}</p></a>`).join('')}</div></div></div>`;
+  if (!a) return `<div class="route-enter"><div class="wrap page-head"><div class="breadcrumbs"><a href="#/">Home</a> / The play journal</div><div class="mono muted">The Playrooom journal</div><h1 class="page-title">Notes on play.</h1><p class="page-intro">Thoughtful guides for choosing toys and making room for play.</p></div><div class="wrap" style="padding-bottom:70px"><div class="journal-grid" style="margin-top:40px">${Object.entries(JOURNAL).map(([k, j]) => `<a class="journal-card" href="#/journal/${k}"><div class="journal-image"><img src="${j.img}" alt="" loading="lazy"></div><h3>${j.title}</h3><p>${j.kicker}</p></a>`).join('')}</div></div></div>`;
   return `<div class="route-enter"><div class="wrap page-top page-head"><div class="breadcrumbs"><a href="#/">Home</a> / <a href="#/journal">The play journal</a> / Article</div><div class="mono muted">${a.kicker}</div><h1 class="page-title" style="max-width:900px">${a.title}</h1></div><article class="wrap" style="max-width:900px;padding-bottom:80px"><div class="story-art" style="aspect-ratio:1.8;margin-bottom:35px"><img src="${a.img}" alt="${safe(a.title)}" loading="lazy"></div><div class="policy-copy">${a.body.map((p) => `<p>${p}</p>`).join('')}<h2>One last thought</h2><p>There is no single right way to play. Start with curiosity, keep the invitation simple and let the child bring the rest.</p><a class="btn" href="#/catalog">Find something to play with <span class="arrow">↗</span></a></div></article></div>`;
 }
 
@@ -1592,11 +1592,11 @@ function renderJournal(path) {
 const svHead = (crumb, kicker, title, intro) => `<div class="wrap page-head"><div class="breadcrumbs">${crumb}</div>${kicker ? `<div class="mono muted">${kicker}</div>` : ''}<h1 class="page-title">${title}</h1>${intro ? `<p class="page-intro">${intro}</p>` : ''}</div>`;
 
 const HELP_FAQS = [
-  ['Can I place a real order?', 'No \u2014 Playroom is a concept storefront for a class project. Checkout creates a local demo order stored only in this browser. No payment is taken and nothing is dispatched.'],
+  ['Can I place a real order?', 'No \u2014 Playrooom is a concept storefront for a class project. Checkout creates a local demo order stored only in this browser. No payment is taken and nothing is dispatched.'],
   ['How does delivery work?', 'Every product page has a PIN-code checker that shows a simulated delivery estimate. A live shop would connect that to a real logistics service; the dates here are illustrative.'],
   ['How do I track a parcel?', 'After a demo checkout you receive a FedEx-style tracking number. Paste it into Track an order to follow the simulated journey, milestone by milestone.'],
   ['Can I save products?', 'Yes \u2014 tap the heart on anything to keep it in your wish list. Your bag, wish list and demo orders live in this browser, so they are waiting whenever you return.'],
-  ['What kind of returns can I expect?', 'The returns stories on this site describe how a real Playroom would work \u2014 unopened items, seven days, a pickup from your door. In this prototype nothing ships, so there is nothing to send back.'],
+  ['What kind of returns can I expect?', 'The returns stories on this site describe how a real Playrooom would work \u2014 unopened items, seven days, a pickup from your door. In this prototype nothing ships, so there is nothing to send back.'],
   ['How are payments handled?', 'Payments are demonstrated with a realistic gateway flow and a test card (4242 4242 4242 4242). No money moves, and card details never leave your browser.'],
   ['Is my information stored anywhere?', 'Only in your own browser \u2014 cart, wish list, demo orders and popup preferences. Clearing site data clears everything.'],
   ['Which toys suit which ages?', 'Every toy lists a recommended age band and a short note on its play value. The gift finder can narrow the collection by age, play style and budget in three taps.'],
@@ -1604,7 +1604,7 @@ const HELP_FAQS = [
 
 function renderHelpPage() {
   return `<div class="route-enter">
-  ${svHead(`<a href="#/">Home</a><span> / </span><span>Help &amp; FAQs</span>`, 'Playroom care', 'How can we help?', 'Answers to the questions we hear most \u2014 about orders, delivery, returns and the small details in between.')}
+  ${svHead(`<a href="#/">Home</a><span> / </span><span>Help &amp; FAQs</span>`, 'Playrooom care', 'How can we help?', 'Answers to the questions we hear most \u2014 about orders, delivery, returns and the small details in between.')}
   <section class="sv-section wrap"><div class="sv-narrow">
     <div class="sv-grid-3">
       <a class="sv-topic" href="#/track-order"><span class="sv-topic-icon">\u2197</span><b>Track an order</b><small>Follow a demo parcel step by step, from dispatch to doorstep.</small><i>\u2197</i></a>
@@ -1618,7 +1618,7 @@ function renderHelpPage() {
   <section class="sv-band"><div class="wrap sv-band-inner">
     <div class="mono">Still wondering?</div>
     <h2>A real person is <em>one tap away.</em></h2>
-    <p>Mira, our Playroom Care host, waits in the corner of every page \u2014 or send a note and we will reply within the story of this project.</p>
+    <p>Mira, our Playrooom Care host, waits in the corner of every page \u2014 or send a note and we will reply within the story of this project.</p>
     <div class="sv-band-actions">
       <button class="btn" type="button" onclick="document.getElementById('plOpenChat').click()">Chat with us <span class="arrow">\u2197</span></button>
       <a class="btn outline" href="#/contact">Send a note <span class="arrow">\u2197</span></a>
@@ -1628,7 +1628,7 @@ function renderHelpPage() {
 
 function renderContactPage() {
   return `<div class="route-enter">
-  ${svHead(`<a href="#/">Home</a><span> / </span><span>Talk to us</span>`, 'Playroom care', 'Talk to us.', 'A question, a suggestion, or a toy you think belongs here \u2014 everything that arrives is read.')}
+  ${svHead(`<a href="#/">Home</a><span> / </span><span>Talk to us</span>`, 'Playrooom care', 'Talk to us.', 'A question, a suggestion, or a toy you think belongs here \u2014 everything that arrives is read.')}
   <section class="sv-section wrap">
     <div class="sv-contact">
       <form id="contactForm" class="sv-card sv-form">
@@ -1647,7 +1647,7 @@ function renderContactPage() {
         <div class="sv-card">
           <div class="sv-card-head"><span class="mono">Other ways in</span><h2>Reach us without the form.</h2></div>
           <div class="sv-rows">
-            <button type="button" class="sv-row" onclick="document.getElementById('plOpenChat').click()"><b>Chat with Mira</b><small>Playroom Care \u00b7 replies in moments</small><span>\u2197</span></button>
+            <button type="button" class="sv-row" onclick="document.getElementById('plOpenChat').click()"><b>Chat with Mira</b><small>Playrooom Care \u00b7 replies in moments</small><span>\u2197</span></button>
             <button type="button" class="sv-row" onclick="document.getElementById('plOpenCall').click()"><b>Audio call with Mira</b><small>A short recorded hello \u00b7 with live captions</small><span>\u2197</span></button>
             <a class="sv-row" href="#/track-order"><b>Track an order</b><small>FedEx-style demo tracking</small><span>\u2197</span></a>
             <a class="sv-row" href="#/help"><b>Help &amp; FAQs</b><small>Quick answers to common questions</small><span>\u2197</span></a>
@@ -1657,7 +1657,7 @@ function renderContactPage() {
           <div class="mono">Support hours</div>
           <div class="sv-hours"><span>Monday \u2013 Saturday</span><b>10:00 \u2013 18:00 IST</b></div>
           <div class="sv-hours"><span>Sunday</span><b>Notes only</b></div>
-          <p class="sv-fineprint">In this concept store, replies are simulated. A live Playroom would answer within one working day.</p>
+          <p class="sv-fineprint">In this concept store, replies are simulated. A live Playrooom would answer within one working day.</p>
         </div>
       </aside>
     </div>
@@ -1666,7 +1666,7 @@ function renderContactPage() {
 
 function renderShippingPage() {
   return `<div class="route-enter">
-  ${svHead(`<a href="#/">Home</a><span> / </span><span>Shipping &amp; returns</span>`, 'Delivery & returns', 'Getting things home.', 'How delivery, packaging and returns would work at a real Playroom \u2014 and what happens here instead.')}
+  ${svHead(`<a href="#/">Home</a><span> / </span><span>Shipping &amp; returns</span>`, 'Delivery & returns', 'Getting things home.', 'How delivery, packaging and returns would work at a real Playrooom \u2014 and what happens here instead.')}
   <section class="sv-section wrap"><div class="sv-narrow">
     <div class="sv-grid-3">
       <div class="sv-promise"><span class="mono">01</span><b>Complimentary delivery</b><p>Standard delivery is complimentary on orders over \u20b91,499 \u2014 the little threshold marked on every page.</p></div>
@@ -1693,10 +1693,10 @@ function renderShippingPage() {
 
 function renderPrivacyPage() {
   const qs = [
-    ['What exactly is stored?', 'Your cart, wish list, recently viewed toys, demo orders and a few preferences (like whether you have seen the welcome offer) are kept in your browser\u2019s local storage, under keys that start with \u201cplayroom\u201d.'],
+    ['What exactly is stored?', 'Your cart, wish list, recently viewed toys, demo orders and a few preferences (like whether you have seen the welcome offer) are kept in your browser\u2019s local storage, under keys that start with \u201cplayrooom\u201d.'],
     ['Payments & card details', 'This prototype demonstrates a realistic payment flow but never processes real payments. Test card details you type are validated in the page and never leave your browser \u2014 there is no server to receive them.'],
     ['The welcome offer & preferences', 'The one-time welcome popup remembers a simple \u201calready seen\u201d note so it does not reappear. Sharing an email in the demo form stores nothing beyond your own browser.'],
-    ['The terms of this concept store', 'Playroom is a student-built concept storefront. Product names, prices, reviews and stock levels are illustrative. Nothing here constitutes a real offer of sale, and no goods or services are provided.'],
+    ['The terms of this concept store', 'Playrooom is a student-built concept storefront. Product names, prices, reviews and stock levels are illustrative. Nothing here constitutes a real offer of sale, and no goods or services are provided.'],
     ['Content, imagery & inspiration', 'Media used in this project is credited where possible and assembled for a class demonstration only. The design language takes cues from warm, editorial commerce experiences \u2014 with everything rebuilt from scratch.'],
   ];
   return `<div class="route-enter">
@@ -1762,7 +1762,7 @@ function renderSimple(path) {
 }
 
 function renderAbout() {
-  return `<div class="route-enter"><div class="wrap page-top page-head"><div class="breadcrumbs"><a href="#/">Home</a> / Our point of view</div><div class="mono muted">A considered little toy shop</div><h1 class="page-title">Less noise.<br>More wonder.</h1><p class="page-intro">Playroom is a concept store built around one simple thought: the best toys make room for children to bring something of their own.</p></div><section class="section wrap"><div class="story-grid"><div class="story-art"><img src="${photo.wood}" alt="Thoughtful play materials" loading="lazy"></div><div class="story-copy"><div class="mono muted">What we look for</div><h2>Not more toys.<br>More possibility.</h2><p>We look for things that invite participation: a block that becomes a bridge, a card that starts a story, a puzzle that brings a family around the same table.</p><p>Our imagined collection is organised around kinds of play rather than trends alone. We want it to be easier to find something thoughtful and easier to understand why it might be right for a child.</p><p><b>Playroom is a student-built concept storefront.</b> Product descriptions, reviews, inventory and checkout are demonstration content—not claims of real stock or verified customer experiences.</p><a class="btn" href="#/catalog">Explore the collection <span class="arrow">↗</span></a></div></div></section>${advisoryStripHTML()}<section class="trust-strip"><div class="wrap trust-grid"><div class="trust-item"><div class="trust-icon">✳</div><div><b>Open-ended play</b><span>Room for a child's own ideas.</span></div></div><div class="trust-item"><div class="trust-icon">♡</div><div><b>Thoughtful gifting</b><span>Start with the person.</span></div></div><div class="trust-item"><div class="trust-icon">↗</div><div><b>Clear information</b><span>Age, contents and play value.</span></div></div><div class="trust-item"><div class="trust-icon">⌁</div><div><b>Curiosity first</b><span>Always another way to play.</span></div></div></div></section></div>`;
+  return `<div class="route-enter"><div class="wrap page-top page-head"><div class="breadcrumbs"><a href="#/">Home</a> / Our point of view</div><div class="mono muted">A considered little toy shop</div><h1 class="page-title">Less noise.<br>More wonder.</h1><p class="page-intro">Playrooom is a concept store built around one simple thought: the best toys make room for children to bring something of their own.</p></div><section class="section wrap"><div class="story-grid"><div class="story-art"><img src="${photo.wood}" alt="Thoughtful play materials" loading="lazy"></div><div class="story-copy"><div class="mono muted">What we look for</div><h2>Not more toys.<br>More possibility.</h2><p>We look for things that invite participation: a block that becomes a bridge, a card that starts a story, a puzzle that brings a family around the same table.</p><p>Our imagined collection is organised around kinds of play rather than trends alone. We want it to be easier to find something thoughtful and easier to understand why it might be right for a child.</p><p><b>Playrooom is a student-built concept storefront.</b> Product descriptions, reviews, inventory and checkout are demonstration content—not claims of real stock or verified customer experiences.</p><a class="btn" href="#/catalog">Explore the collection <span class="arrow">↗</span></a></div></div></section>${advisoryStripHTML()}<section class="trust-strip"><div class="wrap trust-grid"><div class="trust-item"><div class="trust-icon">✳</div><div><b>Open-ended play</b><span>Room for a child's own ideas.</span></div></div><div class="trust-item"><div class="trust-icon">♡</div><div><b>Thoughtful gifting</b><span>Start with the person.</span></div></div><div class="trust-item"><div class="trust-icon">↗</div><div><b>Clear information</b><span>Age, contents and play value.</span></div></div><div class="trust-item"><div class="trust-icon">⌁</div><div><b>Curiosity first</b><span>Always another way to play.</span></div></div></div></section></div>`;
 }
 
 function renderGiftFinder() {
@@ -1874,7 +1874,7 @@ function openReturnSheet(order) {
     try {
       await syncNewReturn(ret);
     } catch (error) {
-      console.warn('[Playroom returns] could not save the return to the account', error?.message || error);
+      console.warn('[Playrooom returns] could not save the return to the account', error?.message || error);
     }
     closeModal();
     toast(`${ORDER_MODE_LABEL[mode]} ${ret.id} started.`, 'A simulated pickup is scheduled — watch the steps.');
@@ -1974,7 +1974,7 @@ function renderWish() {
   const list = state.wishlist.map(byId).filter(Boolean);
   const s = storageRead('wish-share', null) || {};
   return `<div class="route-enter">
-  ${svHead(`<a href="#/">Home</a><span> / </span><span>Shared list</span>`, 'SHARED VIEW · DEMO', s.for ? safe(s.for) : 'A shared little list', s.note ? safe(s.note) : 'Saved with love from the Playroom wish list. In a real shop this page would load the list from a share link; here it reads the saved shelf in this browser.')}
+  ${svHead(`<a href="#/">Home</a><span> / </span><span>Shared list</span>`, 'SHARED VIEW · DEMO', s.for ? safe(s.for) : 'A shared little list', s.note ? safe(s.note) : 'Saved with love from the Playrooom wish list. In a real shop this page would load the list from a share link; here it reads the saved shelf in this browser.')}
   <section class="section wrap" style="padding-top:22px">
     ${list.length ? `<div class="wish-shared-bar"><span class="mono muted">${list.length} GOOD IDEA${list.length === 1 ? '' : 'S'}</span><span class="post-pill post-pill--leaf">✳ Demo — links open on this device only</span></div><div class="product-grid">${list.map(productCard).join('')}</div>` : '<div class="empty-state"><div class="empty-icon">♡</div><h3>This shared list is empty.</h3><p>Save a few things first, then share the shelf.</p><a class="btn" href="#/catalog">Find a favourite ↗</a></div>'}
     <p class="pdp-fine">A real registry page would live on a server and open anywhere; this concept storefront keeps everything in your browser.</p>
@@ -1985,21 +1985,21 @@ function renderWish() {
 // Route registry
 // ------------------------------------------------------------------
 // ------------------------------------------------------------------
-// The community — the playroom. Members post, moderators reply.
+// The community — the playrooom. Members post, moderators reply.
 // Fully interactive: posting, replying, hearts, filters and sorting
 // all work, and everything you write is remembered in your browser.
 // ------------------------------------------------------------------
 const COMMUNITY_TOPICS = ['All', 'Builds', 'Crafts', 'Gifting wins', 'Questions'];
-const COMMUNITY_STORE_KEY = 'playroom-community-v1';
-const COMMUNITY_ME = { name: 'You', initials: 'YU', tone: '#d3818a', role: 'Playroom member' };
+const COMMUNITY_STORE_KEY = 'playrooom-community-v1';
+const COMMUNITY_ME = { name: 'You', initials: 'YU', tone: '#d3818a', role: 'Playrooom member' };
 const COMMUNITY_POSTS = [
   {
-    id: 'c1', topic: 'Builds', pinned: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#3d6482',
+    id: 'c1', topic: 'Builds', pinned: true, name: 'Priya · Playrooom team', initials: 'PL', tone: '#3d6482',
     role: 'Community moderator', time: 'Yesterday', image: null, likes: 212,
-    text: 'Welcome to the playroom — our little corner for show-and-tell. Post the towers, the paintings, the half-finished masterpieces. Be kind, credit the makers, and our mods will be around all week with tips and ideas. ✳',
+    text: 'Welcome to the playrooom — our little corner for show-and-tell. Post the towers, the paintings, the half-finished masterpieces. Be kind, credit the makers, and our mods will be around all week with tips and ideas. ✳',
     replies: [
       { name: 'Mia R.', initials: 'MR', tone: '#e59aa2', time: '18 h ago', text: 'Such a lovely idea. My two are already planning their entry for this week’s prompt…' },
-      { mod: true, name: 'Dev · Playroom team', initials: 'PL', tone: '#779abb', time: '12 h ago', text: 'We can’t wait to see it, Mia. Post it with #thisweeksprompt and we’ll pin our favourites on Friday.' },
+      { mod: true, name: 'Dev · Playrooom team', initials: 'PL', tone: '#779abb', time: '12 h ago', text: 'We can’t wait to see it, Mia. Post it with #thisweeksprompt and we’ll pin our favourites on Friday.' },
     ],
   },
   {
@@ -2008,7 +2008,7 @@ const COMMUNITY_POSTS = [
     text: 'Rainy Saturday = the marble run came back out. They rebuilt the whole spiral twice without a single “I’m bored”. I’m calling it a win.',
     replies: [
       { name: 'Jonas K.', initials: 'JK', tone: '#6c7c88', time: '3 h ago', text: 'That spiral is serious engineering. How long did it stand before someone bumped the table?' },
-      { mod: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#3d6482', time: '2 h ago', text: 'The office record is 41 minutes. Consider this an official challenge — we’ll be watching for the rematch. ✳' },
+      { mod: true, name: 'Priya · Playrooom team', initials: 'PL', tone: '#3d6482', time: '2 h ago', text: 'The office record is 41 minutes. Consider this an official challenge — we’ll be watching for the rematch. ✳' },
     ],
   },
   {
@@ -2016,7 +2016,7 @@ const COMMUNITY_POSTS = [
     role: 'Member since 2025', time: '6 h ago', image: photos[10], likes: 31,
     text: 'We painted the cardboard boxes instead of throwing them out — apparently the box WAS the toy all along. Saving this one for the scrapbook.',
     replies: [
-      { mod: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#3d6482', time: '5 h ago', text: 'Every play expert we’ve ever met says the same: the box is never just a box. Beautiful work, Aisha.' },
+      { mod: true, name: 'Priya · Playrooom team', initials: 'PL', tone: '#3d6482', time: '5 h ago', text: 'Every play expert we’ve ever met says the same: the box is never just a box. Beautiful work, Aisha.' },
     ],
   },
   {
@@ -2032,7 +2032,7 @@ const COMMUNITY_POSTS = [
     role: 'New here', time: '2 d ago', image: photos[21], likes: 19,
     text: 'Honest question: how do you store the tiny pieces so they don’t migrate under the sofa? I need the system that actually survives a toddler.',
     replies: [
-      { mod: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#3d6482', time: '2 d ago', text: 'Our honest answer: clear zip pouches, one per set, tipped into a single deep basket. The toddler can’t resist the basket — but the pouches survive.' },
+      { mod: true, name: 'Priya · Playrooom team', initials: 'PL', tone: '#3d6482', time: '2 d ago', text: 'Our honest answer: clear zip pouches, one per set, tipped into a single deep basket. The toddler can’t resist the basket — but the pouches survive.' },
       { name: 'Mia R.', initials: 'MR', tone: '#e59aa2', time: '1 d ago', text: '+1 for the basket. Labels with a picture of the toy helped ours put things back at bedtime.' },
     ],
   },
@@ -2041,7 +2041,7 @@ const COMMUNITY_POSTS = [
     role: 'Grandparent duty', time: '2 d ago', image: photos[30], likes: 64,
     text: 'Three generations around the same puzzle this weekend. My mother claims she “just watched”. The photo says otherwise.',
     replies: [
-      { mod: true, name: 'Dev · Playroom team', initials: 'PL', tone: '#779abb', time: '1 d ago', text: 'This is the whole idea of Playroom in one photo, Kenji. Borrowing this for our wall of lovely things — with your permission. ✳' },
+      { mod: true, name: 'Dev · Playrooom team', initials: 'PL', tone: '#779abb', time: '1 d ago', text: 'This is the whole idea of Playrooom in one photo, Kenji. Borrowing this for our wall of lovely things — with your permission. ✳' },
     ],
   },
 ];
@@ -2081,7 +2081,7 @@ function renderCommunity() {
   const seedPosts = COMMUNITY_POSTS.map((p, i) => ({ ...p, replies: [...p.replies, ...(cs.replies[p.id] || [])], liked: cs.liked.includes(p.id), idx: i }));
   const posts = [...userPosts, ...seedPosts];
   const postCount = 312 + cs.posts.length;
-  return `<div class="route-enter"><div class="wrap page-top page-head"><div class="breadcrumbs"><a href="#/">Home</a> / The community</div><div class="mono muted">The playroom — open to everyone</div><h1 class="page-title">Made and loved by you.</h1><p class="page-intro">Show-and-tell for Playroom families: builds, crafts, gifting wins and honest questions. Moderators drop in daily with answers, tips and the occasional surprise.</p></div>
+  return `<div class="route-enter"><div class="wrap page-top page-head"><div class="breadcrumbs"><a href="#/">Home</a> / The community</div><div class="mono muted">The playrooom — open to everyone</div><h1 class="page-title">Made and loved by you.</h1><p class="page-intro">Show-and-tell for Playrooom families: builds, crafts, gifting wins and honest questions. Moderators drop in daily with answers, tips and the occasional surprise.</p></div>
   <section class="section wrap" id="communityContent">
     <div class="community-top">
       <div class="community-prompt reveal"><div class="mono">This week’s prompt · closes Friday</div><h2>Show us <em>the build she’s proudest of.</em></h2><p>Post it with #thisweeksprompt. Our moderators pick their favourites every Friday, and the top three little makers get a small parcel on us.</p><button class="btn light" data-prompt-post>Post yours <span class="arrow">↗</span></button></div>
@@ -2094,12 +2094,12 @@ function renderCommunity() {
     <div class="community-layout">
       <div class="community-feed">
         <div class="community-filters"><div class="community-topic-filters">${COMMUNITY_TOPICS.map((t, i) => `<button class="filter-chip${i === 0 ? ' active' : ''}" data-ctopic="${t}">${t}</button>`).join('')}</div><div class="sort-toggle" role="group" aria-label="Sort posts"><button class="active" type="button" data-csort="recent">Recent</button><button type="button" data-csort="liked">Most loved</button></div></div>
-        <form id="communityComposer" class="community-composer"><input name="post" placeholder="Share something with the playroom…" autocomplete="off" aria-label="Share something with the playroom"><select name="topic" aria-label="Choose a topic">${COMMUNITY_TOPICS.slice(1).map((t) => `<option>${t}</option>`).join('')}</select><button class="btn" type="submit">Post <span class="arrow">↗</span></button></form>
+        <form id="communityComposer" class="community-composer"><input name="post" placeholder="Share something with the playrooom…" autocomplete="off" aria-label="Share something with the playrooom"><select name="topic" aria-label="Choose a topic">${COMMUNITY_TOPICS.slice(1).map((t) => `<option>${t}</option>`).join('')}</select><button class="btn" type="submit">Post <span class="arrow">↗</span></button></form>
         <div id="communityFeed">${posts.map(communityPostCard).join('')}</div>
         <p class="community-footnote">Fully working and local — posts, replies and hearts are saved in your browser and never leave it.</p>
       </div>
       <aside class="community-side">
-        <div class="side-card reveal"><h4>How the playroom works</h4><ul><li><i>✳</i>Be kind. Every maker here is still learning.</li><li><i>✳</i>Credit the makers — ask before reposting a photo.</li><li><i>✳</i>No selling, no spam, no grown-up arguments.</li><li><i>✳</i>A moderator reads every post within a day.</li></ul></div>
+        <div class="side-card reveal"><h4>How the playrooom works</h4><ul><li><i>✳</i>Be kind. Every maker here is still learning.</li><li><i>✳</i>Credit the makers — ask before reposting a photo.</li><li><i>✳</i>No selling, no spam, no grown-up arguments.</li><li><i>✳</i>A moderator reads every post within a day.</li></ul></div>
         <div class="side-card reveal"><h4>Top members this month</h4><div class="member-row"><span class="post-avatar" style="--av:#e59aa2">MR</span><b>Mia R.</b><span>18 posts</span></div><div class="member-row"><span class="post-avatar" style="--av:#b38771">AN</span><b>Aisha N.</b><span>14 posts</span></div><div class="member-row"><span class="post-avatar" style="--av:#6c7c88">JK</span><b>Jonas K.</b><span>11 posts</span></div><div class="member-row"><span class="post-avatar" style="--av:#7d6a9a">KM</span><b>Kenji M.</b><span>9 posts</span></div></div>
         <div class="side-card reveal"><h4>Trending topics</h4><div class="trending-tags"><span>#thisweeksprompt</span><span>#marblewentwrong</span><span>#rainydayrescues</span><span>#giftingwins</span><span>#tidy-up-sos</span></div></div>
       </aside>
@@ -2249,7 +2249,7 @@ function wirePage() {
   });
   $('#contactForm')?.addEventListener('submit', (e) => {
     e.preventDefault();
-    openModal('Your note is ready', `<div class="success-panel"><div class="success-icon">✓</div><h2>Thanks for the thought.</h2><p>Your message passed the demo form validation. It has not been sent to a server.</p><button class="btn" id="successClose">Back to Playroom ↗</button></div>`);
+    openModal('Your note is ready', `<div class="success-panel"><div class="success-icon">✓</div><h2>Thanks for the thought.</h2><p>Your message passed the demo form validation. It has not been sent to a server.</p><button class="btn" id="successClose">Back to Playrooom ↗</button></div>`);
   });
   wireTrack();
   wireCheckout();
@@ -2261,7 +2261,7 @@ function wirePage() {
   wireAdminPage();
   wireSponsored(); // home — swipeable sponsored picks
 
-  // Community — the playroom (posts, replies, likes, filters, sorting)
+  // Community — the playrooom (posts, replies, likes, filters, sorting)
   if ($('#communityContent')) {
     const feed = $('#communityFeed');
     const cs = communityStore();
@@ -2333,7 +2333,7 @@ function wirePage() {
         communityPersist(cs);
       }
       input.value = '';
-      toast('Reply added. ✳', 'Saved in your browser — this playroom is a demo.');
+      toast('Reply added. ✳', 'Saved in your browser — this playrooom is a demo.');
     });
     $('#communityComposer')?.addEventListener('submit', (e) => {
       e.preventDefault();
@@ -2351,7 +2351,7 @@ function wirePage() {
       applySort();
       const stat = $('#communityPostsStat');
       if (stat) { const c = Number(stat.dataset.count || 0) + 1; stat.dataset.count = String(c); stat.textContent = c.toLocaleString('en-IN'); }
-      toast('Posted to the playroom. ✳', 'Saved in your browser — this playroom is a demo.');
+      toast('Posted to the playrooom. ✳', 'Saved in your browser — this playrooom is a demo.');
     });
     $('[data-prompt-post]')?.addEventListener('click', () => {
       $('#communityComposer input')?.focus();
@@ -2384,7 +2384,7 @@ async function init() {
   startWishlistSync();
   startOrderSync();
   startMembershipSync();
-  window.addEventListener('playroom:orders-updated', () => {
+  window.addEventListener('playrooom:orders-updated', () => {
     if (!appReady) return;
     const path = route().path;
     if (['/orders', '/account/orders', '/order-confirmation', '/track-order'].includes(path)) {

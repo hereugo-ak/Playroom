@@ -14,7 +14,7 @@ function adminGate() {
     <div class="wrap page-head admin-head">
       <div class="mono muted">ADMIN ACCESS</div>
       <h1 class="page-title">Restricted.</h1>
-      <p class="page-intro">This area is available to Playroom administrators only.</p>
+      <p class="page-intro">This area is available to Playrooom administrators only.</p>
     </div>
     <section class="section wrap"><div class="admin-gate-card"><p>Sign in with an administrator account to view analytics.</p><a class="btn" href="#/account/login?admin=1">Admin sign in <span class="arrow" aria-hidden="true">↗</span></a></div></section>
   </div>`;
@@ -67,8 +67,8 @@ export function renderAdminDashboard(r) {
   return `<div class="route-enter admin-page">
     <div class="wrap page-head admin-head">
       <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Admin analytics</span></div>
-      <div class="mono muted">PLAYROOM CONTROL ROOM</div>
-      <h1 class="page-title">The whole <em>playroom.</em></h1>
+      <div class="mono muted">PLAYROOOM CONTROL ROOM</div>
+      <h1 class="page-title">The whole <em>playrooom.</em></h1>
       <p class="page-intro">Order-level, customer-level and event-level analytics — drawn from the live storefront.</p>
     </div>
     <section class="section wrap admin-section">
@@ -171,7 +171,7 @@ async function download(type) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `playroom-${type}.csv`;
+    a.download = `playrooom-${type}.csv`;
     a.click();
     URL.revokeObjectURL(url);
     trackEvent('admin_export', { type });

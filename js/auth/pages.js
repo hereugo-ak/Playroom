@@ -77,9 +77,9 @@ function textField({ id, name, label, type = 'text', autocomplete = 'off', place
 function authShell({ page, kicker, title, intro, children, alt }) {
   return `<div class="route-enter pl-auth" data-auth-page="${page}">
     <div class="pl-auth-wrap wrap">
-      <aside class="pl-auth-aside" aria-label="Playroom">
+      <aside class="pl-auth-aside" aria-label="Playrooom">
         <figure class="pl-auth-figure">
-          <img src="${ART}" alt="Wooden toys on a warm playroom shelf" loading="eager" decoding="async">
+          <img src="${ART}" alt="Wooden toys on a warm playrooom shelf" loading="eager" decoding="async">
           <figcaption class="pl-auth-figure-cap">
             <span class="mono">LITTLE HANDS · BIG WORLDS</span>
             <p>Toys chosen for the way children actually play — slowly, curiously, and all over the floor.</p>
@@ -93,7 +93,7 @@ function authShell({ page, kicker, title, intro, children, alt }) {
 
       <section class="pl-auth-panel">
         <div class="pl-auth-brand">
-          <a class="wordmark" href="#/" aria-label="Playroom home"><i class="mark"></i>playroom</a>
+          <a class="wordmark" href="#/" aria-label="Playrooom home"><i class="mark"></i>playrooom</a>
           <a class="pl-auth-back" href="#/">Back to the shop <span aria-hidden="true">↗</span></a>
         </div>
         <header class="pl-auth-head">
@@ -111,7 +111,7 @@ function authShell({ page, kicker, title, intro, children, alt }) {
   </div>`;
 }
 
-function accountShell({ page, active, title, intro, body, kicker = 'YOUR PLAYROOM ACCOUNT' }) {
+function accountShell({ page, active, title, intro, body, kicker = 'YOUR PLAYROOOM ACCOUNT' }) {
   const user = authState.user;
   const profile = authState.profile;
   const name = accountDisplayName();
@@ -152,7 +152,7 @@ function accountShell({ page, active, title, intro, body, kicker = 'YOUR PLAYROO
 
 function pageGuardCard(message, href = '#/account/login', label = 'Sign in') {
   return `<div class="route-enter pl-auth pl-auth--narrow"><div class="pl-auth-simple">
-    <a class="wordmark" href="#/"><i class="mark"></i>playroom</a>
+    <a class="wordmark" href="#/"><i class="mark"></i>playrooom</a>
     <div class="mono">ACCOUNT</div>
     <h1>${safe(message)}</h1>
     <a class="btn" href="${href}">${safe(label)} <span class="arrow">↗</span></a>
@@ -169,9 +169,9 @@ export function renderLogin(r) {
   return authShell({
     page: 'login',
     kicker: adminMode ? 'RESTRICTED ACCESS' : 'WELCOME BACK',
-    title: adminMode ? 'Admin <em>sign in.</em>' : 'Back to<br><em>the playroom.</em>',
+    title: adminMode ? 'Admin <em>sign in.</em>' : 'Back to<br><em>the playrooom.</em>',
     intro: adminMode
-      ? 'Sign in with an administrator account to open the Playroom analytics control room.'
+      ? 'Sign in with an administrator account to open the Playrooom analytics control room.'
       : 'Sign in to find your saved things, addresses and orders exactly where you left them.',
     children: `<form class="pl-form" id="authLoginForm" novalidate data-next="${safe(next)}"${adminMode ? ' data-admin="1"' : ''}>
       ${textField({ id: 'loginEmail', name: 'email', label: 'Email address', type: 'email', autocomplete: 'email', placeholder: 'you@example.com' })}
@@ -188,7 +188,7 @@ export function renderLogin(r) {
     <div class="pl-form-message pl-form-message--error" data-auth-inline-error role="alert" hidden></div>`,
     alt: adminMode
       ? '<p>Not an administrator? <a href="#/account/login">Return to customer sign in</a></p>'
-      : `<p>New to Playroom? <a href="${registerHref}">Create an account <span aria-hidden="true">↗</span></a></p><p class="pl-admin-link"><a href="#/account/login?admin=1">Admin access <span aria-hidden="true">↗</span></a></p>`,
+      : `<p>New to Playrooom? <a href="${registerHref}">Create an account <span aria-hidden="true">↗</span></a></p><p class="pl-admin-link"><a href="#/account/login?admin=1">Admin access <span aria-hidden="true">↗</span></a></p>`,
   });
 }
 
@@ -326,7 +326,7 @@ export function renderDashboard() {
         <div class="field pl-field full">
           <label for="profileEmail">Email address</label>
           <input id="profileEmail" type="email" autocomplete="email" value="${safe(user?.email || '')}" readonly>
-          <small class="pl-field-hint">Your sign-in email is managed by Playroom care. Ask us from the <a href="#/contact">contact page</a> to change it.</small>
+          <small class="pl-field-hint">Your sign-in email is managed by Playrooom care. Ask us from the <a href="#/contact">contact page</a> to change it.</small>
         </div>
       </div>
       <div class="pl-form-actions">

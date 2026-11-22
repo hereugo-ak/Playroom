@@ -135,7 +135,7 @@ function accountMenuHTML() {
     </div>
     <a class="btn full account-menu-cta" href="#/account/login" role="menuitem">Sign in</a>
     <a class="account-menu-create" href="#/account/register" role="menuitem">Create an account</a>
-    <a class="account-menu-create" href="#/circle" role="menuitem">Explore Playroom Circle</a>`;
+    <a class="account-menu-create" href="#/circle" role="menuitem">Explore Playrooom Circle</a>`;
 }
 
 export function refreshAccountHeader() {
@@ -208,7 +208,7 @@ function wireHeader() {
 // ---------------------------------------------------------------------------
 function loadingScreen(label = 'Opening your account…') {
   return `<div class="route-enter pl-auth pl-auth--narrow"><div class="pl-auth-simple pl-auth-simple--loading">
-    <a class="wordmark" href="#/"><i class="mark"></i>playroom</a>
+    <a class="wordmark" href="#/"><i class="mark"></i>playrooom</a>
     <span class="pl-spinner pl-spinner--large" aria-hidden="true"></span>
     <p>${safe(label)}</p>
   </div></div>`;
@@ -620,7 +620,7 @@ async function handleRegister(form, event) {
     if (result.session) {
       const next = takeDestination(sanitizeNext(form.dataset.next) || '/account');
       trackEvent('signup_complete', { verifiedImmediately: true });
-      toast('Your account is ready.', 'Welcome to Playroom.');
+      toast('Your account is ready.', 'Welcome to Playrooom.');
       go(next);
       return;
     }
@@ -679,7 +679,7 @@ function showOtpVerification(form, email, next) {
       if (data.session) {
         const target = takeDestination(next);
         trackEvent('signup_complete', { verifiedImmediately: false });
-        toast('Your email is verified.', 'Welcome to Playroom.');
+        toast('Your email is verified.', 'Welcome to Playrooom.');
         go(target);
         return;
       }

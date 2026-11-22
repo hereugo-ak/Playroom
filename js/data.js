@@ -1,4 +1,4 @@
-// Playroom Atelier — data layer.
+// Playrooom Atelier — data layer.
 // Product seed data is extracted verbatim from the supplied reference HTML so the
 // catalogue stays 1:1 (names, prices, ages, descriptions, includes, benefits).
 import { seedData } from './data-seeds.js';

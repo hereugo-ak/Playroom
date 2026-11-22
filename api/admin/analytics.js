@@ -68,7 +68,7 @@ export default async function handler(req, res) {
       page_path: '/admin',
       properties: { days: rangeDays, event_filter: eventFilter },
       device_type: 'desktop',
-      browser: 'Playroom Admin',
+      browser: 'Playrooom Admin',
     });
 
     const [

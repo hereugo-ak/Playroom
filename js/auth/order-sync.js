@@ -79,7 +79,7 @@ async function mergeLocalOrders(orders) {
     } catch (error) {
       // Offline / table not created yet: keep it visible locally and try again
       // on the next sign-in.
-      console.warn('[Playroom orders] could not upload a local order', error?.message || error);
+      console.warn('[Playrooom orders] could not upload a local order', error?.message || error);
       orders.push(local);
     }
     known.add(String(local.id).toLowerCase());
@@ -96,7 +96,7 @@ async function mergeLocalReturns(returns) {
       const saved = await saveRemoteReturn(local);
       returns.push(saved || local);
     } catch (error) {
-      console.warn('[Playroom orders] could not upload a local return', error?.message || error);
+      console.warn('[Playrooom orders] could not upload a local return', error?.message || error);
       returns.push(local);
     }
     known.add(String(local.id).toLowerCase());
@@ -116,7 +116,7 @@ function hydrate(user) {
       orders = await listRemoteOrders();
     } catch (error) {
       // A missing table or a network hiccup must not blank the order history.
-      console.warn('[Playroom orders] history unavailable', error?.message || error);
+      console.warn('[Playrooom orders] history unavailable', error?.message || error);
       return;
     }
     const syncedOrders = await mergeLocalOrders(orders);
@@ -125,7 +125,7 @@ function hydrate(user) {
     try {
       syncedReturns = await mergeLocalReturns(await listRemoteReturns());
     } catch (error) {
-      console.warn('[Playroom returns] history unavailable', error?.message || error);
+      console.warn('[Playrooom returns] history unavailable', error?.message || error);
       syncedReturns = [...state.returns];
     }
 
@@ -133,7 +133,7 @@ function hydrate(user) {
     setReturns(syncedReturns);
     hydratedFor = user.id;
     // The first paint may have happened before a slow history request finished.
-    window.dispatchEvent(new Event('playroom:orders-updated'));
+    window.dispatchEvent(new Event('playrooom:orders-updated'));
   })();
 
   hydration = { id: user.id, promise };

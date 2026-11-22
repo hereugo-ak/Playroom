@@ -1,4 +1,4 @@
-// Playroom Atelier — delivery promise.
+// Playrooom Atelier — delivery promise.
 // The logic behind the live urgency line and the checkout delivery options:
 // a 3pm dispatch cutoff, business-day estimates, and the chosen option kept
 // in sessionStorage so cart → checkout → order snapshot agree on one story.

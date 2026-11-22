@@ -8,7 +8,7 @@ const clean = (value, max = 40) => String(value ?? '').trim().slice(0, max);
 function guideHtml(month) {
   return `<!doctype html>
 <html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Playroom Circle · ${month} Play Guide</title>
+<title>Playrooom Circle · ${month} Play Guide</title>
 <style>
 body{margin:0;background:#F0E5D7;color:#3D2E23;font-family:Arial,Helvetica,sans-serif;line-height:1.7}
 .wrap{max-width:720px;margin:0 auto;padding:42px 26px 70px}
@@ -29,7 +29,7 @@ li{margin:8px 0}
 <section class="card"><h2>02 · Make room for repetition</h2><p>Building the same tower, retelling the same story or sorting the same buttons is not boredom. It is practice, memory and confidence.</p></section>
 <section class="card"><h2>03 · Ask smaller questions</h2><p>“What would this become if it turned over?” opens more play than “What are you making?” A quiet prompt is often enough.</p></section>
 <section class="card"><h2>04 · Keep one thing unfinished</h2><p>Leave a block structure, marble run or pretend scene partly built. Returning to it later gives the next play session a gentle entry point.</p></section>
-<p class="foot">PLAYROOM CIRCLE · MADE FOR LITTLE BIG IMAGINATIONS.</p>
+<p class="foot">PLAYROOOM CIRCLE · MADE FOR LITTLE BIG IMAGINATIONS.</p>
 </main></body></html>`;
 }
 
@@ -58,7 +58,7 @@ export default async function handler(req, res) {
     const month = clean(req.query?.month, 24) || new Intl.DateTimeFormat('en-IN', { month: 'long' }).format(new Date());
     res.status(200);
     res.setHeader('Content-Type', 'text/html; charset=utf-8');
-    res.setHeader('Content-Disposition', `inline; filename="playroom-circle-play-guide.html"`);
+    res.setHeader('Content-Disposition', `inline; filename="playrooom-circle-play-guide.html"`);
     res.setHeader('Cache-Control', 'no-store');
     res.end(guideHtml(month));
   } catch (error) {

@@ -1,4 +1,4 @@
-// Playroom Atelier — one-time welcome offer popup.
+// Playrooom Atelier — one-time welcome offer popup.
 // Ported 1:1 from the approved prototype (#playloom-welcome-media-behavior, popup part only).
 export function initWelcome() {
   const overlay = document.getElementById('plWelcomeOverlay');
@@ -29,7 +29,7 @@ export function initWelcome() {
     const emails = [...new Set([...readList(), email])];
     try { localStorage.setItem('pl-newsletter', JSON.stringify(emails)); localStorage.setItem('pl-welcome-subscribed', '1'); localStorage.removeItem('pl-welcome-snooze-until'); } catch {}
     card.classList.add('is-success');
-    content.innerHTML = `<div class="pl-welcome-wordmark"><span class="pl-welcome-mark">p.</span> playroom</div><div class="mono pl-welcome-kicker">A LITTLE SOMETHING, UNLOCKED</div><h2 class="pl-welcome-success-title">Your next little<br><em>discovery awaits.</em></h2><p>Use this code at checkout for 10% off your first demo order.</p><div class="pl-welcome-code" id="plWelcomeCode">PLAY10</div><button class="pl-welcome-copy-code" type="button" id="plWelcomeCopyCode">Copy your code</button><button class="pl-welcome-shop-btn" type="button" id="plWelcomeShop">EXPLORE THE COLLECTION ↗</button><p class="pl-welcome-fineprint">This is a concept store. The sign-up is saved only in this browser.</p>`;
+    content.innerHTML = `<div class="pl-welcome-wordmark"><span class="pl-welcome-mark">p.</span> playrooom</div><div class="mono pl-welcome-kicker">A LITTLE SOMETHING, UNLOCKED</div><h2 class="pl-welcome-success-title">Your next little<br><em>discovery awaits.</em></h2><p>Use this code at checkout for 10% off your first demo order.</p><div class="pl-welcome-code" id="plWelcomeCode">PLAY10</div><button class="pl-welcome-copy-code" type="button" id="plWelcomeCopyCode">Copy your code</button><button class="pl-welcome-shop-btn" type="button" id="plWelcomeShop">EXPLORE THE COLLECTION ↗</button><p class="pl-welcome-fineprint">This is a concept store. The sign-up is saved only in this browser.</p>`;
     card.querySelector('.pl-welcome-success-title')?.setAttribute('tabindex', '-1');
     card.querySelector('.pl-welcome-success-title')?.focus({ preventScroll: true });
     const copy = document.getElementById('plWelcomeCopyCode');

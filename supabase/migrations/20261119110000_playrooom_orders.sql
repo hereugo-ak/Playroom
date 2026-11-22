@@ -1,5 +1,5 @@
 -- ============================================================================
--- Playroom — customer orders & returns
+-- Playrooom — customer orders & returns
 -- ----------------------------------------------------------------------------
 -- Checkout still creates a clearly-labelled DEMO order (no payment is taken),
 -- but the snapshot is now stored against the signed-in customer instead of
@@ -10,7 +10,7 @@
 -- RLS guarantees that one customer can never read another customer's orders or
 -- returns. Nothing here is authorised in the browser.
 --
--- Safe to re-run. Run after 20261119090000_playroom_accounts.sql.
+-- Safe to re-run. Run after 20261119090000_playrooom_accounts.sql.
 -- ============================================================================
 
 -- ---------------------------------------------------------------------------

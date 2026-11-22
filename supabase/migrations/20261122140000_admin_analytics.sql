@@ -1,5 +1,5 @@
 -- ============================================================================
--- Playroom — admin analytics foundation
+-- Playrooom — admin analytics foundation
 -- ----------------------------------------------------------------------------
 -- Adds low-level event tracking, admin audit logs and analytics views.
 -- The admin password is NOT stored here. Create the Supabase Auth user first,

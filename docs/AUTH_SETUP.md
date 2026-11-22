@@ -14,9 +14,9 @@ the Vercel deployment.
 
 1. Create a project at <https://supabase.com/dashboard>.
 2. Open **SQL Editor** and run both migrations, in this order:
-   1. [`20261119090000_playroom_accounts.sql`](../supabase/migrations/20261119090000_playroom_accounts.sql) —
+   1. [`20261119090000_playrooom_accounts.sql`](../supabase/migrations/20261119090000_playrooom_accounts.sql) —
       `profiles`, `addresses`, `wishlist`, `user_roles`.
-   2. [`20261119110000_playroom_orders.sql`](../supabase/migrations/20261119110000_playroom_orders.sql) —
+   2. [`20261119110000_playrooom_orders.sql`](../supabase/migrations/20261119110000_playrooom_orders.sql) —
       `orders` and `returns`, with the same RLS pattern. This is the one that
       makes order history and tracking follow the account.
 
@@ -91,12 +91,12 @@ recovery token. The app detects `type=recovery` and routes to the reset form.
 
 1. <https://console.cloud.google.com/> → create (or choose) a project.
 2. **APIs & Services → OAuth consent screen**: choose *External*, fill the app
-   name (Playroom), support email and developer email. Add the scopes
+   name (Playrooom), support email and developer email. Add the scopes
    `email`, `profile`, `openid`. While the app is in *Testing*, add the Google
    accounts that should be able to sign in.
 3. **APIs & Services → Credentials → Create credentials → OAuth client ID**:
    - Application type: **Web application**
-   - Name: `Playroom web`
+   - Name: `Playrooom web`
    - **Authorised JavaScript origins**
      - `https://playrooom.vercel.app`
      - `http://localhost:5173`

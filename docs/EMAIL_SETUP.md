@@ -1,6 +1,6 @@
 # Order confirmation email — setup
 
-Premium transactional email for Playroom orders, sent from Gmail SMTP with Nodemailer. Email is dispatched by a Vercel serverless function **after** the Supabase order has been committed. Nothing in the browser talks to SMTP.
+Premium transactional email for Playrooom orders, sent from Gmail SMTP with Nodemailer. Email is dispatched by a Vercel serverless function **after** the Supabase order has been committed. Nothing in the browser talks to SMTP.
 
 ## Files
 
@@ -13,8 +13,8 @@ Premium transactional email for Playroom orders, sent from Gmail SMTP with Nodem
 
 Run the migrations in order:
 
-1. `20261119090000_playroom_accounts.sql`
-2. `20261119110000_playroom_orders.sql`
+1. `20261119090000_playrooom_accounts.sql`
+2. `20261119110000_playrooom_orders.sql`
 3. `20261120120000_order_email_outbox.sql`
 
 The last migration adds:
@@ -37,7 +37,7 @@ Set these in **Vercel → Project Settings → Environment Variables** for Produ
 | `SMTP_PORT` | `465` |
 | `SMTP_USER` | `playrooom.project@gmail.com` |
 | `SMTP_PASS` | Gmail App Password |
-| `SMTP_FROM` | `Playroom <playrooom.project@gmail.com>` |
+| `SMTP_FROM` | `Playrooom <playrooom.project@gmail.com>` |
 | `SITE_URL` | `https://playrooom.vercel.app/` (optional) |
 | `SUPPORT_EMAIL` | `playrooom.project@gmail.com` (optional) |
 
@@ -72,7 +72,7 @@ If the order insert succeeds but email sending fails, the API still returns the 
 
 It uses:
 
-- the official hosted Playroom logo
+- the official hosted Playrooom logo
 - table-based email layout and inline CSS
 - no JavaScript, no web fonts, no Grid/Flexbox
 - a light-only colour scheme
@@ -81,12 +81,12 @@ It uses:
 
 Subject lines:
 
-- Confirmed/paid: `Your Playroom order is on its way to becoming something wonderful — #[ORDER]`
-- All other states: `Your Playroom order is confirmed — #[ORDER]`
+- Confirmed/paid: `Your Playrooom order is on its way to becoming something wonderful — #[ORDER]`
+- All other states: `Your Playrooom order is confirmed — #[ORDER]`
 
 Payment status is never invented. The server accepts `cod` from the trusted payment-method label and otherwise records `demo_not_charged`; browser-supplied “paid” values are ignored.
 
-## Playroom Circle confirmation
+## Playrooom Circle confirmation
 
 `api/subscriptions/activate.js` uses the same transport and outbox pattern for
 `subscription_confirmation` messages. The template is

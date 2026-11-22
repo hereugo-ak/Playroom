@@ -1,4 +1,4 @@
-// Vercel serverless function: activate Playroom Circle after the existing demo
+// Vercel serverless function: activate Playrooom Circle after the existing demo
 // payment flow is approved. No real payment provider is used.
 import { renderSubscriptionConfirmation } from '../../emails/subscription-confirmation.js';
 import { bearer, getAdmin, getTransport, json, readJson, requireEnv } from '../_lib/server.js';
@@ -118,7 +118,7 @@ export default async function handler(req, res) {
     const body = await readJson(req);
     const code = clean(body.planCode, 40);
     const plan = PLAN_META[code];
-    if (!plan) return json(res, 400, { error: 'Choose a valid Playroom Circle plan.' });
+    if (!plan) return json(res, 400, { error: 'Choose a valid Playrooom Circle plan.' });
 
     const key = clean(body.idempotencyKey, 100);
     if (!/^[A-Za-z0-9_-]{16,100}$/.test(key)) return json(res, 400, { error: 'Invalid membership request.' });

@@ -1,4 +1,4 @@
-// Playroom Atelier — demo tracking timeline (handoff §8.6).
+// Playrooom Atelier — demo tracking timeline (handoff §8.6).
 // Model: the FULL planned timeline is generated deterministically at lookup time
 // from the order snapshot, with the first event marked complete and later events
 // labelled "Simulated next step". No randomness, no courier claims, no GPS.
@@ -52,7 +52,7 @@ export function timelineFor(order) {
     if (i === 0) {
       return {
         status: stage.status, title: stage.title, description: stage.desc(order),
-        timestampLabel: fmt(placed), locationLabel: 'Playroom demo store', complete: true,
+        timestampLabel: fmt(placed), locationLabel: 'Playrooom demo store', complete: true,
       };
     }
     const at = new Date(placed.getTime() + OFFSETS_H[stage.status] * 3600 * 1000);

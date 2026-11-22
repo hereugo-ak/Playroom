@@ -1,4 +1,4 @@
-// Premium Playroom Circle confirmation email.
+// Premium Playrooom Circle confirmation email.
 // Uses the same table-based design system as the order confirmation email.
 import { escapeHtml } from './order-confirmation.js';
 
@@ -71,7 +71,7 @@ export function renderSubscriptionConfirmation(data = {}, options = {}) {
   const site = safeUrl(options.siteUrl || SITE, SITE);
   const membershipUrl = safeUrl(options.membershipUrl || `${site}#/account/membership`, site);
   const shopUrl = safeUrl(options.shopUrl || site, site);
-  const planName = String(data.planName || 'Playroom Circle');
+  const planName = String(data.planName || 'Playrooom Circle');
   const amount = Number(data.amount || 0);
   const periodEnd = data.currentPeriodEnd || data.periodEnd || '';
   const reference = String(data.paymentReference || 'DEMO');
@@ -86,7 +86,7 @@ export function renderSubscriptionConfirmation(data = {}, options = {}) {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light only">
 <meta name="supported-color-schemes" content="light only">
-<title>Welcome to Playroom Circle</title>
+<title>Welcome to Playrooom Circle</title>
 <style>
   @media only screen and (max-width:620px) {
     .px { padding-left:20px !important; padding-right:20px !important; }
@@ -96,19 +96,19 @@ export function renderSubscriptionConfirmation(data = {}, options = {}) {
 </style>
 </head>
 <body style="margin:0;padding:0;background:${C.beige};color:${C.ink};font-family:Arial,Helvetica,sans-serif;-webkit-text-size-adjust:100%;">
-<div style="display:none;max-height:0;overflow:hidden;opacity:0;">Welcome to Playroom Circle. Your demo membership is active.</div>
+<div style="display:none;max-height:0;overflow:hidden;opacity:0;">Welcome to Playrooom Circle. Your demo membership is active.</div>
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="${C.beige}" style="background:${C.beige};">
   <tr><td align="center" style="padding:0;">
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="620" style="width:100%;max-width:620px;background:${C.ivory};">
-      <tr><td align="center" bgcolor="${C.cocoa}" style="background:${C.cocoa};padding:11px 20px;color:#d3e1ee;font:9px Arial,sans-serif;letter-spacing:.12em;">PLAYROOM CIRCLE · MEMBER CONFIRMATION · MADE FOR LITTLE BIG IMAGINATIONS</td></tr>
+      <tr><td align="center" bgcolor="${C.cocoa}" style="background:${C.cocoa};padding:11px 20px;color:#d3e1ee;font:9px Arial,sans-serif;letter-spacing:.12em;">PLAYROOOM CIRCLE · MEMBER CONFIRMATION · MADE FOR LITTLE BIG IMAGINATIONS</td></tr>
       <tr><td align="center" bgcolor="${C.beige}" class="px" style="background:${C.beige};padding:32px 44px 28px;border-bottom:1px solid ${C.line};">
-        <img src="${LOGO}" width="190" alt="Playroom" style="display:block;width:190px;max-width:70%;height:auto;">
+        <img src="${LOGO}" width="190" alt="Playrooom" style="display:block;width:190px;max-width:70%;height:auto;">
         <div style="margin-top:14px;color:${C.rose};font:700 12px Arial,sans-serif;letter-spacing:.14em;">LITTLE HANDS. BIG WORLDS.</div>
       </td></tr>
       <tr><td class="px" style="padding:38px 44px 10px;">
-        <div style="color:${C.rose};font:700 9px Arial,sans-serif;letter-spacing:.16em;">PLAYROOM CIRCLE / MEMBERSHIP ACTIVE</div>
+        <div style="color:${C.rose};font:700 9px Arial,sans-serif;letter-spacing:.16em;">PLAYROOOM CIRCLE / MEMBERSHIP ACTIVE</div>
         <h1 class="hero-title" style="margin:16px 0 12px;color:${C.ink};font:400 44px/1.05 Georgia,'Times New Roman',serif;letter-spacing:-.03em;">A little more room for <em style="color:${C.rose};font-style:italic;">play.</em></h1>
-        <p style="margin:0;color:${C.muted};font:14px/1.75 Arial,sans-serif;">${firstName ? `Hello ${escapeHtml(firstName)},` : 'Hello,'} your Playroom Circle membership is active. The demo payment was approved and your benefits are ready to use.</p>
+        <p style="margin:0;color:${C.muted};font:14px/1.75 Arial,sans-serif;">${firstName ? `Hello ${escapeHtml(firstName)},` : 'Hello,'} your Playrooom Circle membership is active. The demo payment was approved and your benefits are ready to use.</p>
       </td></tr>
       <tr><td class="px" style="padding:20px 44px 10px;">
         <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#d3e1ee;border:1px solid ${C.line};border-radius:6px;">
@@ -153,12 +153,12 @@ export function renderSubscriptionConfirmation(data = {}, options = {}) {
 </html>`;
 
   const text = [
-    'PLAYROOM CIRCLE — LITTLE HANDS. BIG WORLDS.',
+    'PLAYROOOM CIRCLE — LITTLE HANDS. BIG WORLDS.',
     '',
     'MEMBERSHIP ACTIVE',
     '',
     firstName ? `Hello ${firstName},` : 'Hello,',
-    'Your Playroom Circle membership is active. The demo payment was approved and your benefits are ready to use.',
+    'Your Playrooom Circle membership is active. The demo payment was approved and your benefits are ready to use.',
     '',
     `Plan: ${planName}`,
     'Status: Active · demo',
@@ -187,7 +187,7 @@ export function renderSubscriptionConfirmation(data = {}, options = {}) {
   ].join('\n');
 
   return {
-    subject: 'Welcome to Playroom Circle — your membership is active',
+    subject: 'Welcome to Playrooom Circle — your membership is active',
     html,
     text,
   };

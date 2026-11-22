@@ -1,4 +1,4 @@
-// Playroom 3D product studio — product only.
+// Playrooom 3D product studio — product only.
 // Image-derived materials, art-directed geometry, real fullscreen viewport.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';

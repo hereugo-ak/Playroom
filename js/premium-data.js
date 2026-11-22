@@ -1,4 +1,4 @@
-// Playroom Atelier — premium content pools.
+// Playrooom Atelier — premium content pools.
 // Copy, structure and “editorial” layers for the depth features: age stages,
 // play-stage guidance, materials & safety, spare parts, reviews, Q&A, press
 // wall and the (clearly-labelled) advisory board. Pure data + tiny helpers —
@@ -202,7 +202,7 @@ export const DESIGN_STANDARDS = [
 ];
 
 export const SAFETY_DEMO_NOTE =
-  'Playroom is a concept storefront. These standards describe the design intent of the demo catalogue — no real certification body has tested these simulated products.';
+  'Playrooom is a concept storefront. These standards describe the design intent of the demo catalogue — no real certification body has tested these simulated products.';
 
 // ----------------------------------------------------------- spare parts --
 export const SPARE_PARTS_BY_KIND = {
@@ -315,17 +315,17 @@ export const QNA_GENERAL = [
   {
     q: 'How long does delivery usually take?',
     a: 'Standard delivery arrives in 2–4 business days across India, and it is complimentary on orders above ₹1,499. Express and “pick a day” options are available at checkout.',
-    by: 'Playroom team',
+    by: 'Playrooom team',
   },
   {
     q: 'What is the return window?',
     a: 'Thirty days, any reason, free pickup. You can start a return from your orders page — the courier comes to you and the refund lands back on the original payment method.',
-    by: 'Playroom team',
+    by: 'Playrooom team',
   },
   {
     q: 'Is it safe for a child who still mouths toys?',
     a: 'Every finish in the range is water-based and saliva-safe by design, and age guidance on the box is enforced strictly. If a set contains small parts, the listing says so before you add it to the bag.',
-    by: 'Playroom team',
+    by: 'Playrooom team',
   },
 ];
 

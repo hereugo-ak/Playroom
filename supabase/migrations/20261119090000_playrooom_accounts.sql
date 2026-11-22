@@ -1,5 +1,5 @@
 -- ============================================================================
--- Playroom — customer accounts
+-- Playrooom — customer accounts
 -- ----------------------------------------------------------------------------
 -- Creates the customer-facing tables used by the storefront:
 --

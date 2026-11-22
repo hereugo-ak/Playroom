@@ -1,6 +1,6 @@
-// Playroom Atelier — the living room hero and the cinematic scroll handoff.
+// Playrooom Atelier — the living room hero and the cinematic scroll handoff.
 //
-// The hero video is rendered from the exact art-directed playroom photograph:
+// The hero video is rendered from the exact art-directed playrooom photograph:
 // the same girl, teddy, train, blocks, stacking rings, dollhouse and teepee,
 // with no generative repaint and nothing removed. Lenis supplies the wheel
 // inertia; GSAP + ScrollTrigger own the copy fade and the cream content card

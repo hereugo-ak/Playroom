@@ -43,7 +43,7 @@ export default async function handler(req, res) {
       const csv = [header.join(','), ...rows.map((r) => header.map((key) => csvCell(key === 'properties' ? JSON.stringify(r[key]) : r[key])).join(','))].join('\n');
       res.status(200);
       res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-      res.setHeader('Content-Disposition', `attachment; filename="playroom-events-${rangeDays}d.csv"`);
+      res.setHeader('Content-Disposition', `attachment; filename="playrooom-events-${rangeDays}d.csv"`);
       res.setHeader('Cache-Control', 'no-store');
       return res.end(csv);
     }
@@ -67,7 +67,7 @@ export default async function handler(req, res) {
     })].join('\n');
     res.status(200);
     res.setHeader('Content-Type', 'text/csv; charset=utf-8');
-    res.setHeader('Content-Disposition', `attachment; filename="playroom-orders-${rangeDays}d.csv"`);
+    res.setHeader('Content-Disposition', `attachment; filename="playrooom-orders-${rangeDays}d.csv"`);
     res.setHeader('Cache-Control', 'no-store');
     return res.end(csv);
   } catch (error) {
