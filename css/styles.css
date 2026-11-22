@@ -2951,51 +2951,27 @@ body.pl-call-active .pl-support-launchers{opacity:0;pointer-events:none}
 .home-trust-strip i{width:3px;height:3px;border-radius:50%;background:#bfc7ce}
 
 /* ==================================================================
-   HOME HERO · campaign artwork ("Playrooom Adventures Under Rainbow")
-   The artwork carries its own wordmark, so the copy moves into an
-   editorial bar under the frame instead of over it: the picture stays
-   whole, the headline reads at full size, and no text sits on a face.
-   Palette sampled from the artwork itself — wall #bdd3e8, arch #f1ad93,
-   floor #f1e7e4, logo brown #4d362f.
+   HOME HERO · artwork only, then a physics handoff into the shelf
+   The picture is the whole first screen: nothing sits on it. Two crops
+   are served — the 2.2:1 wide frame from 1400px up, the taller 1.56:1
+   frame below — so the composition is never cropped at any width.
    ================================================================== */
-#app .home-hero.home-hero--campaign{width:100%;max-width:none;margin:0;padding:0;background:var(--paper);overflow:clip}
-.hero-campaign-art{position:relative;margin:0;overflow:hidden;background:#bdd3e8}
-.hero-campaign-art img{display:block;width:100%;height:auto;aspect-ratio:1670/941;object-fit:contain;transform:scale(1.001)}
+#app .home-hero.home-hero--art{width:100%;max-width:none;margin:0;padding:0;background:#c3d8ea;position:relative;z-index:0;overflow:clip}
+.hero-picture{position:relative;width:100%;overflow:hidden;background:#c3d8ea;transform-origin:50% 42%;will-change:transform,opacity;backface-visibility:hidden}
+.hero-picture picture,.hero-picture img{display:block;width:100%}
+/* The frame is never taller than the artwork. Height follows the file's own
+   ratio, so the composition is shown whole — nothing is sliced off the top
+   or the base, whatever the viewport height. */
+.hero-picture img{height:auto;aspect-ratio:1024/655;object-fit:cover;object-position:center center;transform-origin:50% 45%;will-change:transform}
+@media(min-width:700px){
+  .hero-picture img{aspect-ratio:2048/1310}
+}
+@media(min-width:1400px){
+  .hero-picture img{aspect-ratio:2880/1310}
+}
 @media(prefers-reduced-motion:no-preference){
-  .hero-campaign-art img{animation:heroArtIn 1.1s var(--ease) both}
-  .hero-campaign-lead>*{animation:heroBarIn .9s .18s var(--ease) both}
-  .hero-campaign-side>*{animation:heroBarIn .9s .3s var(--ease) both}
-  .hero-campaign-side>*:nth-child(2){animation-delay:.38s}
+  .hero-picture img{animation:heroArtSettle 1.15s var(--ease) both}
 }
-@keyframes heroArtIn{from{opacity:0;transform:scale(1.035)}to{opacity:1;transform:scale(1.001)}}
-@keyframes heroBarIn{from{opacity:0;transform:translateY(14px)}to{opacity:1;transform:none}}
-.hero-campaign-bar{display:grid;grid-template-columns:minmax(0,1.12fr) minmax(0,.88fr);gap:clamp(22px,3.6vw,64px);align-items:end;padding:clamp(22px,2.6vw,34px) 0 clamp(22px,2.6vw,34px)}
-.hero-campaign-lead{min-width:0}
-.hero-campaign-bar .hero-overline{color:#8a6f61;font:9px/1 var(--mono);letter-spacing:.16em;text-transform:uppercase;display:flex;align-items:center;gap:10px}
-.hero-campaign-bar .hero-overline:before{content:'';width:26px;height:2px;border-radius:2px;background:#e59aa2;flex:none}
-.hero-campaign-bar h1{font:500 clamp(36px,4.4vw,64px)/1.04 var(--serif);letter-spacing:-.05em;color:#2f211b;margin:14px 0 0}
-.hero-campaign-bar h1 em{font-style:italic;font-weight:400;color:#c9727c}
-.hero-campaign-side{min-width:0;display:grid;gap:18px;justify-items:start}
-.hero-campaign-side p{font-size:13.5px;line-height:1.72;color:#7d6d65;max-width:36ch;margin:0}
-.hero-campaign-bar .hero-actions{gap:20px}
-#app .home-hero--campaign .btn{min-height:50px;padding:15px 21px;font-size:11px;background:#3d6482;border-color:#3d6482;color:#fffdf5;box-shadow:0 10px 22px -12px #3d64829c}
-#app .home-hero--campaign .btn:hover{background:#345671;border-color:#345671;transform:translateY(-2px)}
-#app .home-hero--campaign .hero-secondary-link{color:#3b2a22;border-bottom:1px solid #c9b6a9;padding:0 0 6px;font-size:11px;font-weight:600}
-#app .home-hero--campaign .hero-secondary-link:hover{color:#c9727c;border-color:#e59aa2}
-.hero-campaign-bar+.hero-trust-strip,.home-trust-strip{margin-top:0}
-@media(max-width:900px){
-  .hero-campaign-art img{height:auto}
-  .hero-campaign-bar{grid-template-columns:1fr;gap:16px;align-items:start;padding:22px 0 26px}
-  .hero-campaign-side{gap:14px}
-  .hero-campaign-side p{max-width:46ch}
-}
-@media(max-width:600px){
-  #app .home-hero.home-hero--campaign{width:100%;padding:0}
-  .hero-campaign-art img{height:auto}
-  .hero-campaign-bar h1{font-size:clamp(30px,7.8vw,38px);margin-top:12px}
-  .hero-campaign-bar h1 span,.hero-campaign-bar h1 em{display:block}
-  .hero-campaign-side p{font-size:13px}
-  #app .home-hero--campaign .btn{width:100%;justify-content:center}
-  .hero-campaign-side{justify-items:stretch}
-  #app .home-hero--campaign .hero-secondary-link{align-self:flex-start}
-}
+@keyframes heroArtSettle{from{opacity:0}to{opacity:1}}
+/* the shelf card rides over the receding picture */
+.home-main{transform:translateZ(0)}
