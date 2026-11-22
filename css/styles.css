@@ -3110,3 +3110,82 @@ body.pl-call-active .pl-support-launchers{opacity:0;pointer-events:none}
   .site-chrome-shell .nav > a:hover,
   .site-chrome-shell .nav > button:hover{color:#a0505a!important;background:rgba(61,100,130,.045)}
 }
+
+/* ==================================================================
+   VERTICAL RHYTHM · the space between sections
+   ------------------------------------------------------------------
+   The page had drifted into 130-190px of dead air between stacked
+   sections (two big paddings meeting, plus one-off values of 100-105).
+   Here the rhythm is re-stated once, as tokens, so it can be audited:
+
+     same paper surface ....  80px between blocks  (40 + 40)
+     colour band edge ......  96-120px inside the band
+     hairline ledger .......  56-64px around a rule
+     product detail ........  88px between sections
+
+   Section heads keep their own 24-30px, cards keep their grid gaps.
+   ================================================================== */
+:root{--pl-rhythm:56px}
+
+/* --- shared page sections (catalog intro, journal, community, stage,
+       gift finder, policy pages ...) ---------------------------------- */
+#app .section{padding-top:var(--pl-rhythm);padding-bottom:var(--pl-rhythm)}
+#app .catalog-layout{padding-bottom:56px}
+#app .page-simple{padding-top:36px;padding-bottom:64px}
+#app .circle-section{padding-bottom:64px}
+#app .stage-index-foot{margin-top:32px}
+#app .circle-editorial,.circle-pricing{margin-top:36px}
+#app .sv-section{padding-top:32px;padding-bottom:56px}
+#app .sv-band{padding-top:48px;padding-bottom:48px}
+#app .sv-faq{margin-top:36px}
+
+/* --- home · play shelf -> favourites -> ledger -> sponsored -> bands --- */
+#app .home-premium .home-main > .home-play-section{padding-top:48px;padding-bottom:32px}
+#app .home-premium .home-favorites{padding-top:48px;padding-bottom:48px}
+#app .home-premium .home-trust-strip{padding-top:22px;padding-bottom:16px}
+#app .home-premium .home-sponsored{padding-top:56px;padding-bottom:56px}
+#app .home-premium .home-by-age{padding-top:64px;padding-bottom:64px}
+#app .home-premium .home-story-section{padding-top:64px;padding-bottom:64px}
+#app .home-premium .home-gifting{padding-bottom:56px}
+#app .home-premium .press-strip{padding-top:56px;padding-bottom:32px;margin-top:0}
+#app .home-premium .home-journal{padding-top:12px;padding-bottom:72px}
+
+/* --- product detail · one rhythm for every section -------------------- */
+#app .product-page{padding-bottom:48px}
+#app .pdp-section{padding-top:44px;padding-bottom:44px}
+#app .pdp-sec-head{margin-bottom:24px}
+/* A section already draws its own top hairline; the grid's border-bottom
+   was putting a second rule 68px above it, with nothing in between. */
+#app .pdp-safety .safety-grid{border-bottom:0;padding-bottom:8px}
+
+/* --- tablet ----------------------------------------------------------- */
+@media(max-width:900px){
+  :root{--pl-rhythm:44px}
+  #app .home-premium .home-main > .home-play-section{padding-top:40px;padding-bottom:26px}
+  #app .home-premium .home-favorites{padding-top:40px;padding-bottom:40px}
+  #app .home-premium .home-sponsored{padding-top:44px;padding-bottom:44px}
+  #app .home-premium .home-by-age{padding-top:52px;padding-bottom:52px}
+  #app .home-premium .home-story-section{padding-top:52px;padding-bottom:52px}
+  #app .home-premium .home-gifting{padding-bottom:44px}
+  #app .home-premium .press-strip{padding-top:44px;padding-bottom:26px}
+  #app .home-premium .home-journal{padding-top:8px;padding-bottom:56px}
+  #app .pdp-section{padding-top:36px;padding-bottom:36px}
+  #app .pdp-sec-head{margin-bottom:22px}
+}
+
+/* --- phones ----------------------------------------------------------- */
+@media(max-width:600px){
+  :root{--pl-rhythm:40px}
+  #app .home-premium .home-main > .home-play-section{padding-top:36px;padding-bottom:22px}
+  #app .home-premium .home-favorites{padding-top:36px;padding-bottom:36px}
+  #app .home-premium .home-trust-strip{padding-top:16px;padding-bottom:12px}
+  #app .home-premium .home-sponsored{padding-top:40px;padding-bottom:40px}
+  #app .home-premium .home-by-age{padding-top:44px;padding-bottom:44px}
+  #app .home-premium .home-story-section{padding-top:44px;padding-bottom:44px}
+  #app .home-premium .home-gifting{padding-bottom:40px}
+  #app .home-premium .press-strip{padding-top:40px;padding-bottom:22px}
+  #app .home-premium .home-journal{padding-top:6px;padding-bottom:48px}
+  #app .product-page{padding-bottom:36px}
+  #app .pdp-section{padding-top:30px;padding-bottom:30px}
+  #app .pdp-sec-head{margin-bottom:18px}
+}
