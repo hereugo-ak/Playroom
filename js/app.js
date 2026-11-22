@@ -26,6 +26,7 @@ import { PAYMENT_METHODS, generatePayer, generatePayment, validatePayment, gatew
 import { render, go, route, registerRoutes, setNotFound, holdScrollOnce } from './router.js';
 import { initMotion, motionRefresh } from './motion.js';
 import { initScrollExperience, refreshHeroScene } from './hero-scene.js';
+import { initHeroArrival, destroyHeroArrival } from './hero-arrival.js';
 import { initSupport } from './support.js?v=5';
 import { initWelcome } from './welcome.js';
 import { wireGateway, renderGatewayPanel, rewirePay, brandRowHTML, confettiBurst, completeOrder } from './checkout-gateway.js';
@@ -276,19 +277,14 @@ function renderHome() {
     { n: '02', title: 'Small-world stories', sub: 'Whole universes in miniature.', img: photos[18], href: '#/catalog?category=' + encodeURIComponent('Pretend & Role Play') },
     { n: '03', title: 'Hands-on discovery', sub: 'Curiosity you can hold.', img: photos[27], href: '#/catalog?category=' + encodeURIComponent('Science & Discovery') }];
   return `<div class="route-enter home-premium">
- <section class="home-hero home-hero--campaign" aria-labelledby="heroTitle">
-  <figure class="hero-campaign-art">
-   <img src="assets/img/hero-rainbow.jpg" alt="Two children playing with a wooden dollhouse, stacking blocks, a toy train and a digger in a pastel playrooom under a pink arch" width="1670" height="941" fetchpriority="high" decoding="async">
-  </figure>
-  <div class="wrap hero-campaign-bar">
-   <div class="hero-campaign-lead">
-    <div class="hero-overline">110 toys &middot; every one hand-picked</div>
-    <h1 id="heroTitle"><span>Little hands.</span> <em>Big worlds.</em></h1>
-   </div>
-   <div class="hero-campaign-side">
-    <p>Wood, wool and cloth &mdash; chosen to be outgrown slowly, if ever.</p>
-    <div class="hero-actions"><a class="btn hero-campaign-cta" href="#/catalog">Explore the collection <span class="arrow">&nearr;</span></a><a href="#/gift-finder" class="hero-secondary-link">Find their next favourite <span>&nearr;</span></a></div>
-   </div>
+ <section class="home-hero home-hero--art" aria-labelledby="heroTitle">
+  <h1 class="pl-sr-only" id="heroTitle">Playrooom &mdash; a considered collection of toys for curious minds, ages 0&ndash;12</h1>
+  <div class="hero-picture" data-hero-art>
+   <picture>
+    <source media="(min-width:1400px)" srcset="assets/img/hero-wide-1440.jpg 1440w, assets/img/hero-wide-2880.jpg 2880w" sizes="100vw">
+    <source media="(min-width:700px)" srcset="assets/img/hero-tall-1024.jpg 1024w, assets/img/hero-tall-2048.jpg 2048w" sizes="100vw">
+    <img src="assets/img/hero-tall-1024.jpg" alt="Two children playing with a wooden dollhouse, stacking blocks, a toy train and a digger in a pastel playrooom under a pink arch" width="1024" height="655" fetchpriority="high" decoding="async">
+   </picture>
   </div>
  </section>
  <div class="home-main" data-home-main>
@@ -2573,12 +2569,15 @@ async function init() {
   window.__appReady = true;
   motionRefresh();
   refreshHeroScene();
+  initHeroArrival();
   window.addEventListener('hashchange', () => {
+    destroyHeroArrival();
     render();
     window.__wirePage();
     trackEvent('page_view', { pagePath: window.location.hash.slice(1) || '/' });
     motionRefresh();
     refreshHeroScene();
+    initHeroArrival();
   });
   window.__wirePage();
 }
