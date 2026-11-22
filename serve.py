@@ -73,5 +73,5 @@ class Handler(SimpleHTTPRequestHandler):
 
 if __name__ == '__main__':
     os.chdir(os.path.dirname(os.path.abspath(__file__)))
-    print(f'Playroom dev server on http://localhost:{PORT} (range requests enabled)', flush=True)
+    print(f'Playrooom dev server on http://localhost:{PORT} (range requests enabled)', flush=True)
     ThreadingHTTPServer(('0.0.0.0', PORT), Handler).serve_forever()

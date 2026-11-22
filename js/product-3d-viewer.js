@@ -1,4 +1,4 @@
-// Playroom 3D product studio — product only.
+// Playrooom 3D product studio — product only.
 // Image-derived materials, art-directed geometry, real fullscreen viewport.
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
@@ -31,13 +31,13 @@ function rgbToHex(r, g, b) {
 
 async function imagePalette(url, fallback = {}, regions = DEFAULT_PALETTE_REGIONS) {
   const fallbackPalette = {
-    cream: '#e9d9b8',
-    rust: '#c8735c',
-    mustard: '#d8ad52',
-    sage: '#a5b487',
+    cream: '#c2d5e8',
+    rust: '#cb6859',
+    mustard: '#6b9bc7',
+    sage: '#89a1b2',
     slate: '#4c7078',
-    rose: '#c9827a',
-    wood: '#d8b985',
+    rose: '#cb8378',
+    wood: '#8fb3d5',
     ...fallback,
   };
   const sampleRegions = { ...DEFAULT_PALETTE_REGIONS, ...regions };
@@ -442,8 +442,8 @@ function createContactShadow() {
   canvas.height = 256;
   const ctx = canvas.getContext('2d');
   const g = ctx.createRadialGradient(128, 128, 10, 128, 128, 120);
-  g.addColorStop(0, 'rgba(63,43,33,0.32)');
-  g.addColorStop(1, 'rgba(63,43,33,0)');
+  g.addColorStop(0, 'rgba(62,43,34,0.32)');
+  g.addColorStop(1, 'rgba(62,43,34,0)');
   ctx.fillStyle = g;
   ctx.fillRect(0, 0, 256, 256);
   const texture = new THREE.CanvasTexture(canvas);

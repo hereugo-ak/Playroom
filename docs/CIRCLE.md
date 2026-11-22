@@ -1,6 +1,6 @@
-# Playroom Circle
+# Playrooom Circle
 
-Playroom Circle is a system-level demo membership. It uses the existing Stripe-style demo payment UI, stores membership in Supabase, and activates benefits through server-side checks.
+Playrooom Circle is a system-level demo membership. It uses the existing Stripe-style demo payment UI, stores membership in Supabase, and activates benefits through server-side checks.
 
 **No real payment provider is used.** No money is charged, no card details are stored, and no physical service is scheduled.
 
@@ -51,7 +51,7 @@ Refreshing or retrying with the same idempotency key returns the existing member
 Migration:
 
 ```text
-supabase/migrations/20261120130000_playroom_circle.sql
+supabase/migrations/20261120130000_playrooom_circle.sql
 ```
 
 Tables:
@@ -76,12 +76,12 @@ emails/subscription-confirmation.js
 Subject:
 
 ```text
-Welcome to Playroom Circle — your membership is active
+Welcome to Playrooom Circle — your membership is active
 ```
 
 The email includes:
 
-- Original Playroom logo
+- Original Playrooom logo
 - Warm beige masthead
 - Ivory body
 - Rose italic accents

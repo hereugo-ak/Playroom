@@ -1,4 +1,4 @@
-// Playroom Atelier — support chat + a demo audio call surface.
+// Playrooom Atelier — support chat + a demo audio call surface.
 // The call is intentionally an audio-call UI: a recorded support note plays
 // through it for now, with live captions and a reactive waveform. A real agent
 // can be connected to this same surface in a later build.
@@ -79,7 +79,7 @@ export function initSupport() {
   renderQuickPrompts();
   onAuthChange(renderQuickPrompts);
   onMembershipChange(renderQuickPrompts);
-  window.addEventListener('playroom:orders-updated', renderQuickPrompts);
+  window.addEventListener('playrooom:orders-updated', renderQuickPrompts);
 
   // ---------- floating character launcher ----------
   const fab = $('#plSupportFab'), fabToggle = $('#plFabToggle'), fabMenu = $('#plFabMenu'), fabHint = $('#plFabHint');
@@ -108,7 +108,7 @@ export function initSupport() {
     const row = document.createElement('div');
     row.className = 'pl-chat-message' + (kind === 'user' ? ' is-user' : '');
     const small = document.createElement('small');
-    small.textContent = label || (kind === 'user' ? 'You · Just now' : 'Playroom Care · Just now');
+    small.textContent = label || (kind === 'user' ? 'You · Just now' : 'Playrooom Care · Just now');
     const p = document.createElement('p');
     p.textContent = text;
     row.append(small, p); messages.append(row); messages.scrollTop = messages.scrollHeight;
@@ -135,13 +135,13 @@ export function initSupport() {
       return 'I checked your account and there are no saved orders yet. Once you complete a demo checkout, the receipt, tracking number and returns desk will all live under My orders.';
     }
     if (/track|tracking|order status|where.*order|delivery status/.test(m)) return 'Of course. This storefront is running in demo mode, so I can’t see a live courier. After checkout, open “Track an order” in the site footer and enter the PL- number shown on your confirmation. The status and timeline are simulated in this browser.';
-    if (/deliver|shipping|ship|pincode|pin code|when.*arriv/.test(m)) return 'Delivery is complimentary on demo orders of ₹1,499 or more; otherwise the demo estimates ₹99. Product-page PIN checks show an illustrative 3–6 business day estimate. No real parcel is dispatched in this prototype.';
+    if (/deliver|shipping|ship|pincode|pin code|when.*arriv/.test(m)) return 'Delivery is complimentary on demo orders of ₹499 or more; otherwise the demo estimates ₹99. Product-page PIN checks show an illustrative 3–6 business day estimate. No real parcel is dispatched in this prototype.';
     if (/return|refund|exchange|damaged/.test(m)) return 'We can help you understand the demo returns flow. The prototype describes a 7-day easy-returns concept, but it does not process real returns or refunds. For a live store, this would be confirmed against the order and fulfilment system.';
     if (/gift|present|birthday|recommend|recommendation|choose|choosing|age|toy for/.test(m)) return 'Let’s find something thoughtful. The Gift Finder can narrow the collection by age, interest and budget. For open-ended play, try Building & STEM; for a quieter activity, look at Games & Puzzles; for little comfort gifts, explore Soft & Plush.';
     if (/payment|upi|card|checkout|pay/.test(m)) return 'Checkout is a frontend demo. You can select a payment preference and complete an example order, but no money is collected and no payment credentials are requested or sent.';
     if (/hello|hi\b|hey|good morning|good evening/.test(m)) return 'Hello! Glad you stopped by. I’m here to help you explore toys, think through a gift, or explain how the demo order and tracking screens work.';
     if (/human|person|agent|call|video|talk|speak/.test(m)) return 'The audio call in the corner is a demo call surface right now — a recorded support note plays with live captions, and a real agent can join this same space later. No microphone or camera is used yet.';
-    return 'Thanks for telling me. I’m the Playroom Care assistant, so I can help with toys and gifting, delivery estimates, returns, checkout and order tracking. This message has been received locally; nothing is sent to a server. What would you like help with next?';
+    return 'Thanks for telling me. I’m the Playrooom Care assistant, so I can help with toys and gifting, delivery estimates, returns, checkout and order tracking. This message has been received locally; nothing is sent to a server. What would you like help with next?';
   }
   function sendMessage(value) {
     const message = String(value || '').trim();
@@ -152,7 +152,7 @@ export function initSupport() {
     const typing = document.createElement('div');
     typing.className = 'pl-chat-message';
     typing.id = 'plChatTyping';
-    typing.innerHTML = '<small>Playroom Care is typing</small><div class="pl-chat-typing" aria-label="Playroom Care is typing"><i></i><i></i><i></i></div>';
+    typing.innerHTML = '<small>Playrooom Care is typing</small><div class="pl-chat-typing" aria-label="Playrooom Care is typing"><i></i><i></i><i></i></div>';
     messages.append(typing); messages.scrollTop = messages.scrollHeight;
     setTimeout(() => { typing.remove(); addMessage(replyFor(message), 'bot'); chatBusy = false; chatInput.focus(); }, reduced ? 0 : 560);
   }
@@ -202,7 +202,7 @@ export function initSupport() {
         if (!response.ok) throw new Error(result.error || 'Could not save your request.');
         window.__closeModal?.();
         trackEvent('support_request', { priority: true, kind: 'support' });
-        addMessage('Your priority care request is saved. You can see it under Membership in your account.', 'bot', 'Playroom Care · Priority desk');
+        addMessage('Your priority care request is saved. You can see it under Membership in your account.', 'bot', 'Playrooom Care · Priority desk');
         toast('Priority request saved.', 'It is marked Priority in your Circle desk.');
       } catch (error) {
         errorEl.hidden = false;
@@ -240,7 +240,7 @@ export function initSupport() {
   const GREETING = [
     { w: 'Hello,', t: 0.100, d: 0.649 }, { w: 'and', t: 0.749, d: 0.304 },
     { w: 'welcome', t: 1.054, d: 0.710 }, { w: 'to', t: 1.764, d: 0.203 },
-    { w: 'the', t: 1.967, d: 0.304 }, { w: 'Playroom.', t: 2.271, d: 0.954 },
+    { w: 'the', t: 1.967, d: 0.304 }, { w: 'Playrooom.', t: 2.271, d: 0.954 },
     { w: 'Thanks', t: 3.175, d: 0.565 }, { w: 'for', t: 3.740, d: 0.283 },
     { w: 'choosing', t: 4.023, d: 0.754 }, { w: 'us —', t: 4.776, d: 0.339 },
     { w: 'how', t: 5.115, d: 0.283 }, { w: 'may', t: 5.398, d: 0.283 },

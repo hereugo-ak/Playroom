@@ -8,8 +8,8 @@ import { supabase, isSupabaseConfigured } from './supabase.js';
 import { buildAuthRedirect } from './config.js';
 import { friendlyAuthError, authUrlErrorMessage } from './errors.js';
 
-const FLASH_KEY = 'playroom-auth-flash';
-const NEXT_KEY = 'playroom-auth-next';
+const FLASH_KEY = 'playrooom-auth-flash';
+const NEXT_KEY = 'playrooom-auth-next';
 
 export const authState = {
   ready: false,
@@ -37,7 +37,7 @@ export function onAuthChange(fn) {
 
 function emit() {
   for (const fn of listeners) {
-    try { fn(authState); } catch (err) { console.error('[Playroom auth] listener failed', err); }
+    try { fn(authState); } catch (err) { console.error('[Playrooom auth] listener failed', err); }
   }
 }
 
@@ -259,7 +259,7 @@ async function loadProfile(user) {
       error,
       'Your profile could not be loaded. Some account details may be unavailable.',
     );
-    console.warn('[Playroom auth] profile unavailable', error?.message || error);
+    console.warn('[Playrooom auth] profile unavailable', error?.message || error);
   }
 
   try {
@@ -311,7 +311,7 @@ export async function updateProfile({ fullName, phone }) {
 
   // Keep auth metadata in sync so the name survives a profile-free render.
   const { error: metaError } = await supabase.auth.updateUser({ data: { full_name: patch.full_name } });
-  if (metaError) console.warn('[Playroom auth] metadata update failed', metaError.message);
+  if (metaError) console.warn('[Playrooom auth] metadata update failed', metaError.message);
 
   emit();
   return authState.profile;
@@ -740,14 +740,14 @@ export function consumeAuthLanding() {
   }
 
   if (authState.recovery || url.type === 'recovery') {
-    setAuthFlash('Choose a new password for your Playroom account.', 'info');
+    setAuthFlash('Choose a new password for your Playrooom account.', 'info');
     return { path: '/account/reset-password' };
   }
 
   if (authState.session) {
     const verified = url.verified || url.type === 'signup' || url.type === 'email_change';
     setAuthFlash(
-      verified ? 'Your email is verified — welcome to Playroom.' : 'Signed in. Welcome back.',
+      verified ? 'Your email is verified — welcome to Playrooom.' : 'Signed in. Welcome back.',
       'success',
     );
     const target = next === '/account/reset-password' ? '/account' : next;

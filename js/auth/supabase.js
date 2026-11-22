@@ -7,7 +7,7 @@ import { SUPABASE_URL, SUPABASE_KEY, AUTH_CONFIGURED, AUTH_CONFIG_MESSAGE } from
 
 if (!AUTH_CONFIGURED) {
   // The storefront keeps working without auth; only the account area is limited.
-  console.warn(`[Playroom] ${AUTH_CONFIG_MESSAGE}`);
+  console.warn(`[Playrooom] ${AUTH_CONFIG_MESSAGE}`);
 }
 
 export const supabase = AUTH_CONFIGURED
@@ -22,10 +22,10 @@ export const supabase = AUTH_CONFIGURED
         // server-side verifier. The tokens stay in the URL fragment and are
         // consumed and removed before the hash router renders a page.
         flowType: 'implicit',
-        storageKey: 'playroom-auth',
+        storageKey: 'playrooom-auth',
       },
       global: {
-        headers: { 'x-client-info': 'playroom-storefront/1.1.0' },
+        headers: { 'x-client-info': 'playrooom-storefront/1.1.0' },
       },
     })
   : null;

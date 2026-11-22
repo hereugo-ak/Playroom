@@ -1,8 +1,8 @@
-# Playroom — Frontend Storefront with Customer Accounts
+# Playrooom — Frontend Storefront with Customer Accounts
 
-A static, modular storefront built from the Playroom reference design. The shop
+A static, modular storefront built from the Playrooom reference design. The shop
 itself runs entirely in the browser; customer accounts (profile, addresses,
-wish list, demo order history and the Playroom Circle demo membership are
+wish list, demo order history and the Playrooom Circle demo membership are
 backed by Supabase when configured.
 Checkout remains a clearly labelled demo and no real payment is charged or
 shipped.
@@ -11,7 +11,7 @@ shipped.
 **Database & RLS:** [`docs/DATABASE.md`](./docs/DATABASE.md)
 **Routes:** [`docs/ROUTES.md`](./docs/ROUTES.md)
 **Order email setup:** [`docs/EMAIL_SETUP.md`](./docs/EMAIL_SETUP.md)
-**Playroom Circle:** [`docs/CIRCLE.md`](./docs/CIRCLE.md)
+**Playrooom Circle:** [`docs/CIRCLE.md`](./docs/CIRCLE.md)
 **3D product studio:** [`docs/3D_VIEWER.md`](./docs/3D_VIEWER.md)
 **Admin analytics:** [`docs/ADMIN_ANALYTICS.md`](./docs/ADMIN_ANALYTICS.md)
 **Testing & manual steps:** [`docs/TESTING.md`](./docs/TESTING.md)
@@ -62,7 +62,7 @@ in Postgres.
 
 - 110 products, 10 categories, editorial home page
 - Filter/sort catalogue, product pages with gallery + PIN delivery estimate
-- Cart drawer with free-delivery progress (free ≥ ₹1,499, else ₹99)
+- Cart drawer with free-delivery progress (free ≥ ₹499, else ₹99)
 - Checkout with validation + demo promo code `PLAY10` (10% off)
 - **Stripe-style demo gateway**: Card / UPI / NetBanking / Crypto tabs, random
   autofill, Elements-style card formatting, animated pay sequence, `pi_demo_*`

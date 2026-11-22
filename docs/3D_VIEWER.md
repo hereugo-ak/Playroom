@@ -1,4 +1,4 @@
-# Playroom 3D product studio
+# Playrooom 3D product studio
 
 A premium interactive 3D viewer for selected products. Built with Three.js inside the existing Vite app and loaded only when the 3D route is opened.
 

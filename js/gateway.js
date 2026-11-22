@@ -1,4 +1,4 @@
-// Playroom Atelier — demo payment gateway ("Stripe-like") + logistics ("FedEx-like").
+// Playrooom Atelier — demo payment gateway ("Stripe-like") + logistics ("FedEx-like").
 // These are UI/model mocks only: no network calls, no charges. Card data is
 // generated randomly and validated by pattern, exactly like a test-mode gateway.
 
@@ -132,7 +132,7 @@ export function packageMeta(lines, total) {
     pieces: 1,
     reference: `PL-${digits(6)}`,
     billedWeight: `${weightKg} kg`,
-    packaging: 'PLAYROOM SECURE BOX',
+    packaging: 'PLAYROOOM SECURE BOX',
   };
 }
 
@@ -147,8 +147,8 @@ export function fedexTimeline(order) {
   });
   const dest = `${order.customer.city} ${order.customer.pincode}`;
   const events = [
-    mk(0, 'Shipment information sent to FedEx', 'Order received · label created', 'PLAYROOM ATELIER, IN', 'done'),
-    mk(2 * H, 'Picked up', 'Package picked up from sender', 'PLAYROOM ATELIER, IN', 'done'),
+    mk(0, 'Shipment information sent to FedEx', 'Order received · label created', 'PLAYROOOM ATELIER, IN', 'done'),
+    mk(2 * H, 'Picked up', 'Package picked up from sender', 'PLAYROOOM ATELIER, IN', 'done'),
     mk(10 * H, 'Arrived at FedEx location', 'Scan at origin facility', 'MUMBAI HUB, IN', 'pending'),
     mk(20 * H, 'Departed FedEx location', 'In transit', 'MUMBAI HUB, IN', 'pending'),
     mk(30 * H, 'Arrived at FedEx hub', 'Line-haul scan', 'DELHI GATEWAY, IN', 'pending'),

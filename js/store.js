@@ -1,27 +1,32 @@
-// Playroom Atelier — store: cart, wishlist, recently viewed, demo orders,
+// Playrooom Atelier — store: cart, wishlist, recently viewed, demo orders,
 // gift wrapping, leaves (loyalty), referral, returns and redeemed promo codes.
 // Persistence uses namespaced, versioned localStorage keys with defensive
 // parsing, per the session handoff brief (section 8.2). Orders are snapshots
 // and are never recalculated from the catalogue after creation.
 
-const NS = 'playroom-demo';
+const NS = 'playrooom-demo';
 const VERSION = 1;
 const key = (name) => `${NS}-v${VERSION}-${name}`;
 
-// One-time continuity for the Playloom → Playroom rename: copy any legacy
-// keys across before the store reads them, then remove the originals so stale
-// state can never be resurrected after a user clears their demo data.
+// One-time continuity for the rename chain (Playloom → Playroom → Playrooom):
+// copy any legacy keys across before the store reads them, then remove the
+// originals so stale state can never be resurrected after a user clears their
+// demo data. Both older prefixes are migrated, oldest first.
 try {
-  const legacy = [];
-  for (let i = 0; i < localStorage.length; i += 1) {
-    const k = localStorage.key(i);
-    if (k && k.startsWith('playloom')) legacy.push(k);
-  }
-  for (const k of legacy) {
-    const next = `playroom${k.slice('playloom'.length)}`;
-    if (localStorage.getItem(next) === null) localStorage.setItem(next, localStorage.getItem(k));
-    localStorage.removeItem(k);
-  }
+  const renamePrefix = (from) => {
+    const legacy = [];
+    for (let i = 0; i < localStorage.length; i += 1) {
+      const k = localStorage.key(i);
+      if (k && k.startsWith(from)) legacy.push(k);
+    }
+    for (const k of legacy) {
+      const next = `playrooom${k.slice(from.length)}`;
+      if (localStorage.getItem(next) === null) localStorage.setItem(next, localStorage.getItem(k));
+      localStorage.removeItem(k);
+    }
+  };
+  renamePrefix('playloom');   // the original storefront
+  renamePrefix('playroom');   // the previous name (its keys start playroom-demo…)
 } catch {
   /* storage unavailable — nothing to migrate */
 }
@@ -47,7 +52,7 @@ export function write(name, value) {
 export { key as storageKey };
 
 // ---------- Pricing (single source of truth) ----------
-export const FREE_DELIVERY_THRESHOLD = 1499; // from the reference announcement bar
+export const FREE_DELIVERY_THRESHOLD = 499; // announcement bar: free delivery above ₹499
 export const DELIVERY_FEE = 99;
 export const PROMO_CODES = { PLAY10: 0.10 }; // 10% off demo subtotal
 export const GIFT_WRAP_ID = 'gift-wrap';

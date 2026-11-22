@@ -6,7 +6,7 @@ import { byId } from '../js/data.js';
 import { renderOrderConfirmation } from '../emails/order-confirmation.js';
 import { bearer, getAdmin, getTransport, json, readJson, requireEnv } from './_lib/server.js';
 
-const FREE_DELIVERY_THRESHOLD = 1499;
+const FREE_DELIVERY_THRESHOLD = 499;
 const DELIVERY_FEE = 99;
 const EXPRESS_FEE = 149;
 const PICKDAY_FEE = 99;
@@ -57,7 +57,7 @@ function buildOrder(body, user, memberActive = false) {
     const qty = Math.max(1, Math.min(20, Number(raw.qty || 1)));
     if (!product) throw new Error(`One of your items is no longer available.`);
     if (product.circleEarly && !memberActive) {
-      throw new Error(`${product.name} is a Circle first-look toy. Join Playroom Circle to add it to your order.`);
+      throw new Error(`${product.name} is a Circle first-look toy. Join Playrooom Circle to add it to your order.`);
     }
     const personalisation = clean(raw.personalisation, memberActive ? 60 : 10);
     const personaliseFee = personalisation && product.persKind ? (memberActive ? 0 : PERSONALISE_FEE) : 0;
@@ -151,7 +151,7 @@ function buildOrder(body, user, memberActive = false) {
       pieces: 1,
       reference: `PL-${digits(6)}`,
       billedWeight: '1 kg',
-      packaging: 'PLAYROOM SECURE BOX',
+      packaging: 'PLAYROOOM SECURE BOX',
     },
     promoCode: promoCode || null,
     pointsEarned: Math.floor(total / 50),

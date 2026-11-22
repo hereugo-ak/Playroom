@@ -1,4 +1,4 @@
-// Playroom Circle membership state.
+// Playrooom Circle membership state.
 // Membership is read from Supabase with RLS; all writes happen on the server.
 import { supabase, isSupabaseConfigured } from './supabase.js';
 import { authState, onAuthChange } from './auth-store.js';

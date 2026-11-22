@@ -1,4 +1,4 @@
-// Playroom Atelier — premium content pools.
+// Playrooom Atelier — premium content pools.
 // Copy, structure and “editorial” layers for the depth features: age stages,
 // play-stage guidance, materials & safety, spare parts, reviews, Q&A, press
 // wall and the (clearly-labelled) advisory board. Pure data + tiny helpers —
@@ -9,11 +9,11 @@ export const ADVISORY_NOTE =
 
 export const ADVISORS = [
   {
-    name: 'Dr. Meera Iyer', role: 'Early-years development specialist', initials: 'MI', tone: '#a56a76',
+    name: 'Dr. Meera Iyer', role: 'Early-years development specialist', initials: 'MI', tone: '#d3818a',
     line: 'What looks like play is the brain building its first theories about how the world works.',
   },
   {
-    name: 'Anand Rao', role: 'Montessori guide & play consultant', initials: 'AR', tone: '#6f8a6a',
+    name: 'Anand Rao', role: 'Montessori guide & play consultant', initials: 'AR', tone: '#6c7c88',
     line: 'A good toy waits. It lets the child set the pace, then quietly raises the ceiling.',
   },
   {
@@ -29,7 +29,7 @@ export const AGE_STAGES = [
     kicker: 'STAGE ONE · THE SENSORY YEARS',
     headline: 'The world, one <em>texture</em> at a time.',
     intro: 'Everything is new: weight, sound, softness, taste. This is the age of reaching, holding and dropping — and the beginning of cause and effect.',
-    img: 28, tone: '#ead4cb',
+    img: 28, tone: '#e5d7d0',
     skills: [
       { title: 'Sensory play', body: 'Textures, contrast and gentle sound build the first pathways.' },
       { title: 'Cause & effect', body: 'Push, rattle, drop — the first experiments with “what happens if…”.' },
@@ -42,7 +42,7 @@ export const AGE_STAGES = [
     kicker: 'STAGE TWO · THE STORY YEARS',
     headline: 'Whole worlds, <em>made up</em> on the spot.',
     intro: 'A box becomes a bus, a block becomes a birthday cake. Pretend play arrives at full volume, and small hands are suddenly ready for detail.',
-    img: 18, tone: '#e7d7c5',
+    img: 18, tone: '#cddbe8',
     skills: [
       { title: 'Pretend play', body: 'Role, story and negotiation — the original social network.' },
       { title: 'Fine motor', body: 'Drawing, threading, placing — control is arriving in the fingers.' },
@@ -55,7 +55,7 @@ export const AGE_STAGES = [
     kicker: 'STAGE THREE · THE MAKER YEARS',
     headline: 'Test the theory. <em>Then test it again.</em>',
     intro: 'Rules are interesting now — especially bending them. Marble runs get engineered, games get taken seriously, and “why?” becomes a full-time job.',
-    img: 1, tone: '#dbe6d5',
+    img: 1, tone: '#d6dfe5',
     skills: [
       { title: 'Planning', body: 'Designing before building — and rebuilding without drama.' },
       { title: 'Logic & rules', body: 'Strategy, turn-taking and losing gracefully (eventually).' },
@@ -202,7 +202,7 @@ export const DESIGN_STANDARDS = [
 ];
 
 export const SAFETY_DEMO_NOTE =
-  'Playroom is a concept storefront. These standards describe the design intent of the demo catalogue — no real certification body has tested these simulated products.';
+  'Playrooom is a concept storefront. These standards describe the design intent of the demo catalogue — no real certification body has tested these simulated products.';
 
 // ----------------------------------------------------------- spare parts --
 export const SPARE_PARTS_BY_KIND = {
@@ -227,18 +227,18 @@ export const DEFAULT_SPARE_PARTS = ['A replacement piece', 'A spare part or acce
 
 // -------------------------------------------------------------- reviews ---
 export const REVIEWERS = [
-  { name: 'Aditi S.', initials: 'AS', tone: '#b56f7b' },
-  { name: 'Rahul M.', initials: 'RM', tone: '#6f8a6a' },
-  { name: 'Meera J.', initials: 'MJ', tone: '#c98a5b' },
+  { name: 'Aditi S.', initials: 'AS', tone: '#e59aa2' },
+  { name: 'Rahul M.', initials: 'RM', tone: '#6c7c88' },
+  { name: 'Meera J.', initials: 'MJ', tone: '#b38771' },
   { name: 'Tom W.', initials: 'TW', tone: '#7d6a9a' },
-  { name: 'Nikhil B.', initials: 'NB', tone: '#6f8a6a' },
-  { name: 'Farah K.', initials: 'FK', tone: '#b56f7b' },
-  { name: 'Shreya D.', initials: 'SD', tone: '#a56a76' },
+  { name: 'Nikhil B.', initials: 'NB', tone: '#6c7c88' },
+  { name: 'Farah K.', initials: 'FK', tone: '#e59aa2' },
+  { name: 'Shreya D.', initials: 'SD', tone: '#d3818a' },
   { name: 'Arvind P.', initials: 'AP', tone: '#7d6a9a' },
-  { name: 'Ishaan R.', initials: 'IR', tone: '#6f8a6a' },
-  { name: 'Neha G.', initials: 'NG', tone: '#c98a5b' },
-  { name: 'Pooja V.', initials: 'PV', tone: '#b56f7b' },
-  { name: 'Daniel A.', initials: 'DA', tone: '#6f8a6a' },
+  { name: 'Ishaan R.', initials: 'IR', tone: '#6c7c88' },
+  { name: 'Neha G.', initials: 'NG', tone: '#b38771' },
+  { name: 'Pooja V.', initials: 'PV', tone: '#e59aa2' },
+  { name: 'Daniel A.', initials: 'DA', tone: '#6c7c88' },
 ];
 
 export const REVIEW_TEXT_BANK = {
@@ -314,18 +314,18 @@ export function reviewDistribution(p, seeded) {
 export const QNA_GENERAL = [
   {
     q: 'How long does delivery usually take?',
-    a: 'Standard delivery arrives in 2–4 business days across India, and it is complimentary on orders above ₹1,499. Express and “pick a day” options are available at checkout.',
-    by: 'Playroom team',
+    a: 'Standard delivery arrives in 2–4 business days across India, and it is complimentary on orders above ₹499. Express and “pick a day” options are available at checkout.',
+    by: 'Playrooom team',
   },
   {
     q: 'What is the return window?',
     a: 'Thirty days, any reason, free pickup. You can start a return from your orders page — the courier comes to you and the refund lands back on the original payment method.',
-    by: 'Playroom team',
+    by: 'Playrooom team',
   },
   {
     q: 'Is it safe for a child who still mouths toys?',
     a: 'Every finish in the range is water-based and saliva-safe by design, and age guidance on the box is enforced strictly. If a set contains small parts, the listing says so before you add it to the bag.',
-    by: 'Playroom team',
+    by: 'Playrooom team',
   },
 ];
 

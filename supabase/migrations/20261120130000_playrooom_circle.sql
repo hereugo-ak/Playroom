@@ -1,5 +1,5 @@
 -- ============================================================================
--- Playroom Circle — demo membership system
+-- Playrooom Circle — demo membership system
 -- ----------------------------------------------------------------------------
 -- Adds plans, subscriptions, demo payment records and member service requests.
 -- Membership is activated only by the server after the existing demo payment

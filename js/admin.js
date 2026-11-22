@@ -14,7 +14,7 @@ function adminGate() {
     <div class="wrap page-head admin-head">
       <div class="mono muted">ADMIN ACCESS</div>
       <h1 class="page-title">Restricted.</h1>
-      <p class="page-intro">This area is available to Playroom administrators only.</p>
+      <p class="page-intro">This area is available to Playrooom administrators only.</p>
     </div>
     <section class="section wrap"><div class="admin-gate-card"><p>Sign in with an administrator account to view analytics.</p><a class="btn" href="#/account/login?admin=1">Admin sign in <span class="arrow" aria-hidden="true">↗</span></a></div></section>
   </div>`;
@@ -24,7 +24,7 @@ const money = (n) => formatMoney(Number(n || 0));
 const num = (n) => Number(n || 0).toLocaleString('en-IN');
 const pct = (n) => `${Number(n || 0).toFixed(1)}%`;
 
-function lineChart(series, color = '#b56f7b') {
+function lineChart(series, color = '#e59aa2') {
   const points = (series || []).map((d) => Number(d.value || 0));
   if (!points.length) return '<div class="admin-empty">No data in this range.</div>';
   const max = Math.max(...points, 1);
@@ -67,8 +67,8 @@ export function renderAdminDashboard(r) {
   return `<div class="route-enter admin-page">
     <div class="wrap page-head admin-head">
       <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Admin analytics</span></div>
-      <div class="mono muted">PLAYROOM CONTROL ROOM</div>
-      <h1 class="page-title">The whole <em>playroom.</em></h1>
+      <div class="mono muted">PLAYROOOM CONTROL ROOM</div>
+      <h1 class="page-title">The whole <em>playrooom.</em></h1>
       <p class="page-intro">Order-level, customer-level and event-level analytics — drawn from the live storefront.</p>
     </div>
     <section class="section wrap admin-section">
@@ -107,9 +107,9 @@ function paint(data) {
 
     <div class="admin-grid admin-grid--charts">
       <article class="admin-panel"><header><span class="mono">REVENUE BY DAY</span><h2>${money(k.revenue)}</h2></header>${lineChart(data.series?.revenue)}</article>
-      <article class="admin-panel"><header><span class="mono">ORDERS BY DAY</span><h2>${num(k.orders)}</h2></header>${lineChart(data.series?.orders, '#4c3428')}</article>
-      <article class="admin-panel"><header><span class="mono">EVENT VOLUME</span><h2>${num((b.eventTypes || []).reduce((a, x) => a + x.count, 0))}</h2></header>${lineChart(data.series?.events, '#d8a15f')}</article>
-      <article class="admin-panel"><header><span class="mono">CIRCLE REVENUE</span><h2>${money(k.circleRevenue)}</h2></header>${lineChart(data.series?.circle, '#b56f7b')}</article>
+      <article class="admin-panel"><header><span class="mono">ORDERS BY DAY</span><h2>${num(k.orders)}</h2></header>${lineChart(data.series?.orders, '#3d6482')}</article>
+      <article class="admin-panel"><header><span class="mono">EVENT VOLUME</span><h2>${num((b.eventTypes || []).reduce((a, x) => a + x.count, 0))}</h2></header>${lineChart(data.series?.events, '#73a0ca')}</article>
+      <article class="admin-panel"><header><span class="mono">CIRCLE REVENUE</span><h2>${money(k.circleRevenue)}</h2></header>${lineChart(data.series?.circle, '#e59aa2')}</article>
     </div>
 
     <div class="admin-grid admin-grid--three">
@@ -171,7 +171,7 @@ async function download(type) {
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = `playroom-${type}.csv`;
+    a.download = `playrooom-${type}.csv`;
     a.click();
     URL.revokeObjectURL(url);
     trackEvent('admin_export', { type });

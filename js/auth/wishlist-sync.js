@@ -28,7 +28,7 @@ async function hydrate() {
       replaceWishlist([...remote]);
     } catch (error) {
       // Missing table / offline: keep the local list rather than blanking it.
-      console.warn('[Playroom wishlist] sync unavailable', error?.message || error);
+      console.warn('[Playrooom wishlist] sync unavailable', error?.message || error);
     } finally {
       hydration = null;
     }
@@ -46,7 +46,7 @@ export function startWishlistSync() {
       if (added) await addWishlistItem(productId);
       else await removeWishlistItem(productId);
     } catch (error) {
-      console.warn('[Playroom wishlist] could not save change', error?.message || error);
+      console.warn('[Playrooom wishlist] could not save change', error?.message || error);
     }
   });
 

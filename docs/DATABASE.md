@@ -2,15 +2,15 @@
 
 Migrations:
 
-1. [`20261119090000_playroom_accounts.sql`](../supabase/migrations/20261119090000_playroom_accounts.sql)
-2. [`20261119110000_playroom_orders.sql`](../supabase/migrations/20261119110000_playroom_orders.sql)
+1. [`20261119090000_playrooom_accounts.sql`](../supabase/migrations/20261119090000_playrooom_accounts.sql)
+2. [`20261119110000_playrooom_orders.sql`](../supabase/migrations/20261119110000_playrooom_orders.sql)
 3. [`20261120120000_order_email_outbox.sql`](../supabase/migrations/20261120120000_order_email_outbox.sql)
-4. [`20261120130000_playroom_circle.sql`](../supabase/migrations/20261120130000_playroom_circle.sql)
+4. [`20261120130000_playrooom_circle.sql`](../supabase/migrations/20261120130000_playrooom_circle.sql)
 5. [`20261122140000_admin_analytics.sql`](../supabase/migrations/20261122140000_admin_analytics.sql)
 
 Checkout still creates a clearly-labelled **demo** order — no payment, courier
 or email is involved — but the receipt snapshot is stored against the signed-in
-customer. Guest orders stay in `playroom-demo-v1-orders` until the visitor signs
+customer. Guest orders stay in `playrooom-demo-v1-orders` until the visitor signs
 in, at which point they are uploaded to the account. Each customer sees only
 their own orders, returns, tracking numbers and receipts.
 
@@ -117,7 +117,7 @@ when catalogue prices change. The order email migration adds
 Only the serverless checkout function writes here with the service role. RLS is
 enabled and browser roles have no privileges.
 
-### Playroom Circle tables
+### Playrooom Circle tables
 
 `subscription_plans` stores the two demo plans: monthly ₹499 and yearly ₹4,499.
 `subscriptions` tracks the customer's active period and status.

@@ -1,11 +1,11 @@
 -- ============================================================================
--- Playroom — server-owned checkout + email outbox
+-- Playrooom — server-owned checkout + email outbox
 -- ----------------------------------------------------------------------------
 -- Adds server-side idempotency to orders and a durable outbox for transactional
 -- email. The browser never sends email directly and the outbox is written only
 -- after an order has been committed successfully.
 --
--- Safe to re-run. Run after 20261119110000_playroom_orders.sql.
+-- Safe to re-run. Run after 20261119110000_playrooom_orders.sql.
 -- ============================================================================
 
 -- The API sends a client-generated key so a refresh/retry cannot create a

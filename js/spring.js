@@ -1,4 +1,4 @@
-// Playroom Atelier — physics motion core.
+// Playrooom Atelier — physics motion core.
 // A tiny, dependency-free spring physics engine used throughout the site:
 // any DOM element can be animated to a target with real spring dynamics
 // (stiffness/damping/mass), or "flicked" with a velocity impulse.

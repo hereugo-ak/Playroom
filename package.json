@@ -1,9 +1,9 @@
 {
-  "name": "playroom-storefront",
+  "name": "playrooom-storefront",
   "private": true,
   "version": "1.1.0",
   "type": "module",
-  "description": "Playroom — Little Hands. Big World. A static storefront with Supabase customer accounts.",
+  "description": "Playrooom — Little Hands. Big World. A static storefront with Supabase customer accounts.",
   "scripts": {
     "dev": "vite",
     "build": "vite build",

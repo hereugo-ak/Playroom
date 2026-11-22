@@ -10,7 +10,7 @@ export function friendlyAuthError(error, fallback = 'Something went wrong. Pleas
   const code = String(error.code || error.status || '').toLowerCase();
 
   if (NETWORK.test(message)) {
-    return "We couldn't reach Playroom's servers. Check your connection and try again.";
+    return "We couldn't reach Playrooom's servers. Check your connection and try again.";
   }
   if (/invalid login credentials|invalid_credentials/i.test(message + code)) {
     return "That email and password don't match. Try again, or reset your password.";
@@ -50,7 +50,7 @@ export function friendlyAuthError(error, fallback = 'Something went wrong. Pleas
     return 'Google sign-in is not switched on for this store yet. Please use email and password.';
   }
   if (/database error saving new user|profiles.*(does not exist|schema)/i.test(message)) {
-    return 'Your account was created, but the customer profile could not be set up. Please contact Playroom care.';
+    return 'Your account was created, but the customer profile could not be set up. Please contact Playrooom care.';
   }
   if (/rate limit|too many requests/i.test(message + code)) {
     return 'Too many attempts. Please wait a moment and try again.';
@@ -66,7 +66,7 @@ export function friendlyAuthError(error, fallback = 'Something went wrong. Pleas
     return 'That is already saved to your account.';
   }
   if (/relation .* does not exist|column .* does not exist|schema cache|PGRST\d+/i.test(message + code)) {
-    return 'The account database is not set up yet. Run the Playroom migration described in docs/AUTH_SETUP.md.';
+    return 'The account database is not set up yet. Run the Playrooom migration described in docs/AUTH_SETUP.md.';
   }
   if (/violates (foreign key|not-null|check constraint)|invalid input syntax|json object requested/i.test(message)) {
     return fallback;

@@ -8,7 +8,7 @@ import { fileURLToPath } from 'node:url';
 // directly, so the same relative paths resolve without any extra configuration.
 function copyRuntimeAssets() {
   return {
-    name: 'playroom-copy-runtime-assets',
+    name: 'playrooom-copy-runtime-assets',
     apply: 'build',
     closeBundle() {
       const folders = [

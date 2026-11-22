@@ -1,4 +1,4 @@
-// Playroom Circle UI — landing, demo payment checkout, success and membership.
+// Playrooom Circle UI — landing, demo payment checkout, success and membership.
 // All membership status comes from Supabase; payment uses the existing demo UI.
 import { $, $$, safe, toast } from './dom.js';
 import { formatMoney, state } from './store.js';
@@ -98,10 +98,10 @@ function signInGate(next = '/circle') {
   const encoded = encodeURIComponent(next);
   return `<div class="route-enter circle-gate">
     <div class="wrap page-head circle-head">
-      <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Playroom Circle</span></div>
+      <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Playrooom Circle</span></div>
       <div class="mono muted">MEMBERSHIP</div>
       <h1 class="page-title">One step before <em>Circle.</em></h1>
-      <p class="page-intro">Sign in to join Playroom Circle and keep your membership with your account.</p>
+      <p class="page-intro">Sign in to join Playrooom Circle and keep your membership with your account.</p>
     </div>
     <section class="section wrap circle-section">
       <div class="circle-panel">
@@ -121,8 +121,8 @@ export function renderCircleLanding() {
   const active = membershipState.active;
   return `<div class="route-enter circle-page">
     <div class="wrap page-head circle-head">
-      <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Playroom Circle</span></div>
-      <div class="mono muted">PLAYROOM CIRCLE</div>
+      <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Playrooom Circle</span></div>
+      <div class="mono muted">PLAYROOOM CIRCLE</div>
       <h1 class="page-title">A little more room for <em>play.</em></h1>
       <p class="page-intro">A membership for the small things that make everyday play feel considered — better delivery, thoughtful extras and a closer connection to the studio.</p>
     </div>
@@ -144,9 +144,9 @@ export function renderCircleLanding() {
           <figcaption>THE EVERYDAY EDIT</figcaption>
         </figure>
         <figure class="circle-hero-inset">
-          <img src="assets/img/photo-31.jpg" alt="A quiet playroom shelf with toys and books" loading="lazy" decoding="async">
+          <img src="assets/img/photo-31.jpg" alt="A quiet playrooom shelf with toys and books" loading="lazy" decoding="async">
         </figure>
-        <div class="circle-hero-stamp"><span>PLAYROOM</span><b>Circle</b><small>LITTLE HANDS · BIG WORLDS</small></div>
+        <div class="circle-hero-stamp"><span>PLAYROOOM</span><b>Circle</b><small>LITTLE HANDS · BIG WORLDS</small></div>
       </div>
     </section>
 
@@ -161,7 +161,7 @@ export function renderCircleLanding() {
       <div class="circle-benefits">${benefitRows()}</div>
 
       <div class="circle-editorial">
-        <div class="circle-editorial-art"><img src="assets/img/photo-13.jpg" alt="Soft toys and a warm playroom setting" loading="lazy" decoding="async"></div>
+        <div class="circle-editorial-art"><img src="assets/img/photo-13.jpg" alt="Soft toys and a warm playrooom setting" loading="lazy" decoding="async"></div>
         <div class="circle-editorial-copy">
           <span class="circle-kicker">THE SMALL EXTRAS</span>
           <h2>Less checkout.<br><em>More play.</em></h2>
@@ -192,7 +192,7 @@ export function renderCircleLanding() {
             : '<button class="btn" type="button" data-circle-plan="yearly">Choose yearly <span class="arrow" aria-hidden="true">↗</span></button>'}
         </article>
       </div>
-      <p class="circle-fine">Demo membership: payment is handled by the existing Playroom demo gateway. No real money is collected and no physical service is scheduled.</p>
+      <p class="circle-fine">Demo membership: payment is handled by the existing Playrooom demo gateway. No real money is collected and no physical service is scheduled.</p>
     </section>
   </div>`;
 }
@@ -231,7 +231,7 @@ export function renderCircleCheckout(r) {
 
   return `<div class="route-enter circle-page">
     <div class="wrap page-head circle-head">
-      <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><a href="#/circle">Playroom Circle</a><span> / </span><span>Checkout</span></div>
+      <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><a href="#/circle">Playrooom Circle</a><span> / </span><span>Checkout</span></div>
       <div class="mono muted">DEMO MEMBERSHIP CHECKOUT</div>
       <h1 class="page-title">Join the <em>Circle.</em></h1>
       <p class="page-intro">Review your plan and approve the demo payment. No real money is collected.</p>
@@ -254,7 +254,7 @@ export function renderCircleCheckout(r) {
             <button class="text-link circle-autofill" id="circleAutofill" type="button">Autofill demo details <span aria-hidden="true">↗</span></button>
             <div class="circle-form-message" data-circle-error role="alert" hidden></div>
             <button class="st-paybtn circle-pay" id="circlePayButton" type="submit">Approve demo payment · ${formatMoney(plan.price)}</button>
-            <p class="circle-fine">This uses the same Playroom demo gateway as checkout. Nothing is charged.</p>
+            <p class="circle-fine">This uses the same Playrooom demo gateway as checkout. Nothing is charged.</p>
           </form>
         </div>
       </div>
@@ -267,8 +267,8 @@ export function renderCircleSuccess() {
   const subscription = membershipState.subscription;
   return `<div class="route-enter circle-page">
     <div class="wrap page-head circle-head">
-      <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><a href="#/circle">Playroom Circle</a><span> / </span><span>Welcome</span></div>
-      <div class="mono muted">PLAYROOM CIRCLE</div>
+      <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><a href="#/circle">Playrooom Circle</a><span> / </span><span>Welcome</span></div>
+      <div class="mono muted">PLAYROOOM CIRCLE</div>
       <h1 class="page-title">You're in. <em>Welcome.</em></h1>
       <p class="page-intro">Your demo membership is active and every Circle benefit is ready to use.</p>
     </div>
@@ -325,7 +325,7 @@ export function renderCircleMembership() {
     return `<div class="route-enter circle-page">
       <div class="wrap page-head circle-head">
         <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Your account</span></div>
-        <div class="mono muted">PLAYROOM ACCOUNT</div>
+        <div class="mono muted">PLAYROOOM ACCOUNT</div>
         <h1 class="page-title">Your <em>membership.</em></h1>
         <p class="page-intro">Circle benefits, saved in one quiet place.</p>
       </div>
@@ -333,7 +333,7 @@ export function renderCircleMembership() {
         <div class="circle-panel">
           <span class="circle-kicker">NOT A MEMBER YET</span>
           <h2>Make everyday play <em>a little richer.</em></h2>
-          <p>Join Playroom Circle to unlock free next-day delivery, gift wrapping, early access and the member service desk.</p>
+          <p>Join Playrooom Circle to unlock free next-day delivery, gift wrapping, early access and the member service desk.</p>
           <div class="circle-actions"><a class="btn" href="#/circle">Explore Circle <span class="arrow" aria-hidden="true">↗</span></a></div>
         </div>
       </section>
@@ -349,13 +349,13 @@ export function renderCircleMembership() {
   return `<div class="route-enter circle-page">
     <div class="wrap page-head circle-head">
       <div class="breadcrumbs"><a href="#/">Home</a><span> / </span><span>Your account</span></div>
-      <div class="mono muted">PLAYROOM CIRCLE</div>
+      <div class="mono muted">PLAYROOOM CIRCLE</div>
       <h1 class="page-title">Your <em>membership.</em></h1>
       <p class="page-intro">Active benefits, saved requests and member payment history.</p>
     </div>
     <section class="section wrap circle-section">
       <div class="circle-pass">
-        <div><span class="circle-kicker">PLAYROOM CIRCLE · ACTIVE DEMO</span><h2>${safe(plan?.name || 'Playroom Circle')}</h2></div>
+        <div><span class="circle-kicker">PLAYROOOM CIRCLE · ACTIVE DEMO</span><h2>${safe(plan?.name || 'Playrooom Circle')}</h2></div>
         <dl>
           <div><dt>Valid until</dt><dd>${safe(endDate)}</dd></div>
           <div><dt>Reference</dt><dd>${safe(sub?.provider_reference || '—')}</dd></div>
@@ -493,7 +493,7 @@ async function wireCheckout() {
       try { sessionStorage.removeItem(`pl-circle-key:${plan.code}`); } catch { /* ignore */ }
       await loadMembership(true);
       trackEvent('membership_activate', { planCode: plan.code, value: plan.price });
-      toast('Welcome to Playroom Circle.', 'Your demo benefits are active.');
+      toast('Welcome to Playrooom Circle.', 'Your demo benefits are active.');
       go('/circle/success');
     } catch (error) {
       setFormError(form, String(error?.message || error || 'Please try again.'));
@@ -568,7 +568,7 @@ function wireGuide() {
       const url = URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = 'playroom-circle-play-guide.html';
+      a.download = 'playrooom-circle-play-guide.html';
       document.body.appendChild(a);
       a.click();
       a.remove();

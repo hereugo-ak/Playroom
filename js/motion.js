@@ -1,4 +1,4 @@
-// Playroom Atelier — premium motion orchestration.
+// Playrooom Atelier — premium motion orchestration.
 // Ported 1:1 from the reference's three motion blocks:
 //   1) reveal-on-scroll system (motion-ready + data-reveal)
 //   2) atelier motion plus (progress bar, cursor glow, magnetic buttons,
@@ -138,7 +138,7 @@ function bindInteractions(root = document) {
 }
 
 // ------------------------------------------------------------------
-// 5. Route curtain (green wipe with "playroom." on hash change)
+// 5. Route curtain (green wipe with "playrooom." on hash change)
 // ------------------------------------------------------------------
 let curtain = null;
 function initCurtain() {
@@ -231,8 +231,8 @@ function initHeader() {
     }
     shell.style.width = '100%';
     shell.style.borderRadius = '0px';
-    shell.style.background = '#f0e5d7';
-    shell.style.boxShadow = `0 ${(.5 + 7 * p).toFixed(2)}px ${(3 + 18 * p).toFixed(2)}px rgba(72,45,27,${(.035 + .055 * p).toFixed(3)})`;
+    shell.style.background = '#f6ece3';
+    shell.style.boxShadow = `0 ${(.5 + 7 * p).toFixed(2)}px ${(3 + 18 * p).toFixed(2)}px rgba(67,44,32,${(.035 + .055 * p).toFixed(3)})`;
     shell.classList.toggle('is-compact', compact);
     if (scrollY > 10) shell.classList.add('is-fixed'); else shell.classList.remove('is-fixed');
   };
