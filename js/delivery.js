@@ -5,6 +5,7 @@
 // DOM-free so every page can use it.
 
 export const CUTOFF_HOUR = 15; // 3pm local — "order within…" cutoff
+export const FREE_DELIVERY_THRESHOLD = 499; // orders at or above this ship standard for free
 export const DELIVERY_FEE_EXPRESS = 149;
 export const DELIVERY_FEE_PICKDAY = 99;
 
@@ -103,7 +104,7 @@ export const DELIVERY_STORAGE = 'pl-delivery';
 export function deliveryOptions(subtotal, now = new Date()) {
   const std = standardDate(now);
   const exp = expressDate(now);
-  const standardFee = subtotal >= 1499 || subtotal === 0 ? 0 : 99;
+  const standardFee = subtotal >= FREE_DELIVERY_THRESHOLD || subtotal === 0 ? 0 : 99;
   return [
     {
       id: 'standard', label: 'Standard', desc: 'Arrives in 2–4 business days',
@@ -144,5 +145,5 @@ export function effectiveDeliveryFee(subtotal) {
     if (live) return live.fee;
     if (Number.isFinite(chosen.fee)) return chosen.fee;
   }
-  return subtotal >= 1499 || subtotal === 0 ? 0 : 99;
+  return subtotal >= FREE_DELIVERY_THRESHOLD || subtotal === 0 ? 0 : 99;
 }

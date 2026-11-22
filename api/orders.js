@@ -6,7 +6,7 @@ import { byId } from '../js/data.js';
 import { renderOrderConfirmation } from '../emails/order-confirmation.js';
 import { bearer, getAdmin, getTransport, json, readJson, requireEnv } from './_lib/server.js';
 
-const FREE_DELIVERY_THRESHOLD = 1499;
+const FREE_DELIVERY_THRESHOLD = 499;
 const DELIVERY_FEE = 99;
 const EXPRESS_FEE = 149;
 const PICKDAY_FEE = 99;

@@ -62,7 +62,7 @@ in Postgres.
 
 - 110 products, 10 categories, editorial home page
 - Filter/sort catalogue, product pages with gallery + PIN delivery estimate
-- Cart drawer with free-delivery progress (free ≥ ₹1,499, else ₹99)
+- Cart drawer with free-delivery progress (free ≥ ₹499, else ₹99)
 - Checkout with validation + demo promo code `PLAY10` (10% off)
 - **Stripe-style demo gateway**: Card / UPI / NetBanking / Crypto tabs, random
   autofill, Elements-style card formatting, animated pay sequence, `pi_demo_*`

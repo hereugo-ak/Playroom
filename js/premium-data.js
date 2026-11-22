@@ -314,7 +314,7 @@ export function reviewDistribution(p, seeded) {
 export const QNA_GENERAL = [
   {
     q: 'How long does delivery usually take?',
-    a: 'Standard delivery arrives in 2–4 business days across India, and it is complimentary on orders above ₹1,499. Express and “pick a day” options are available at checkout.',
+    a: 'Standard delivery arrives in 2–4 business days across India, and it is complimentary on orders above ₹499. Express and “pick a day” options are available at checkout.',
     by: 'Playrooom team',
   },
   {

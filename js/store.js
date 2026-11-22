@@ -52,7 +52,7 @@ export function write(name, value) {
 export { key as storageKey };
 
 // ---------- Pricing (single source of truth) ----------
-export const FREE_DELIVERY_THRESHOLD = 1499; // from the reference announcement bar
+export const FREE_DELIVERY_THRESHOLD = 499; // announcement bar: free delivery above ₹499
 export const DELIVERY_FEE = 99;
 export const PROMO_CODES = { PLAY10: 0.10 }; // 10% off demo subtotal
 export const GIFT_WRAP_ID = 'gift-wrap';
