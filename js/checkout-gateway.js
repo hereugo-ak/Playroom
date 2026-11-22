@@ -361,7 +361,7 @@ export function confettiBurst(host) {
   const layer = document.createElement('div');
   layer.className = 'confetti-layer';
   host.appendChild(layer);
-  const colors = ['#d7b56d', '#b56f7b', '#ead1d2', '#f0e5d7', '#4c3428'];
+  const colors = ['#a8cde6', '#e59aa2', '#dbe9f5', '#f6ece3', '#3d6482'];
   const parts = Array.from({ length: 44 }, () => {
     const d = document.createElement('i');
     const size = 6 + Math.random() * 8;

@@ -5,7 +5,7 @@
    ================================================================== */
 
 .checkout-gate {
-  color: #382a22;
+  color: #3b2a22;
 }
 
 .checkout-gate-head {
@@ -15,7 +15,7 @@
 }
 
 .checkout-gate-head .page-title em {
-  color: #b56f7b;
+  color: #e59aa2;
   font-style: italic;
   font-weight: 400;
 }
@@ -31,11 +31,11 @@
   align-items: stretch;
   max-width: 980px;
   margin: 0 auto;
-  border: 1px solid #e6d6c4;
+  border: 1px solid #ccdae7;
   border-radius: 14px;
   overflow: hidden;
-  background: #fffaf3;
-  box-shadow: 0 24px 70px rgba(63, 43, 33, .08);
+  background: #ffffff;
+  box-shadow: 0 24px 70px rgba(62,43,34, .08);
 }
 
 .checkout-gate-copy {
@@ -45,7 +45,7 @@
 .checkout-gate-kicker {
   display: block;
   margin-bottom: 14px;
-  color: #b56f7b;
+  color: #e59aa2;
   font: 700 9px var(--mono, 'DM Mono', monospace);
   letter-spacing: .16em;
   text-transform: uppercase;
@@ -58,7 +58,7 @@
 }
 
 .checkout-gate-copy h2 em {
-  color: #b56f7b;
+  color: #e59aa2;
   font-style: italic;
   font-weight: 400;
 }
@@ -66,7 +66,7 @@
 .checkout-gate-copy > p {
   max-width: 470px;
   margin: 0 0 26px;
-  color: #806b5a;
+  color: #7b685f;
   font-size: 12.5px;
   line-height: 1.85;
 }
@@ -88,15 +88,15 @@
   gap: 10px;
   margin-top: 30px;
   padding-top: 18px;
-  border-top: 1px solid #eee2d3;
-  color: #806b5a;
+  border-top: 1px solid #d4e1ed;
+  color: #7b685f;
   font-size: 10.5px;
   line-height: 1.7;
 }
 
 .checkout-gate-note i {
   flex: 0 0 auto;
-  color: #b56f7b;
+  color: #e59aa2;
   font-style: normal;
   font-size: 14px;
   line-height: 1;
@@ -105,16 +105,16 @@
 .checkout-gate-bag {
   padding: clamp(28px, 3.5vw, 42px);
   background:
-    linear-gradient(rgba(255, 250, 243, .9), rgba(255, 250, 243, .9)),
-    repeating-linear-gradient(0deg, transparent 0 31px, rgba(181, 111, 123, .06) 31px 32px),
-    #f8f1e8;
-  border-left: 1px solid #e6d6c4;
+    linear-gradient(rgba(255,255,255, .9), rgba(255,255,255, .9)),
+    repeating-linear-gradient(0deg, transparent 0 31px, rgba(229,154,162, .06) 31px 32px),
+    #d3e1ee;
+  border-left: 1px solid #ccdae7;
 }
 
 .checkout-gate-bag > span {
   display: block;
   margin-bottom: 18px;
-  color: #b56f7b;
+  color: #e59aa2;
   font: 700 9px var(--mono, 'DM Mono', monospace);
   letter-spacing: .14em;
   text-transform: uppercase;
@@ -132,11 +132,11 @@
   justify-content: space-between;
   gap: 16px;
   padding: 13px 0;
-  border-bottom: 1px solid #e7d9c8;
+  border-bottom: 1px solid #cfdce8;
 }
 
 .checkout-gate-bag dt {
-  color: #806b5a;
+  color: #7b685f;
   font: 9px var(--mono, 'DM Mono', monospace);
   letter-spacing: .08em;
   text-transform: uppercase;
@@ -144,7 +144,7 @@
 
 .checkout-gate-bag dd {
   margin: 0;
-  color: #382a22;
+  color: #3b2a22;
   font-size: 12px;
   text-align: right;
 }
@@ -155,7 +155,7 @@
 
 .checkout-gate-bag p {
   margin: 18px 0 0;
-  color: #9a8672;
+  color: #8a9aa8;
   font-size: 10px;
   line-height: 1.7;
 }
@@ -167,7 +167,7 @@
 
   .checkout-gate-bag {
     border-left: 0;
-    border-top: 1px solid #e6d6c4;
+    border-top: 1px solid #ccdae7;
   }
 }
 

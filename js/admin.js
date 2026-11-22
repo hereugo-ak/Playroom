@@ -24,7 +24,7 @@ const money = (n) => formatMoney(Number(n || 0));
 const num = (n) => Number(n || 0).toLocaleString('en-IN');
 const pct = (n) => `${Number(n || 0).toFixed(1)}%`;
 
-function lineChart(series, color = '#b56f7b') {
+function lineChart(series, color = '#e59aa2') {
   const points = (series || []).map((d) => Number(d.value || 0));
   if (!points.length) return '<div class="admin-empty">No data in this range.</div>';
   const max = Math.max(...points, 1);
@@ -107,9 +107,9 @@ function paint(data) {
 
     <div class="admin-grid admin-grid--charts">
       <article class="admin-panel"><header><span class="mono">REVENUE BY DAY</span><h2>${money(k.revenue)}</h2></header>${lineChart(data.series?.revenue)}</article>
-      <article class="admin-panel"><header><span class="mono">ORDERS BY DAY</span><h2>${num(k.orders)}</h2></header>${lineChart(data.series?.orders, '#4c3428')}</article>
-      <article class="admin-panel"><header><span class="mono">EVENT VOLUME</span><h2>${num((b.eventTypes || []).reduce((a, x) => a + x.count, 0))}</h2></header>${lineChart(data.series?.events, '#d8a15f')}</article>
-      <article class="admin-panel"><header><span class="mono">CIRCLE REVENUE</span><h2>${money(k.circleRevenue)}</h2></header>${lineChart(data.series?.circle, '#b56f7b')}</article>
+      <article class="admin-panel"><header><span class="mono">ORDERS BY DAY</span><h2>${num(k.orders)}</h2></header>${lineChart(data.series?.orders, '#3d6482')}</article>
+      <article class="admin-panel"><header><span class="mono">EVENT VOLUME</span><h2>${num((b.eventTypes || []).reduce((a, x) => a + x.count, 0))}</h2></header>${lineChart(data.series?.events, '#73a0ca')}</article>
+      <article class="admin-panel"><header><span class="mono">CIRCLE REVENUE</span><h2>${money(k.circleRevenue)}</h2></header>${lineChart(data.series?.circle, '#e59aa2')}</article>
     </div>
 
     <div class="admin-grid admin-grid--three">

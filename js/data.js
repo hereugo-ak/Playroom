@@ -42,12 +42,12 @@ export const SELLERS = [
     badges: ['Verified maker', 'Top maker 2025', 'On-time dispatcher'],
     distribution: [92, 6, 1, 0.6, 0.4],
     reviews: [
-      { name: 'Aditi S.', initials: 'AS', tone: '#b56f7b', when: '2 weeks ago', text: 'Magnets strong enough for real towers, and the finish has held up after six months of daily play.' },
-      { name: 'Rahul M.', initials: 'RM', tone: '#6f8a6a', when: '1 month ago', text: 'Arrived in two days, beautifully packed, and the tiles click together with a very satisfying snap.' },
+      { name: 'Aditi S.', initials: 'AS', tone: '#e59aa2', when: '2 weeks ago', text: 'Magnets strong enough for real towers, and the finish has held up after six months of daily play.' },
+      { name: 'Rahul M.', initials: 'RM', tone: '#6c7c88', when: '1 month ago', text: 'Arrived in two days, beautifully packed, and the tiles click together with a very satisfying snap.' },
     ],
   },
   {
-    id: 'grove', name: 'Little Grove Atelier', initials: 'GA', tone: '#6f8a6a',
+    id: 'grove', name: 'Little Grove Atelier', initials: 'GA', tone: '#6c7c88',
     tagline: 'Wooden classics, made slowly', location: 'Kochi', since: 2016,
     rating: 4.8, ratings: 2110, sold: '31,900', response: '98%', dispatch: '1–2 days', onTime: 97,
     about: 'A family workshop in Kochi where every block is cut, sanded and finished by hand. The wood comes from certified groves, the corners are softened twice, and the studio still smells faintly of beeswax. These are the toys that get handed down, not thrown out.',
@@ -55,12 +55,12 @@ export const SELLERS = [
     badges: ['Verified maker', 'Family-run', 'Plastic-free packing'],
     distribution: [88, 9, 2, 0.7, 0.3],
     reviews: [
-      { name: 'Meera J.', initials: 'MJ', tone: '#c98a5b', when: '3 weeks ago', text: 'You can feel the hand-finishing. The blocks are already being saved for the next baby in the family.' },
+      { name: 'Meera J.', initials: 'MJ', tone: '#b38771', when: '3 weeks ago', text: 'You can feel the hand-finishing. The blocks are already being saved for the next baby in the family.' },
       { name: 'Tom W.', initials: 'TW', tone: '#7d6a9a', when: '2 months ago', text: 'Third order from this maker. Quietly perfect every time — heirloom toys at fair prices.' },
     ],
   },
   {
-    id: 'wonderworks', name: 'Wonderworks', initials: 'WW', tone: '#c98a5b',
+    id: 'wonderworks', name: 'Wonderworks', initials: 'WW', tone: '#b38771',
     tagline: 'Small-batch mechanics for big ideas', location: 'Jaipur', since: 2018,
     rating: 4.8, ratings: 967, sold: '12,600', response: '100%', dispatch: 'Same day', onTime: 99,
     about: 'Wonderworks is a five-person studio in Jaipur that prototypes marble runs the way other people write drafts — over and over until gravity itself seems impressed. If a route is possible, their test kids will find it.',
@@ -68,12 +68,12 @@ export const SELLERS = [
     badges: ['Verified maker', 'On-time dispatcher', 'Plastic-free packing'],
     distribution: [89, 8, 2, 0.6, 0.4],
     reviews: [
-      { name: 'Nikhil B.', initials: 'NB', tone: '#6f8a6a', when: '1 week ago', text: 'The spiral pieces fit together better than any set we have owned. Two rainy weekends and still going.' },
-      { name: 'Farah K.', initials: 'FK', tone: '#b56f7b', when: '1 month ago', text: 'Customer service answered on a Sunday when a piece went missing, and posted a replacement the same day.' },
+      { name: 'Nikhil B.', initials: 'NB', tone: '#6c7c88', when: '1 week ago', text: 'The spiral pieces fit together better than any set we have owned. Two rainy weekends and still going.' },
+      { name: 'Farah K.', initials: 'FK', tone: '#e59aa2', when: '1 month ago', text: 'Customer service answered on a Sunday when a piece went missing, and posted a replacement the same day.' },
     ],
   },
   {
-    id: 'quiet', name: 'The Quiet Company', initials: 'QC', tone: '#8a6a3f',
+    id: 'quiet', name: 'The Quiet Company', initials: 'QC', tone: '#779abb',
     tagline: 'Good puzzles, no shouting', location: 'Pune', since: 2020,
     rating: 4.7, ratings: 806, sold: '9,300', response: '97%', dispatch: '1–2 days', onTime: 96,
     about: 'The Quiet Company makes puzzles and tabletop games for slow afternoons — printed on thick recycled board, cut in Pune, and tested at the founders kitchen table until the whole family stops arguing and starts playing.',
@@ -81,12 +81,12 @@ export const SELLERS = [
     badges: ['Verified maker', 'Recycled materials'],
     distribution: [84, 11, 3.5, 1, 0.5],
     reviews: [
-      { name: 'Shreya D.', initials: 'SD', tone: '#a56a76', when: '2 weeks ago', text: 'The pieces are satisfyingly thick and the picture is genuinely beautiful — it is framed on the wall now.' },
+      { name: 'Shreya D.', initials: 'SD', tone: '#d3818a', when: '2 weeks ago', text: 'The pieces are satisfyingly thick and the picture is genuinely beautiful — it is framed on the wall now.' },
       { name: 'Arvind P.', initials: 'AP', tone: '#7d6a9a', when: '1 month ago', text: 'Bought it for the grandparents, and it quietly became the family routine every Sunday evening.' },
     ],
   },
   {
-    id: 'sunhouse', name: 'Sunhouse Toys', initials: 'ST', tone: '#b56f7b',
+    id: 'sunhouse', name: 'Sunhouse Toys', initials: 'ST', tone: '#e59aa2',
     tagline: 'For gardens, kitchens and muddy hands', location: 'Goa', since: 2017,
     rating: 4.9, ratings: 1542, sold: '22,700', response: '99%', dispatch: 'Same day', onTime: 98,
     about: 'Sunhouse Toys makes art and outdoor gear for children who play like the weather is a challenge. Everything is tested in the Goan sun for a full season — if it fades, cracks or gets boring, it never makes it to the shop.',
@@ -94,8 +94,8 @@ export const SELLERS = [
     badges: ['Verified maker', 'Top maker 2025', 'Season-tested'],
     distribution: [93, 5.5, 1, 0.3, 0.2],
     reviews: [
-      { name: 'Ishaan R.', initials: 'IR', tone: '#6f8a6a', when: '5 days ago', text: 'Left the easel outside all monsoon — no warp, no fade. That is a small miracle in Goa.' },
-      { name: 'Neha G.', initials: 'NG', tone: '#c98a5b', when: '3 weeks ago', text: 'The pressed-flower kit kept a nine-year-old happily busy for an entire holiday without a screen.' },
+      { name: 'Ishaan R.', initials: 'IR', tone: '#6c7c88', when: '5 days ago', text: 'Left the easel outside all monsoon — no warp, no fade. That is a small miracle in Goa.' },
+      { name: 'Neha G.', initials: 'NG', tone: '#b38771', when: '3 weeks ago', text: 'The pressed-flower kit kept a nine-year-old happily busy for an entire holiday without a screen.' },
     ],
   },
   {
@@ -107,8 +107,8 @@ export const SELLERS = [
     badges: ['Verified maker', 'Safety-tested', 'OT-designed'],
     distribution: [87, 10, 2, 0.6, 0.4],
     reviews: [
-      { name: 'Pooja V.', initials: 'PV', tone: '#b56f7b', when: '1 week ago', text: 'Third wash and it still looks brand new. The safety stitching on the eyes convinced my mother, finally.' },
-      { name: 'Daniel A.', initials: 'DA', tone: '#6f8a6a', when: '1 month ago', text: 'The texture is perfect for tiny hands — our daughter has not let go of it since the box opened.' },
+      { name: 'Pooja V.', initials: 'PV', tone: '#e59aa2', when: '1 week ago', text: 'Third wash and it still looks brand new. The safety stitching on the eyes convinced my mother, finally.' },
+      { name: 'Daniel A.', initials: 'DA', tone: '#6c7c88', when: '1 month ago', text: 'The texture is perfect for tiny hands — our daughter has not let go of it since the box opened.' },
     ],
   },
 ];
@@ -187,7 +187,7 @@ export const PRODUCT_3D_CONFIG = {
     title: 'Orbit Magnetic Building Tiles',
     kicker: 'THE 3D STUDIO',
     intro: 'Build a little skyline in 3D — translucent tiles, saturated colour and clean geometric edges.',
-    fallbackPalette: { cream: '#f0c94a', rust: '#d9553f', mustard: '#e79b32', sage: '#5fa56f', slate: '#2d77b8', rose: '#9b5ca8', wood: '#d8b985' },
+    fallbackPalette: { cream: '#75a2cb', rust: '#c86050', mustard: '#6b9bc7', sage: '#6287a2', slate: '#2d77b8', rose: '#9b5ca8', wood: '#8fb3d5' },
     paletteRegions: { cream: [0.20, 0.18, 0.12, 0.16], rust: [0.38, 0.02, 0.14, 0.15], mustard: [0.08, 0.48, 0.14, 0.16], sage: [0.64, 0.48, 0.14, 0.16], slate: [0.52, 0.22, 0.14, 0.16], rose: [0.78, 0.20, 0.12, 0.14], wood: [0.45, 0.75, 0.08, 0.08] },
     hotspots: [
       { id: 'tiles', label: 'Translucent tiles', detail: 'Light passes through the coloured faces for a clean, architectural feel.', point: [0.55, 1.2, 0.2] },
@@ -221,7 +221,7 @@ export const PRODUCT_3D_CONFIG = {
     title: 'The City Bus — Wooden',
     kicker: 'THE 3D STUDIO',
     intro: 'A rounded wooden bus with a proper little route through the city.',
-    fallbackPalette: { cream: '#e5d2a8', rust: '#c46a4a', mustard: '#d8a84e', sage: '#5f7f65', slate: '#2f5d63', rose: '#b86f67', wood: '#d3ad79' },
+    fallbackPalette: { cream: '#b3cbe2', rust: '#ab7b63', mustard: '#6b9bc7', sage: '#61717d', slate: '#2f5d63', rose: '#ba7065', wood: '#83abd0' },
     paletteRegions: { cream: [0.50, 0.16, 0.12, 0.12], rust: [0.72, 0.50, 0.10, 0.12], mustard: [0.83, 0.38, 0.10, 0.12], sage: [0.18, 0.55, 0.14, 0.14], slate: [0.35, 0.55, 0.14, 0.12], rose: [0.60, 0.72, 0.10, 0.10], wood: [0.12, 0.78, 0.12, 0.08] },
     hotspots: [
       { id: 'body', label: 'Rounded wooden body', detail: 'Smooth edges and a solid, satisfying weight in the hand.', point: [0.1, 1.0, 0.45] },
@@ -239,7 +239,7 @@ export const PRODUCT_3D_CONFIG = {
     title: 'First Shapes Wooden Sorter',
     kicker: 'THE 3D STUDIO',
     intro: 'Soft colour, smooth wood and a stack that feels as good as it looks.',
-    fallbackPalette: { cream: '#e8d6b8', rust: '#c98562', mustard: '#d6a454', sage: '#8da578', slate: '#5d7f8b', rose: '#c97675', wood: '#d7b487' },
+    fallbackPalette: { cream: '#c1d5e7', rust: '#b58b76', mustard: '#6b9bc7', sage: '#7a92a3', slate: '#5d7f8b', rose: '#cb7f73', wood: '#90b4d5' },
     paletteRegions: { cream: [0.48, 0.22, 0.12, 0.12], rust: [0.43, 0.58, 0.12, 0.10], mustard: [0.43, 0.44, 0.12, 0.10], sage: [0.54, 0.34, 0.12, 0.10], slate: [0.26, 0.55, 0.12, 0.10], rose: [0.20, 0.68, 0.12, 0.10], wood: [0.78, 0.62, 0.10, 0.10] },
     hotspots: [
       { id: 'rings', label: 'Stacking rings', detail: 'Chunky rings slide onto the post and settle with a soft wooden click.', point: [0.1, 0.8, 0.4] },
@@ -257,7 +257,7 @@ export const PRODUCT_3D_CONFIG = {
     title: 'The Tiny Parade Xylophone',
     kicker: 'THE 3D STUDIO',
     intro: 'Colour-coded bars, a warm wooden frame and two mallets ready for a first tune.',
-    fallbackPalette: { cream: '#e9d9b7', rust: '#c65f4e', mustard: '#d7a94f', sage: '#7e9f6b', slate: '#3f7b80', rose: '#b85f70', wood: '#d6b17a' },
+    fallbackPalette: { cream: '#c1d5e7', rust: '#c75d4d', mustard: '#6b9bc7', sage: '#6e899c', slate: '#3f7b80', rose: '#ba695d', wood: '#86add1' },
     paletteRegions: { cream: [0.18, 0.80, 0.12, 0.10], rust: [0.16, 0.42, 0.10, 0.14], mustard: [0.30, 0.38, 0.10, 0.14], sage: [0.45, 0.35, 0.10, 0.14], slate: [0.60, 0.34, 0.10, 0.14], rose: [0.76, 0.36, 0.10, 0.14], wood: [0.84, 0.78, 0.10, 0.10] },
     hotspots: [
       { id: 'bars', label: 'Colour-coded bars', detail: 'Eight graduated bars make first melodies easy to find.', point: [0.1, 0.65, 0.3] },

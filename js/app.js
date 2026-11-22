@@ -256,7 +256,7 @@ function homePlayCardHTML(product, index, threeD = false) {
 function renderHome() {
   const featured = products.filter((p) => p.featured).slice(0, 8);
   const picks = sponsoredPicks();
-  const tone = ['#e7d7c5', '#dbe6d5', '#ead4cb', '#d5e2e8', '#eadfbd', '#d9d7c9', '#e6d8c8', '#dce5dd', '#e9d9b5', '#dce4e8'];
+  const tone = ['#cddbe8', '#d6dfe5', '#e5d7d0', '#d5e2e8', '#c6d8e9', '#cfd5dc', '#cfdce7', '#dce1e5', '#bfd4e7', '#dce4e8'];
   const catImage = { 'Building & STEM': 0, 'Games & Puzzles': 8, 'Soft & Plush': 12, 'Vehicles & Adventures': 16, 'Art & Imagination': 20, 'Baby & Early Years': 28, 'Pretend & Role Play': 18, 'Outdoor & Active': 24, 'Science & Discovery': 26, 'Music & Movement': 22 };
 
   // Exactly ten products: five with 3D, five normal, interleaved.
@@ -276,28 +276,21 @@ function renderHome() {
     { n: '02', title: 'Small-world stories', sub: 'Whole universes in miniature.', img: photos[18], href: '#/catalog?category=' + encodeURIComponent('Pretend & Role Play') },
     { n: '03', title: 'Hands-on discovery', sub: 'Curiosity you can hold.', img: photos[27], href: '#/catalog?category=' + encodeURIComponent('Science & Discovery') }];
   return `<div class="route-enter home-premium">
- <section class="home-hero home-hero--integrated"><div class="hero-cinema hero-cinema--warm" data-hero-scene>
-  <div class="hero-cinema-media" aria-hidden="true">
-    <div class="hero-cinema-parallax" data-hero-parallax>
-      <img class="hero-cinema-image" data-hero-image src="assets/img/hero.jpg" alt="" width="1672" height="941" fetchpriority="high" decoding="async">
-      <video class="hero-cinema-video" data-hero-video data-source="assets/img/hero.jpg" autoplay muted loop playsinline preload="auto" poster="assets/img/hero.jpg" aria-hidden="true">
-        <source src="assets/video/playroom-living.mp4" type="video/mp4">
-      </video>
-      <span class="hero-cinema-glow" aria-hidden="true"></span>
-    </div>
+ <section class="home-hero home-hero--campaign" aria-labelledby="heroTitle">
+  <figure class="hero-campaign-art">
+   <img src="assets/img/hero-rainbow.jpg" alt="Two children playing with a wooden dollhouse, stacking blocks, a toy train and a digger in a pastel playroom under a pink arch" width="1670" height="941" fetchpriority="high" decoding="async">
+  </figure>
+  <div class="wrap hero-campaign-bar">
+   <div class="hero-campaign-lead">
+    <div class="hero-overline">110 toys &middot; every one hand-picked</div>
+    <h1 id="heroTitle"><span>Little hands.</span> <em>Big worlds.</em></h1>
+   </div>
+   <div class="hero-campaign-side">
+    <p>Wood, wool and cloth &mdash; chosen to be outgrown slowly, if ever.</p>
+    <div class="hero-actions"><a class="btn hero-campaign-cta" href="#/catalog">Explore the collection <span class="arrow">&nearr;</span></a><a href="#/gift-finder" class="hero-secondary-link">Find their next favourite <span>&nearr;</span></a></div>
+   </div>
   </div>
-  <div class="hero-cinema-shade" aria-hidden="true"></div>
-  <button class="hero-video-play" data-hero-video-play type="button" aria-label="Play the playroom film" hidden><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M8 5.2v13.6L19 12 8 5.2Z"/></svg></button>
-  <div class="hero-editorial">
-    <div class="hero-editorial-inner">
-      <div class="hero-overline">110 toys · every one hand-picked</div>
-      <h1><span>Little hands.</span><br><em>Big worlds.</em></h1>
-      <p>Wood, wool and cloth — chosen to be outgrown slowly, if ever.</p>
-      <div class="hero-actions"><a class="btn light" href="#/catalog">Explore the collection <span class="arrow">↗</span></a><a href="#/gift-finder" class="hero-secondary-link">Find their next favourite <span>↗</span></a></div>
-    </div>
-  </div>
-  <div class="hero-scene-caption"><span>SCROLL TO EXPLORE</span><i></i></div>
- </div></section>
+ </section>
  <div class="home-main" data-home-main>
  <section class="section wrap home-categories-section home-play-section"><div class="home-section-top"><div><div class="mono muted">A PLACE TO BEGIN</div><h2>What kind of play<br><em>feels right today?</em></h2></div><div class="home-section-aside"><p>Five pieces open in the 3D studio. The rest are favourites from the shelf — choose the kind of play that fits today.</p><a class="text-link" href="#/catalog">Shop all 110+ toys <span>↗</span></a></div></div><div class="product-grid home-play-grid">${playProducts.map((item, i) => homePlayCardHTML(item.product, i, item.threeD)).join('')}</div></section>
  <section class="section wrap home-favorites"><div class="home-section-top"><div><div class="mono muted">THE ONES WORTH COMING BACK TO</div><h2>Small things.<br><em>Lasting favourites.</em></h2></div><div class="home-section-aside"><p>For the rainy afternoon that turns into a whole world, the birthday they’ve been counting down to, or a little surprise for no reason at all.</p><a class="text-link" href="#/catalog?sort=popular">Browse the favourites <span>↗</span></a></div></div><div class="product-grid">${featured.map((p, i) => productCard(p, i)).join('')}</div></section>
@@ -638,7 +631,7 @@ function fbtHTML(p) {
 
 function reviewCardHTML(r) {
   const stars = '★'.repeat(r.stars) + '☆'.repeat(5 - r.stars);
-  return `<article class="review rev-card${r.mine ? ' is-mine' : ''}" data-stars="${r.stars}" data-photo="${r.photo ? 1 : 0}"><div class="rev-head"><span class="post-avatar" style="--av:${r.tone || '#8a6a3f'}">${r.initials || 'YU'}</span><div class="rev-who"><b>${safe(r.name)}</b>${r.verified ? '<span class="tag">Verified purchase · demo</span>' : ''}${r.mine ? '<span class="tag tag--you">Your note</span>' : ''}</div><time>${safe(r.when)}</time></div><div class="rev-stars" aria-label="${r.stars} out of 5">${stars}</div><h4>${safe(r.title)}</h4><p>${safe(r.body)}</p>${r.photo ? `<figure class="rev-photo"><img src="${r.photo}" alt="" loading="lazy"><figcaption>${safe(r.photoCaption || 'Customer photo')}</figcaption></figure>` : ''}<div class="rev-foot"><button class="rev-help" type="button" data-helpful>Helpful · <span>${r.helpful || 0}</span></button></div></article>`;
+  return `<article class="review rev-card${r.mine ? ' is-mine' : ''}" data-stars="${r.stars}" data-photo="${r.photo ? 1 : 0}"><div class="rev-head"><span class="post-avatar" style="--av:${r.tone || '#779abb'}">${r.initials || 'YU'}</span><div class="rev-who"><b>${safe(r.name)}</b>${r.verified ? '<span class="tag">Verified purchase · demo</span>' : ''}${r.mine ? '<span class="tag tag--you">Your note</span>' : ''}</div><time>${safe(r.when)}</time></div><div class="rev-stars" aria-label="${r.stars} out of 5">${stars}</div><h4>${safe(r.title)}</h4><p>${safe(r.body)}</p>${r.photo ? `<figure class="rev-photo"><img src="${r.photo}" alt="" loading="lazy"><figcaption>${safe(r.photoCaption || 'Customer photo')}</figcaption></figure>` : ''}<div class="rev-foot"><button class="rev-help" type="button" data-helpful>Helpful · <span>${r.helpful || 0}</span></button></div></article>`;
 }
 
 function allReviewsFor(p) {
@@ -672,7 +665,7 @@ function openReviewModal(p) {
     const body = f.querySelector('[name="body"]').value.trim();
     if (!body) { toast('Add a few words first.'); return; }
     const db = storageRead('pdp-reviews', {});
-    db[p.id] = [{ name: 'You', initials: 'YU', tone: '#a56a76', stars, title, body, when: 'Just now', photo: null, verified: false, mine: true, helpful: 0 }, ...(db[p.id] || [])];
+    db[p.id] = [{ name: 'You', initials: 'YU', tone: '#d3818a', stars, title, body, when: 'Just now', photo: null, verified: false, mine: true, helpful: 0 }, ...(db[p.id] || [])];
     storageWrite('pdp-reviews', db);
     closeModal();
     refreshReviewsList(p);
@@ -1688,7 +1681,7 @@ function renderShippingPage() {
       <div class="sv-line"><span>Courier</span><b>A FedEx-style demo integration, complete with a tracking timeline</b></div>
       <div class="sv-line"><span>Packaging</span><b>Designed to be opened slowly and reused or recycled</b></div>
     </div>
-    <div class="mono sv-center" style="color:#9a6b55;margin:0 0 20px">How a return would work</div>
+    <div class="mono sv-center" style="color:#916f5e;margin:0 0 20px">How a return would work</div>
     <div class="sv-steps">
       <div class="sv-step"><i>STEP 01</i><b>Tell us what changed</b><p>One note with the order number is enough \u2014 no forms in triplicate, no interrogation.</p></div>
       <div class="sv-step"><i>STEP 02</i><b>We book the pickup</b><p>A courier collects from your door within 48 hours, in the same box if you kept it.</p></div>
@@ -1998,49 +1991,49 @@ function renderWish() {
 // ------------------------------------------------------------------
 const COMMUNITY_TOPICS = ['All', 'Builds', 'Crafts', 'Gifting wins', 'Questions'];
 const COMMUNITY_STORE_KEY = 'playroom-community-v1';
-const COMMUNITY_ME = { name: 'You', initials: 'YU', tone: '#a56a76', role: 'Playroom member' };
+const COMMUNITY_ME = { name: 'You', initials: 'YU', tone: '#d3818a', role: 'Playroom member' };
 const COMMUNITY_POSTS = [
   {
-    id: 'c1', topic: 'Builds', pinned: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#4c3428',
+    id: 'c1', topic: 'Builds', pinned: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#3d6482',
     role: 'Community moderator', time: 'Yesterday', image: null, likes: 212,
     text: 'Welcome to the playroom — our little corner for show-and-tell. Post the towers, the paintings, the half-finished masterpieces. Be kind, credit the makers, and our mods will be around all week with tips and ideas. ✳',
     replies: [
-      { name: 'Mia R.', initials: 'MR', tone: '#b56f7b', time: '18 h ago', text: 'Such a lovely idea. My two are already planning their entry for this week’s prompt…' },
-      { mod: true, name: 'Dev · Playroom team', initials: 'PL', tone: '#8a6a3f', time: '12 h ago', text: 'We can’t wait to see it, Mia. Post it with #thisweeksprompt and we’ll pin our favourites on Friday.' },
+      { name: 'Mia R.', initials: 'MR', tone: '#e59aa2', time: '18 h ago', text: 'Such a lovely idea. My two are already planning their entry for this week’s prompt…' },
+      { mod: true, name: 'Dev · Playroom team', initials: 'PL', tone: '#779abb', time: '12 h ago', text: 'We can’t wait to see it, Mia. Post it with #thisweeksprompt and we’ll pin our favourites on Friday.' },
     ],
   },
   {
-    id: 'c2', topic: 'Builds', name: 'Mia R.', initials: 'MR', tone: '#b56f7b',
+    id: 'c2', topic: 'Builds', name: 'Mia R.', initials: 'MR', tone: '#e59aa2',
     role: 'Parent of two', time: '4 h ago', image: photos[3], likes: 48,
     text: 'Rainy Saturday = the marble run came back out. They rebuilt the whole spiral twice without a single “I’m bored”. I’m calling it a win.',
     replies: [
-      { name: 'Jonas K.', initials: 'JK', tone: '#6f8a6a', time: '3 h ago', text: 'That spiral is serious engineering. How long did it stand before someone bumped the table?' },
-      { mod: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#4c3428', time: '2 h ago', text: 'The office record is 41 minutes. Consider this an official challenge — we’ll be watching for the rematch. ✳' },
+      { name: 'Jonas K.', initials: 'JK', tone: '#6c7c88', time: '3 h ago', text: 'That spiral is serious engineering. How long did it stand before someone bumped the table?' },
+      { mod: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#3d6482', time: '2 h ago', text: 'The office record is 41 minutes. Consider this an official challenge — we’ll be watching for the rematch. ✳' },
     ],
   },
   {
-    id: 'c3', topic: 'Crafts', name: 'Aisha N.', initials: 'AN', tone: '#c98a5b',
+    id: 'c3', topic: 'Crafts', name: 'Aisha N.', initials: 'AN', tone: '#b38771',
     role: 'Member since 2025', time: '6 h ago', image: photos[10], likes: 31,
     text: 'We painted the cardboard boxes instead of throwing them out — apparently the box WAS the toy all along. Saving this one for the scrapbook.',
     replies: [
-      { mod: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#4c3428', time: '5 h ago', text: 'Every play expert we’ve ever met says the same: the box is never just a box. Beautiful work, Aisha.' },
+      { mod: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#3d6482', time: '5 h ago', text: 'Every play expert we’ve ever met says the same: the box is never just a box. Beautiful work, Aisha.' },
     ],
   },
   {
-    id: 'c4', topic: 'Gifting wins', name: 'Jonas K.', initials: 'JK', tone: '#6f8a6a',
+    id: 'c4', topic: 'Gifting wins', name: 'Jonas K.', initials: 'JK', tone: '#6c7c88',
     role: 'Gift-finder regular', time: 'Yesterday', image: null, likes: 27,
     text: 'Used the gift finder for my niece’s fifth birthday — the flower-press kit was a hit with both the kid AND the parents. Sent the link to three other uncles already.',
     replies: [
-      { name: 'Sofia T.', initials: 'ST', tone: '#a56a76', time: 'Yesterday', text: 'Good to know — my niece turns five next month. Adding it to the list right now.' },
+      { name: 'Sofia T.', initials: 'ST', tone: '#d3818a', time: 'Yesterday', text: 'Good to know — my niece turns five next month. Adding it to the list right now.' },
     ],
   },
   {
-    id: 'c5', topic: 'Questions', name: 'Sofia T.', initials: 'ST', tone: '#a56a76',
+    id: 'c5', topic: 'Questions', name: 'Sofia T.', initials: 'ST', tone: '#d3818a',
     role: 'New here', time: '2 d ago', image: photos[21], likes: 19,
     text: 'Honest question: how do you store the tiny pieces so they don’t migrate under the sofa? I need the system that actually survives a toddler.',
     replies: [
-      { mod: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#4c3428', time: '2 d ago', text: 'Our honest answer: clear zip pouches, one per set, tipped into a single deep basket. The toddler can’t resist the basket — but the pouches survive.' },
-      { name: 'Mia R.', initials: 'MR', tone: '#b56f7b', time: '1 d ago', text: '+1 for the basket. Labels with a picture of the toy helped ours put things back at bedtime.' },
+      { mod: true, name: 'Priya · Playroom team', initials: 'PL', tone: '#3d6482', time: '2 d ago', text: 'Our honest answer: clear zip pouches, one per set, tipped into a single deep basket. The toddler can’t resist the basket — but the pouches survive.' },
+      { name: 'Mia R.', initials: 'MR', tone: '#e59aa2', time: '1 d ago', text: '+1 for the basket. Labels with a picture of the toy helped ours put things back at bedtime.' },
     ],
   },
   {
@@ -2048,7 +2041,7 @@ const COMMUNITY_POSTS = [
     role: 'Grandparent duty', time: '2 d ago', image: photos[30], likes: 64,
     text: 'Three generations around the same puzzle this weekend. My mother claims she “just watched”. The photo says otherwise.',
     replies: [
-      { mod: true, name: 'Dev · Playroom team', initials: 'PL', tone: '#8a6a3f', time: '1 d ago', text: 'This is the whole idea of Playroom in one photo, Kenji. Borrowing this for our wall of lovely things — with your permission. ✳' },
+      { mod: true, name: 'Dev · Playroom team', initials: 'PL', tone: '#779abb', time: '1 d ago', text: 'This is the whole idea of Playroom in one photo, Kenji. Borrowing this for our wall of lovely things — with your permission. ✳' },
     ],
   },
 ];
@@ -2107,7 +2100,7 @@ function renderCommunity() {
       </div>
       <aside class="community-side">
         <div class="side-card reveal"><h4>How the playroom works</h4><ul><li><i>✳</i>Be kind. Every maker here is still learning.</li><li><i>✳</i>Credit the makers — ask before reposting a photo.</li><li><i>✳</i>No selling, no spam, no grown-up arguments.</li><li><i>✳</i>A moderator reads every post within a day.</li></ul></div>
-        <div class="side-card reveal"><h4>Top members this month</h4><div class="member-row"><span class="post-avatar" style="--av:#b56f7b">MR</span><b>Mia R.</b><span>18 posts</span></div><div class="member-row"><span class="post-avatar" style="--av:#c98a5b">AN</span><b>Aisha N.</b><span>14 posts</span></div><div class="member-row"><span class="post-avatar" style="--av:#6f8a6a">JK</span><b>Jonas K.</b><span>11 posts</span></div><div class="member-row"><span class="post-avatar" style="--av:#7d6a9a">KM</span><b>Kenji M.</b><span>9 posts</span></div></div>
+        <div class="side-card reveal"><h4>Top members this month</h4><div class="member-row"><span class="post-avatar" style="--av:#e59aa2">MR</span><b>Mia R.</b><span>18 posts</span></div><div class="member-row"><span class="post-avatar" style="--av:#b38771">AN</span><b>Aisha N.</b><span>14 posts</span></div><div class="member-row"><span class="post-avatar" style="--av:#6c7c88">JK</span><b>Jonas K.</b><span>11 posts</span></div><div class="member-row"><span class="post-avatar" style="--av:#7d6a9a">KM</span><b>Kenji M.</b><span>9 posts</span></div></div>
         <div class="side-card reveal"><h4>Trending topics</h4><div class="trending-tags"><span>#thisweeksprompt</span><span>#marblewentwrong</span><span>#rainydayrescues</span><span>#giftingwins</span><span>#tidy-up-sos</span></div></div>
       </aside>
     </div>

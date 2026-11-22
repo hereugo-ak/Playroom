@@ -6,15 +6,15 @@ const LOGO = 'https://kouyxayyapmfqhixjved.supabase.co/storage/v1/object/public/
 const SITE = 'https://playrooom.vercel.app/';
 
 const C = {
-  beige: '#F0E5D7',
-  cocoa: '#4C3428',
-  rose: '#B56F7B',
-  gold: '#E8B96A',
-  ivory: '#FFF9EF',
-  ink: '#3D2E23',
-  muted: '#806B5A',
-  footer: '#E8D9C8',
-  line: '#DCCAB4',
+  beige: '#f6ece3',
+  cocoa: '#3d6482',
+  rose: '#e59aa2',
+  gold: '#87aed2',
+  ivory: '#d3e1ee',
+  ink: '#3c2c24',
+  muted: '#7b685f',
+  footer: '#d0dde9',
+  line: '#bbcddd',
 };
 
 function safeUrl(value, base = SITE) {
@@ -100,7 +100,7 @@ export function renderSubscriptionConfirmation(data = {}, options = {}) {
 <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="${C.beige}" style="background:${C.beige};">
   <tr><td align="center" style="padding:0;">
     <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="620" style="width:100%;max-width:620px;background:${C.ivory};">
-      <tr><td align="center" bgcolor="${C.cocoa}" style="background:${C.cocoa};padding:11px 20px;color:#F7E7CF;font:9px Arial,sans-serif;letter-spacing:.12em;">PLAYROOM CIRCLE · MEMBER CONFIRMATION · MADE FOR LITTLE BIG IMAGINATIONS</td></tr>
+      <tr><td align="center" bgcolor="${C.cocoa}" style="background:${C.cocoa};padding:11px 20px;color:#d3e1ee;font:9px Arial,sans-serif;letter-spacing:.12em;">PLAYROOM CIRCLE · MEMBER CONFIRMATION · MADE FOR LITTLE BIG IMAGINATIONS</td></tr>
       <tr><td align="center" bgcolor="${C.beige}" class="px" style="background:${C.beige};padding:32px 44px 28px;border-bottom:1px solid ${C.line};">
         <img src="${LOGO}" width="190" alt="Playroom" style="display:block;width:190px;max-width:70%;height:auto;">
         <div style="margin-top:14px;color:${C.rose};font:700 12px Arial,sans-serif;letter-spacing:.14em;">LITTLE HANDS. BIG WORLDS.</div>
@@ -111,7 +111,7 @@ export function renderSubscriptionConfirmation(data = {}, options = {}) {
         <p style="margin:0;color:${C.muted};font:14px/1.75 Arial,sans-serif;">${firstName ? `Hello ${escapeHtml(firstName)},` : 'Hello,'} your Playroom Circle membership is active. The demo payment was approved and your benefits are ready to use.</p>
       </td></tr>
       <tr><td class="px" style="padding:20px 44px 10px;">
-        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#FFFDF8;border:1px solid ${C.line};border-radius:6px;">
+        <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="background:#d3e1ee;border:1px solid ${C.line};border-radius:6px;">
           <tr><td style="padding:20px 22px;">
             <div style="color:${C.rose};font:700 9px Arial,sans-serif;letter-spacing:.14em;">YOUR MEMBERSHIP</div>
             <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" style="margin-top:14px;">
@@ -139,12 +139,12 @@ export function renderSubscriptionConfirmation(data = {}, options = {}) {
       <tr><td class="px" align="center" style="padding:30px 44px 36px;border-top:1px solid ${C.line};">
         <div style="color:${C.ink};font:400 21px/1.5 Georgia,serif;">Thoughtfully chosen toys for curious minds, big imaginations and everyday little adventures.</div>
         <div style="margin-top:12px;color:${C.rose};font:700 9px Arial,sans-serif;letter-spacing:.16em;">LITTLE HANDS. BIG WORLDS.</div>
-        <div style="margin-top:14px;color:#9A8672;font:10px/1.6 Arial,sans-serif;">Demo membership — no real payment was collected and no physical service has been scheduled.</div>
+        <div style="margin-top:14px;color:#8a9aa8;font:10px/1.6 Arial,sans-serif;">Demo membership — no real payment was collected and no physical service has been scheduled.</div>
       </td></tr>
       <tr><td align="center" bgcolor="${C.footer}" class="px" style="background:${C.footer};padding:26px 30px;">
         <div style="color:${C.cocoa};font:700 10px Arial,sans-serif;letter-spacing:.16em;">MADE FOR LITTLE BIG IMAGINATIONS.</div>
         <div style="margin-top:10px;color:${C.muted};font:12px/1.8 Arial,sans-serif;">playrooom.vercel.app</div>
-        <div style="margin-top:12px;color:#9A8672;font:10px/1.6 Arial,sans-serif;">Automated membership confirmation. Please do not reply directly to this message.</div>
+        <div style="margin-top:12px;color:#8a9aa8;font:10px/1.6 Arial,sans-serif;">Automated membership confirmation. Please do not reply directly to this message.</div>
       </td></tr>
     </table>
   </td></tr>
